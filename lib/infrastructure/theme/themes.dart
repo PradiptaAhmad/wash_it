@@ -21,9 +21,12 @@ const Color categoryCuciRegular = Color(0xFFD9EDBF);
 
 // margin and padding
 const double defaultMargin = 15.0;
-const double defaultPadding = 24.0;
+const double defaultPadding = 24;
 
 // Text Styles
+figmaFontsize(int fontSize) {
+  return fontSize * 1.1;
+}
 
 // Headline Text Styles
 // Large
@@ -31,58 +34,64 @@ TextStyle tsHeadlineLargeRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 28,
+    fontSize: figmaFontsize(28),
   );
 }
+
 TextStyle tsHeadlineLargeMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 28,
+    fontSize: figmaFontsize(28),
   );
 }
+
 TextStyle tsHeadlineLargeSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 28,
+    fontSize: figmaFontsize(28),
   );
 }
+
 TextStyle tsHeadlineLargeBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 28,
+    fontSize: figmaFontsize(28),
   );
 }
 
-// Medium 
+// Medium
 TextStyle tsHeadlineMediumRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 26,
+    fontSize: figmaFontsize(26),
   );
 }
+
 TextStyle tsHeadlineMediumMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 26,
+    fontSize: figmaFontsize(26),
   );
 }
+
 TextStyle tsHeadlineMediumSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 26,
+    fontSize: figmaFontsize(26),
   );
 }
+
 TextStyle tsHeadlineMediumBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 26,
+    fontSize: figmaFontsize(26),
   );
 }
 
@@ -91,28 +100,31 @@ TextStyle tsHeadlineSmallRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 24,
+    fontSize: figmaFontsize(24),
   );
 }
+
 TextStyle tsHeadlineSmallMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 24,
+    fontSize: figmaFontsize(24),
   );
 }
+
 TextStyle tsHeadlineSmallSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 24,
+    fontSize: figmaFontsize(24),
   );
 }
+
 TextStyle tsHeadlineSmallBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 24,
+    fontSize: figmaFontsize(24),
   );
 }
 
@@ -122,28 +134,31 @@ TextStyle tsTitleLargeRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 22,
+    fontSize: figmaFontsize(22),
   );
 }
+
 TextStyle tsTitleLargeMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 22,
+    fontSize: figmaFontsize(22),
   );
 }
+
 TextStyle tsTitleLargeSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 22,
+    fontSize: figmaFontsize(22),
   );
 }
+
 TextStyle tsTitleLargeBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 22,
+    fontSize: figmaFontsize(22),
   );
 }
 
@@ -152,28 +167,31 @@ TextStyle tsTitleMediumRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 20,
+    fontSize: figmaFontsize(20),
   );
 }
+
 TextStyle tsTitleMediumMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 20,
+    fontSize: figmaFontsize(20),
   );
 }
+
 TextStyle tsTitleMediumSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 20,
+    fontSize: figmaFontsize(20),
   );
 }
+
 TextStyle tsTitleMediumBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 20,
+    fontSize: figmaFontsize(20),
   );
 }
 
@@ -182,28 +200,31 @@ TextStyle tsTitleSmallRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 18,
+    fontSize: figmaFontsize(18),
   );
 }
+
 TextStyle tsTitleSmallMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 18,
+    fontSize: figmaFontsize(18),
   );
 }
+
 TextStyle tsTitleSmallSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 18,
+    fontSize: figmaFontsize(18),
   );
 }
+
 TextStyle tsTitleSmallBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 18,
+    fontSize: figmaFontsize(18),
   );
 }
 
@@ -213,28 +234,31 @@ TextStyle tsBodyLargeRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 16,
+    fontSize: figmaFontsize(16),
   );
 }
+
 TextStyle tsBodyLargeMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 16,
+    fontSize: figmaFontsize(16),
   );
 }
+
 TextStyle tsBodyLargeSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 16,
+    fontSize: figmaFontsize(16),
   );
 }
+
 TextStyle tsBodyLargeBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 16,
+    fontSize: figmaFontsize(16),
   );
 }
 
@@ -243,28 +267,31 @@ TextStyle tsBodyMediumRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 14,
+    fontSize: figmaFontsize(14),
   );
 }
+
 TextStyle tsBodyMediumMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 14,
+    fontSize: figmaFontsize(14),
   );
 }
+
 TextStyle tsBodyMediumSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 14,
+    fontSize: figmaFontsize(14),
   );
 }
+
 TextStyle tsBodyMediumBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 14,
+    fontSize: figmaFontsize(14),
   );
 }
 
@@ -273,28 +300,31 @@ TextStyle tsBodySmallRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 12,
+    fontSize: figmaFontsize(12),
   );
 }
+
 TextStyle tsBodySmallMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 12,
+    fontSize: figmaFontsize(12),
   );
 }
+
 TextStyle tsBodySmallSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 12,
+    fontSize: figmaFontsize(12),
   );
 }
+
 TextStyle tsBodySmallBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 12,
+    fontSize: figmaFontsize(12),
   );
 }
 
@@ -304,28 +334,31 @@ TextStyle tsLabelLargeRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 10,
+    fontSize: figmaFontsize(10),
   );
 }
+
 TextStyle tsLabelLargeMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 10,
+    fontSize: figmaFontsize(10),
   );
 }
+
 TextStyle tsLabelLargeSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 10,
+    fontSize: figmaFontsize(10),
   );
 }
+
 TextStyle tsLabelLargeBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 10,
+    fontSize: figmaFontsize(10),
   );
 }
 
@@ -334,28 +367,31 @@ TextStyle tsLabelMediumRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 8,
+    fontSize: figmaFontsize(8),
   );
 }
+
 TextStyle tsLabelMediumMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 8,
+    fontSize: figmaFontsize(8),
   );
 }
+
 TextStyle tsLabelMediumSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 8,
+    fontSize: figmaFontsize(8),
   );
 }
+
 TextStyle tsLabelMediumBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 8,
+    fontSize: figmaFontsize(8),
   );
 }
 
@@ -364,31 +400,30 @@ TextStyle tsLabelSmallRegular(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w400,
-    fontSize: 6,
+    fontSize: figmaFontsize(6),
   );
 }
+
 TextStyle tsLabelSmallMedium(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w500,
-    fontSize: 6,
+    fontSize: figmaFontsize(6),
   );
 }
+
 TextStyle tsLabelSmallSemibold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w600,
-    fontSize: 6,
+    fontSize: figmaFontsize(6),
   );
 }
+
 TextStyle tsLabelSmallBold(Color color) {
   return GoogleFonts.poppins(
     color: color,
     fontWeight: FontWeight.w700,
-    fontSize: 6,
+    fontSize: figmaFontsize(6),
   );
 }
-
-
-
-
