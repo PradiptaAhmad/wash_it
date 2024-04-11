@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/widget/common/auth_text_field.dart';
+import 'package:wash_it/widget/common/button_widget.dart';
 
 import 'controllers/login_page.controller.dart';
 
@@ -98,23 +99,10 @@ class LoginPageScreen extends GetView<LoginPageController> {
             SizedBox(
               height: 15,
             ),
-            ElevatedButton(
+            ButtonWidget(
+              text: "Login",
+              backgroundColor: secondaryColor,
               onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: secondaryColor,
-                padding: EdgeInsets.symmetric(vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                child: Text(
-                  "Login",
-                  style: tsBodyMediumSemibold(primaryColor),
-                ),
-              ),
             ),
             SizedBox(
               height: 15,
@@ -125,14 +113,14 @@ class LoginPageScreen extends GetView<LoginPageController> {
               children: [
                 Container(
                   color: lightGrey,
-                  width: screenWidth * 0.4,
+                  width: screenWidth * 0.39,
                   height: 2,
                 ),
                 SizedBox(
                   width: 10,
                 ),
                 Text(
-                  "Or",
+                  "Atau",
                   style: tsBodySmallMedium(darkGrey),
                 ),
                 SizedBox(
@@ -140,7 +128,7 @@ class LoginPageScreen extends GetView<LoginPageController> {
                 ),
                 Container(
                   color: lightGrey,
-                  width: screenWidth * 0.4,
+                  width: screenWidth * 0.39,
                   height: 2,
                 ),
               ],
@@ -160,13 +148,25 @@ class LoginPageScreen extends GetView<LoginPageController> {
                 ),
                 child: Container(
                   height: 25,
+                  padding: EdgeInsets.symmetric(horizontal: 25),
                   child: Row(
-                    children: [],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/icGoogle.svg",
+                        width: 25,
+                      ),
+                      Spacer(),
+                      Text(
+                        "Login Dengan Google",
+                        style: tsBodyMediumSemibold(darkBlue),
+                      ),
+                      Spacer(),
+                    ],
                   ),
                 )),
-            SvgPicture.asset(
-              "assets/icons/icGoogle.svg",
-            ),
+
           ],
         ),
       ),
