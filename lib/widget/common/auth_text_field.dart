@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 
 class AuthTextField extends StatelessWidget {
@@ -9,6 +10,7 @@ class AuthTextField extends StatelessWidget {
   final String? hintText;
   final bool? isObsecure;
   final Widget? suffixIcon;
+  final List<TextInputFormatter>? formatter;
   AuthTextField({
     this.formKey,
     this.onTap,
@@ -17,6 +19,7 @@ class AuthTextField extends StatelessWidget {
     this.hintText,
     this.isObsecure,
     this.suffixIcon,
+    this.formatter,
   });
 
   @override
