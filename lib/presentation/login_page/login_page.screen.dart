@@ -166,7 +166,24 @@ class LoginPageScreen extends GetView<LoginPageController> {
                     ],
                   ),
                 )),
-
+                 Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Belum punya akun?",
+                  style: tsBodyMediumMedium(darkGrey),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Text(
+                    "Daftar Sekarang",
+                    style: tsBodyMediumBold(darkBlue),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
