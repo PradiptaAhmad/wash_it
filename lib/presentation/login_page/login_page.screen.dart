@@ -14,7 +14,6 @@ class LoginPageScreen extends GetView<LoginPageController> {
 
   @override
   Widget build(BuildContext context) {
-    final LoginPageController controller = Get.put(LoginPageController());
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 

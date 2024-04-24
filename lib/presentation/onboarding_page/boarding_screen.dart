@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/onboarding_page/slider.dart';
 import 'package:wash_it/presentation/login_page/login_page.screen.dart';
+import 'package:get/get.dart';
+
+import '../../infrastructure/navigation/routes.dart';
 
 class BoardingScreen extends StatefulWidget {
   @override
@@ -125,10 +128,7 @@ class _BoardingScreenState extends State<BoardingScreen> {
               InkWell(
                 onTap: () {
                   if (_currentPage == (_pages.length - 1)) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPageScreen()),
-                    );
+                    Get.toNamed(Routes.LOGIN_PAGE);
                   } else {
                     _controller.nextPage(
                       duration: Duration(milliseconds: 800),
