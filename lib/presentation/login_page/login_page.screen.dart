@@ -11,8 +11,10 @@ import 'controllers/login_page.controller.dart';
 
 class LoginPageScreen extends GetView<LoginPageController> {
   const LoginPageScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    final LoginPageController controller = Get.put(LoginPageController());
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
