@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
+import 'package:wash_it/presentation/onboarding_page/boarding_screen.dart';
+import 'package:wash_it/presentation/splash_screen/controllers/splash_screen.controller.dart';
+import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
 
 import '../../config.dart';
 import '../../presentation/screens.dart';
@@ -27,9 +31,28 @@ class EnvironmentsBadge extends StatelessWidget {
 class Nav {
   static List<GetPage> routes = [
     GetPage(
+      name:  Routes.SPLASH_SCREEN,
+      page:  () => SplashScreen(),
+      binding: SplashControllerBinding(),
+    ),
+    GetPage(
+      name:  Routes.ONBOARDING_PAGE,
+      page:  () => BoardingScreen(),
+    ),
+    GetPage(
       name: Routes.HOME,
       page: () => const HomeScreen(),
       binding: HomeControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.LOGIN_PAGE,
+      page: () => const LoginPageScreen(),
+      binding: LoginPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.REGISTER_PAGE,
+      page: () => const RegisterPageScreen(),
+      binding: RegisterPageControllerBinding(),
     ),
   ];
 }

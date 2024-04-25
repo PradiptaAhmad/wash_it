@@ -10,14 +10,20 @@ dependencies:
   get_cli: any
   get: 4.6.6
   google_fonts: any
+  introduction_screen: any
+  http: any
+  get_storage: any
+  flutter_svg: any
   flutter: 
     sdk: flutter
 
 dev_dependencies: 
-  flutter_lints: ^3.0.0
   flutter_test: 
     sdk: flutter
 
 flutter: 
   uses-material-design: true
 
+  assets:
+  - assets/icons/
+  - assets/bg_boarding/
