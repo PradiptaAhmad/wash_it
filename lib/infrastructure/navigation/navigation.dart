@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
+
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
 import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
@@ -57,6 +59,11 @@ class Nav {
       name: Routes.REGISTER_PAGE,
       page: () => const RegisterPageScreen(),
       binding: RegisterPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.HISTORY_PAGE,
+      page: () => const HistoryPageScreen(),
+      binding: HistoryPageControllerBinding(),
     ),
   ];
 }
