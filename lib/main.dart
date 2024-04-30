@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import 'package:wash_it/infrastructure/theme/themes.dart';
 
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
@@ -12,6 +12,7 @@ void main() async {
 
 class Main extends StatelessWidget {
   final String initialRoute;
+
   Main(this.initialRoute);
 
   @override
@@ -19,6 +20,9 @@ class Main extends StatelessWidget {
     return GetMaterialApp(
       initialRoute: initialRoute,
       getPages: Nav.routes,
+      theme: ThemeData(
+        scaffoldBackgroundColor: primaryColor,
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ class Routes {
     return ONBOARDING_PAGE;
   }
 
+  static const NAVBAR = '/navigation_menu';
   static const ONBOARDING_PAGE = '/boarding_screen';
   static const SPLASH_SCREEN = '/splash_screen';
   static const HOME = '/home';

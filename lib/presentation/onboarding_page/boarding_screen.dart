@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/onboarding_page/slider.dart';
-import 'package:wash_it/presentation/login_page/login_page.screen.dart';
-import 'package:get/get.dart';
 
 import '../../infrastructure/navigation/routes.dart';
 
@@ -120,7 +119,9 @@ class _BoardingScreenState extends State<BoardingScreen> {
                     margin: EdgeInsets.symmetric(horizontal: 5, vertical: 30),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: (index == _currentPage) ? Colors.black : Colors.grey.withOpacity(0.5),
+                      color: (index == _currentPage)
+                          ? Colors.black
+                          : Colors.grey.withOpacity(0.5),
                     ),
                   );
                 }),
@@ -147,17 +148,17 @@ class _BoardingScreenState extends State<BoardingScreen> {
                   ),
                   child: (_currentPage == (_pages.length - 1))
                       ? Text(
-                    "Daftar",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  )
+                          "Daftar",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        )
                       : Icon(
-                    Icons.navigate_next,
-                    size: 50,
-                    color: Colors.white,
-                  ),
+                          Icons.navigate_next,
+                          size: 50,
+                          color: Colors.white,
+                        ),
                 ),
               ),
               SizedBox(
