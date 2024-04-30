@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/presentation/history_page/history_page.screen.dart';
 
 import '../../presentation/home/home.screen.dart';
 
@@ -43,7 +44,7 @@ class NavigationController extends GetxController {
   final screens = [
     HomeScreen(),
     Container(color: Colors.blue),
-    Container(color: Colors.green),
+    HistoryPageScreen(),
     Container(color: Colors.yellow),
   ];
 }
