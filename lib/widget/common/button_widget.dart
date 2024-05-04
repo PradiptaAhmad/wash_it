@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:wash_it/infrastructure/theme/themes.dart';
 
 class ButtonWidget extends StatelessWidget {
   final void Function()? onPressed;
@@ -9,6 +9,7 @@ class ButtonWidget extends StatelessWidget {
   final String? text;
   final Color? textColor;
   final Widget? child;
+
   const ButtonWidget({
     this.onPressed,
     this.key,
