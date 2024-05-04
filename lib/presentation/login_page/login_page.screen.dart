@@ -102,7 +102,9 @@ class LoginPageScreen extends GetView<LoginPageController> {
             ButtonWidget(
               text: "Login",
               backgroundColor: secondaryColor,
-              onPressed: () {},
+              onPressed: () {
+                controller.login();
+              },
             ),
             SizedBox(
               height: 15,
