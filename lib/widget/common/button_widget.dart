@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 
 class ButtonWidget extends StatelessWidget {
@@ -7,6 +8,7 @@ class ButtonWidget extends StatelessWidget {
   final Color? backgroundColor;
   final String? text;
   final Color? textColor;
+  final Widget? child;
 
   const ButtonWidget({
     this.onPressed,
@@ -14,6 +16,7 @@ class ButtonWidget extends StatelessWidget {
     this.backgroundColor,
     this.text,
     this.textColor,
+    this.child,
   }) : super(key: key);
 
   @override
@@ -22,7 +25,6 @@ class ButtonWidget extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
-        padding: EdgeInsets.symmetric(vertical: 15),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -30,10 +32,7 @@ class ButtonWidget extends StatelessWidget {
       child: Container(
         width: double.infinity,
         alignment: Alignment.center,
-        child: Text(
-          text!,
-          style: tsBodyMediumSemibold(textColor ?? primaryColor),
-        ),
+        child: child
       ),
     );
   }

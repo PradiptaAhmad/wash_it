@@ -52,6 +52,7 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                   if (value == null || value.isEmpty) {
                     return "Username tidak boleh kosong";
                   } else {
+                    controller.username.value = value;
                     return null;
                   }
                 },
@@ -68,16 +69,14 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
               ),
               AuthTextField(
                 hintText: "Masukkan Email",
-                formatter: [
-                  LengthLimitingTextInputFormatter(14),
-                  FilteringTextInputFormatter.digitsOnly
-                ],
+                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Email tidak boleh kosong";
                   } else if (!GetUtils.isEmail(value)) {
                     return "Email tidak valid";
                   } else {
+                    controller.email.value = value;
                     return null;
                   }
                 },
@@ -94,6 +93,7 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
               ),
               AuthTextField(
                 hintText: "Masukkan Nomor Telepon",
+                keyboardType: TextInputType.phone,
                 formatter: [
                   LengthLimitingTextInputFormatter(14),
                   FilteringTextInputFormatter.digitsOnly
@@ -102,6 +102,7 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                   if (value == null || value.isEmpty) {
                     return "Username tidak boleh kosong";
                   } else {
+                    controller.phone.value = value;
                     return null;
                   }
                 },
@@ -119,14 +120,11 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
               Obx(() => AuthTextField(
                     hintText: "Masukkan Password",
                     isObsecure: controller.isObsecure.value,
-                    formatter: [
-                      LengthLimitingTextInputFormatter(14),
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Username tidak boleh kosong";
                       } else {
+                        controller.password.value = value;
                         return null;
                       }
                     },
@@ -146,11 +144,30 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
               SizedBox(
                 height: 20,
               ),
-              ButtonWidget(
-                text: "Daftar",
-                backgroundColor: secondaryColor,
-                onPressed: () {},
-              ),
+              Obx(() => ButtonWidget(
+                    child: controller.isLoading.value
+                        ? Container(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: Transform.scale(
+                              scale: 0.4,
+                              child: CircularProgressIndicator(
+                                color: primaryColor,
+                                strokeWidth: 5,
+                              ),
+                            ),
+                          )
+                        : Container(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            child: Text(
+                              "Daftar",
+                              style: tsBodyMediumSemibold(primaryColor),
+                            ),
+                          ),
+                    backgroundColor: secondaryColor,
+                    onPressed: () {
+                      controller.register();
+                    },
+                  )),
               SizedBox(
                 height: 15,
               ),

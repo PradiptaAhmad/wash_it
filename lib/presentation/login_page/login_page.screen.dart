@@ -104,7 +104,7 @@ class LoginPageScreen extends GetView<LoginPageController> {
               text: "Login",
               backgroundColor: secondaryColor,
               onPressed: () {
-                Get.toNamed(Routes.NAVBAR);
+                controller.login();
               },
             ),
             SizedBox(
