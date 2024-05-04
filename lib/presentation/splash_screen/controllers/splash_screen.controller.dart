@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/navigation/routes.dart';
 
