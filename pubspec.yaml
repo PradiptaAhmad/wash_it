@@ -13,6 +13,8 @@ dependencies:
   http: any
   get_storage: any
   flutter_svg: any
+  firebase_core: any
+  firebase_messaging: any
   flutter: 
     sdk: flutter
 
