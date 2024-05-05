@@ -24,12 +24,41 @@ class NavigationMenu extends StatelessWidget {
           onDestinationSelected: (index) =>
               controller.selectedIndex.value = index,
           destinations: const [
-            NavigationDestination(icon: Icon(Iconsax.home), label: "Home"),
-            NavigationDestination(icon: Icon(Iconsax.status), label: "Status"),
             NavigationDestination(
-                icon: Icon(Iconsax.activity), label: "History"),
+              icon: Icon(Iconsax.home),
+              selectedIcon: Icon(
+                Iconsax.home1,
+                color: darkGrey,
+              ),
+              // New line: selected icon
+              label: "Home",
+            ),
             NavigationDestination(
-                icon: Icon(Iconsax.setting), label: "Settings"),
+              icon: Icon(Iconsax.status),
+              selectedIcon: Icon(
+                Iconsax.status5,
+                color: darkGrey,
+              ),
+              // New line: selected icon
+              label: "Status",
+            ),
+            NavigationDestination(
+              icon: Icon(Iconsax.receipt),
+              selectedIcon: Icon(
+                Iconsax.receipt_11,
+                color: darkGrey,
+              ),
+              // New line: selected icon
+              label: "History",
+            ),
+            NavigationDestination(
+              icon: Icon(Iconsax.setting),
+              selectedIcon: Icon(
+                Iconsax.setting1,
+                color: darkGrey,
+              ),
+              label: "Settings",
+            ),
           ],
         ),
       ),
