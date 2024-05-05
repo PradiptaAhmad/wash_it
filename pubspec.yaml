@@ -8,7 +8,7 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.6
   get_cli: any
-  iconsax: ^0.0.8
+  iconsax: any
   get: 4.6.6
   google_fonts: any
   introduction_screen: any
@@ -17,6 +17,10 @@ dependencies:
   flutter_svg: any
   flutter_rating_bar: ^4.0.1
   dotted_line: ^3.2.2
+
+  firebase_core: any
+  firebase_messaging: any
+
   flutter:
     sdk: flutter
 
