@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/order_antarjemput.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
+<<<<<<< HEAD
 import 'package:wash_it/presentation/onboarding_page/boarding_screen.dart';
 import 'package:wash_it/presentation/order_antarjemput/order_view.dart';
 import 'package:wash_it/presentation/splash_screen/controllers/splash_screen.controller.dart';
+=======
+import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
+>>>>>>> 3e6cc0f9227d989eaebd3953d303df8faa8615ae
 import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
 
 import '../../config.dart';
@@ -15,7 +18,9 @@ import 'routes.dart';
 
 class EnvironmentsBadge extends StatelessWidget {
   final Widget child;
+
   EnvironmentsBadge({required this.child});
+
   @override
   Widget build(BuildContext context) {
     var env = ConfigEnvironments.getEnvironments()['env'];
@@ -33,13 +38,17 @@ class EnvironmentsBadge extends StatelessWidget {
 class Nav {
   static List<GetPage> routes = [
     GetPage(
-      name:  Routes.SPLASH_SCREEN,
-      page:  () => SplashScreen(),
-      binding: SplashControllerBinding(),
+      name: Routes.NAVBAR,
+      page: () => NavigationMenu(),
     ),
     GetPage(
-      name:  Routes.ONBOARDING_PAGE,
-      page:  () => BoardingScreen(),
+      name: Routes.ONBOARDING_PAGE,
+      page: () => BoardingScreen(),
+    ),
+    GetPage(
+      name: Routes.SPLASH_SCREEN,
+      page: () => SplashScreen(),
+      binding: SplashControllerBinding(),
     ),
     GetPage(
       name: Routes.HOME,

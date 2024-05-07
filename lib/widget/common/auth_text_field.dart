@@ -11,6 +11,7 @@ class AuthTextField extends StatelessWidget {
   final bool? isObsecure;
   final Widget? suffixIcon;
   final List<TextInputFormatter>? formatter;
+  final TextInputType? keyboardType;
   AuthTextField({
     this.formKey,
     this.onTap,
@@ -20,6 +21,7 @@ class AuthTextField extends StatelessWidget {
     this.isObsecure,
     this.suffixIcon,
     this.formatter,
+    this.keyboardType,
   });
 
   @override
@@ -30,7 +32,9 @@ class AuthTextField extends StatelessWidget {
       onChanged: onChanged,
       validator: validator,
       obscureText: isObsecure ?? false,
+      inputFormatters: formatter,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      keyboardType: keyboardType ?? TextInputType.text,
       decoration: InputDecoration(
         isCollapsed: true,
         isDense: true,
