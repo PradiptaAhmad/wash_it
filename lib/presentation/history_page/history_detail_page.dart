@@ -1,8 +1,12 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/presentation/history_page/widget/detail_text_widget.dart';
+import 'package:wash_it/widget/common/button_widget.dart';
+
+import '../../infrastructure/navigation/routes.dart';
 
 class HistoryDetailPage extends StatelessWidget {
   const HistoryDetailPage({Key? key}) : super(key: key);
@@ -141,21 +145,31 @@ class HistoryDetailPage extends StatelessWidget {
                   )
                 ],
               ),
-              detailDataWidget("No. Pemesanan", "0441768479184"),
-              detailDataWidget("Nama Pelanggan", "Adit Rajin Mengaji"),
-              detailDataWidget("Nomor Ponsel", "081245678908"),
-              detailDataWidget("Alamat", "Sanggrahan, Karanganyar"),
-              detailDataWidget("Tipe Laundry", "Cuci Regular"),
-              detailDataWidget("Berat (Kg)", "4 Kg"),
-              detailDataWidget("Tanggal Pemesanan", "23 Maret 2024"),
+              DetailDataWidget(
+                  leftTitle: "No. Pemesanan", rightTitle: "0441768479184"),
+              DetailDataWidget(
+                  leftTitle: "Nama Pelanggan", rightTitle: "081245678908"),
+              DetailDataWidget(
+                  leftTitle: "Nomor Ponsel", rightTitle: "081245678908"),
+              DetailDataWidget(
+                  leftTitle: "Alamat", rightTitle: "Sanggrahan, Karanganyar"),
+              DetailDataWidget(
+                  leftTitle: "Tipe Laundry", rightTitle: "Cuci Regular"),
+              DetailDataWidget(leftTitle: "Berat (Kg)", rightTitle: "4 Kg"),
+              DetailDataWidget(
+                  leftTitle: "Tanggal Pemesanan", rightTitle: "23 Maret 2024"),
               SizedBox(height: 20),
               Text(
                 "Detail Pembayaran",
                 style: tsBodyMediumMedium(black),
               ),
-              detailDataWidget("Nomor Referensi", "00000876416789"),
-              detailDataWidget("Status Pembayaran", "Sukses"),
-              detailDataWidget("Waktu Pembayaran", "25-03-2024,  12:22:12"),
+              DetailDataWidget(
+                  leftTitle: "Nomor Referensi", rightTitle: "00000876416789"),
+              DetailDataWidget(
+                  leftTitle: "Status Pembayaran", rightTitle: "Sukses"),
+              DetailDataWidget(
+                  leftTitle: "Waktu Pembayaran",
+                  rightTitle: "25-03-2024,  12:22:12"),
               SizedBox(height: 20),
               Row(
                 children: [
@@ -172,58 +186,21 @@ class HistoryDetailPage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20),
-              Center(
-                child: RatingBar.builder(
-                  itemPadding: EdgeInsets.symmetric(horizontal: 8),
-                  glow: false,
-                  itemSize: 40,
-                  ignoreGestures: true,
-                  initialRating: 4,
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (rating) {
-                    print(rating);
-                  },
+              ButtonWidget(
+                backgroundColor: secondaryColor,
+                child: Text(
+                  "Beri Penilaian",
+                  style: tsBodySmallSemibold(primaryColor),
                 ),
+                onPressed: () {
+                  Get.toNamed(Routes.REVIEW_PAGE);
+                },
               ),
               SizedBox(height: 20),
-              // ButtonWidget(
-              //   text: "Beri Penilaian",
-              //   backgroundColor: secondaryColor,
-              //   onPressed: () {},
-              // ),
             ],
           ),
         ),
       ),
     );
   }
-}
-
-Widget detailDataWidget(leftTitle, rightTitle) {
-  return Column(
-    children: [
-      SizedBox(height: 10),
-      Container(
-        margin: EdgeInsets.symmetric(horizontal: 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              leftTitle,
-              style: tsBodySmallRegular(darkBlue),
-              textAlign: TextAlign.left,
-            ),
-            Text(
-              rightTitle,
-              style: tsBodySmallRegular(darkBlue),
-              textAlign: TextAlign.right,
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
 }
