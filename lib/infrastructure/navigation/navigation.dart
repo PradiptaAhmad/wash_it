@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
+import 'package:wash_it/presentation/history_page/review_page.dart';
 import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
 
 import '../../config.dart';
+import '../../presentation/history_page/history_detail_page.dart';
 import '../../presentation/screens.dart';
 import 'bindings/controllers/controllers_bindings.dart';
 import 'routes.dart';
@@ -58,5 +60,15 @@ class Nav {
       page: () => const RegisterPageScreen(),
       binding: RegisterPageControllerBinding(),
     ),
+    GetPage(
+      name: Routes.HISTORY_PAGE,
+      page: () => const HistoryPageScreen(),
+      binding: HistoryPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.HISTORY_DETAIL_PAGE,
+      page: () => HistoryDetailPage(),
+    ),
+    GetPage(name: Routes.REVIEW_PAGE, page: () => ReviewPage())
   ];
 }
