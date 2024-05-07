@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class OrderPageScreen1 extends StatelessWidget {
   final VoidCallback onNext;
 
-  const OrderPageScreen1({Key? key, required this.onNext}) : super(key: key);
+  const OrderPageScreen1({Key? key, required this.onNext, required void Function() onFinish}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
