@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
+
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
 import 'package:wash_it/presentation/history_page/review_page.dart';
@@ -69,6 +71,11 @@ class Nav {
       name: Routes.HISTORY_DETAIL_PAGE,
       page: () => HistoryDetailPage(),
     ),
-    GetPage(name: Routes.REVIEW_PAGE, page: () => ReviewPage())
+    GetPage(name: Routes.REVIEW_PAGE, page: () => ReviewPage()),
+    GetPage(
+      name: Routes.VERIFICATION_PAGE,
+      page: () => const VerificationPageScreen(),
+      binding: VerificationPageControllerBinding(),
+    ),
   ];
 }
