@@ -1,7 +1,7 @@
 class Routes {
   static Future<String> get initialRoute async {
     // TODO: implement method
-    return ORDERANTARJEMPUT_PAGE;
+    return SPLASH_SCREEN;
   }
 
   static const NAVBAR = '/navigation_menu';

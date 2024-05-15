@@ -17,6 +17,7 @@ dependencies:
   flutter_svg: any
   firebase_core: any
   firebase_messaging: any
+  flutter_local_notifications: any
     
   flutter: 
     sdk: flutter
