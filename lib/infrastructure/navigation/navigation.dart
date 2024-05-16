@@ -77,5 +77,10 @@ class Nav {
       page: () => const VerificationPageScreen(),
       binding: VerificationPageControllerBinding(),
     ),
+    GetPage(
+      name: Routes.STATUS_PAGE,
+      page: () => const StatusPageScreen(),
+      binding: StatusPageControllerBinding(),
+    ),
   ];
 }
