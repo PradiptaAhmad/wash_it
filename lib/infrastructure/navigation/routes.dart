@@ -13,4 +13,5 @@ class Routes {
   static const HISTORY_PAGE = '/history-page';
   static const HISTORY_DETAIL_PAGE = '/history-detail-page';
   static const REVIEW_PAGE = '/review-page';
+  static const CHAT_PAGE = '/message_screen';
 }
