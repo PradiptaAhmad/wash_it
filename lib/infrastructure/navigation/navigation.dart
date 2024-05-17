@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/order_antarjemput.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 import 'package:wash_it/presentation/order_antarjemput/order_view.dart';
+import 'package:wash_it/presentation/profile_page/profile_controller.dart';
+import 'package:wash_it/presentation/profile_page/profile_page.dart';
+import 'package:wash_it/presentation/splash_screen/controllers/splash_screen.controller.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
 import 'package:wash_it/presentation/chat_page/message_screen.dart';
 import 'package:wash_it/presentation/history_page/review_page.dart';
@@ -68,6 +71,14 @@ class Nav {
       name: Routes.ORDERANTARJEMPUT_PAGE,
       page: () => OrderView(),
       binding: OrderAntarJemputPageControllerBinding(),
+    ),
+    GetPage(
+    GetPage(
+      name: Routes.PROFILE_PAGE,
+      page: () => ProfilePage(),
+      binding: BindingsBuilder(() {
+      Get.lazyPut<ProfileController>(() => ProfileController());
+    }),
     ),
     GetPage(
       name: Routes.HISTORY_PAGE,
