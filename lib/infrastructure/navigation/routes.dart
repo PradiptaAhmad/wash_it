@@ -1,7 +1,7 @@
 class Routes {
   static Future<String> get initialRoute async {
     // TODO: implement method
-    return ORDERANTARJEMPUT_PAGE;
+    return PROFILE_PAGE;
   }
 
   static const NAVBAR = '/navigation_menu';
@@ -11,4 +11,5 @@ class Routes {
   static const LOGIN_PAGE = '/login-page.screen';
   static const REGISTER_PAGE = '/register-page';
   static const ORDERANTARJEMPUT_PAGE = '/order_antarjemput';
+  static const PROFILE_PAGE = '/profile';
 }

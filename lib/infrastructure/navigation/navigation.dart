@@ -4,6 +4,8 @@ import 'package:wash_it/infrastructure/navigation/bindings/controllers/order_ant
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 import 'package:wash_it/presentation/onboarding_page/boarding_screen.dart';
 import 'package:wash_it/presentation/order_antarjemput/order_view.dart';
+import 'package:wash_it/presentation/profile_page/profile_controller.dart';
+import 'package:wash_it/presentation/profile_page/profile_page.dart';
 import 'package:wash_it/presentation/splash_screen/controllers/splash_screen.controller.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
 import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
@@ -66,6 +68,13 @@ class Nav {
       name: Routes.ORDERANTARJEMPUT_PAGE,
       page: () => OrderView(),
       binding: OrderAntarJemputPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PROFILE_PAGE,
+      page: () => ProfilePage(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<ProfileController>(() => ProfileController());
+      }),
     ),
   ];
 }
