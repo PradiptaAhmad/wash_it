@@ -21,8 +21,9 @@ dependencies:
 
   firebase_core: any
   firebase_messaging: any
-
-  flutter:
+  flutter_local_notifications: any
+    
+  flutter: 
     sdk: flutter
 
 dev_dependencies:

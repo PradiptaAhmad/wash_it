@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wash_it/infrastructure/navigation/bindings/controllers/order_antarjemput.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
+import 'package:wash_it/presentation/order_antarjemput/order_view.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
 import 'package:wash_it/presentation/chat_page/message_screen.dart';
 import 'package:wash_it/presentation/history_page/review_page.dart';
@@ -55,12 +57,17 @@ class Nav {
     GetPage(
       name: Routes.LOGIN_PAGE,
       page: () => const LoginPageScreen(),
-      binding: LoginPageControllerBinding(),
+      binding:  LoginPageControllerBinding(),
     ),
     GetPage(
       name: Routes.REGISTER_PAGE,
       page: () => const RegisterPageScreen(),
       binding: RegisterPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.ORDERANTARJEMPUT_PAGE,
+      page: () => OrderView(),
+      binding: OrderAntarJemputPageControllerBinding(),
     ),
     GetPage(
       name: Routes.HISTORY_PAGE,
