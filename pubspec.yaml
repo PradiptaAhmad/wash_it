@@ -15,12 +15,16 @@ dependencies:
   http: any
   get_storage: any
   flutter_svg: any
+  flutter_rating_bar: ^4.0.1
+  dotted_line: ^3.2.2
+
   firebase_core: any
   firebase_messaging: any
+  flutter_local_notifications: any
     
   flutter: 
     sdk: flutter
-    
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
