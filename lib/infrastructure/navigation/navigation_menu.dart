@@ -4,7 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/history_page/history_page.screen.dart';
 
-import '../../presentation/home/home.screen.dart';
+import '../../presentation/home_page/home.screen.dart';
 
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({Key? key}) : super(key: key);

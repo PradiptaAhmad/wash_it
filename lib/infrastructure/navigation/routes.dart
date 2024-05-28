@@ -1,7 +1,7 @@
 class Routes {
   static Future<String> get initialRoute async {
     // TODO: implement method
-    return VERIFICATION_PAGE;
+    return ONBOARDING_PAGE;
   }
 
   static const HISTORY_DETAIL_PAGE = '/history-detail-page';

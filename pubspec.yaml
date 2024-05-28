@@ -17,11 +17,13 @@ dependencies:
   flutter_svg: any
   flutter_rating_bar: ^4.0.1
   dotted_line: ^3.2.2
+  image_picker: any
 
   firebase_core: any
   firebase_messaging: any
-
-  flutter:
+  flutter_local_notifications: any
+    
+  flutter: 
     sdk: flutter
 
 dev_dependencies:
@@ -35,3 +37,4 @@ flutter:
     - assets/icons/
     - assets/bg_boarding/
     - assets/img_home/
+    - assets/img_chat/
