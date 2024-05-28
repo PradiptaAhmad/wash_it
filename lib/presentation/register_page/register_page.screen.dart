@@ -14,8 +14,13 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-
     double screenWidth = MediaQuery.of(context).size.width;
+
+    final _usernameKey = GlobalKey<FormState>();
+    final _emailKey = GlobalKey<FormState>();
+    final _phoneKey = GlobalKey<FormState>();
+    final _passwordKey = GlobalKey<FormState>();
+  
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
@@ -46,6 +51,7 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
               ),
               AuthTextField(
                 hintText: "Masukkan Username",
+                formKey: _usernameKey,
                 // onChanged: controller.username,
 
                 validator: (value) {
@@ -68,6 +74,7 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                 height: 12,
               ),
               AuthTextField(
+                formKey: _emailKey,
                 hintText: "Masukkan Email",
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
@@ -92,6 +99,7 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                 height: 12,
               ),
               AuthTextField(
+                formKey: _phoneKey,
                 hintText: "Masukkan Nomor Telepon",
                 keyboardType: TextInputType.phone,
                 formatter: [
@@ -100,7 +108,7 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                 ],
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Username tidak boleh kosong";
+                    return "Nomor telepon tidak boleh kosong";
                   } else {
                     controller.phone.value = value;
                     return null;
@@ -118,11 +126,12 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                 height: 12,
               ),
               Obx(() => AuthTextField(
+                    formKey: _passwordKey,
                     hintText: "Masukkan Password",
                     isObsecure: controller.isObsecure.value,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return "Username tidak boleh kosong";
+                        return "Password tidak boleh kosong";
                       } else {
                         controller.password.value = value;
                         return null;
@@ -165,7 +174,13 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                           ),
                     backgroundColor: secondaryColor,
                     onPressed: () {
+                      if (_usernameKey.currentState!.validate() &&
+                          _emailKey.currentState!.validate() &&
+                          _phoneKey.currentState!.validate() &&
+                          _passwordKey.currentState!.validate()) {
+
                       controller.register();
+                      }
                     },
                   )),
               SizedBox(

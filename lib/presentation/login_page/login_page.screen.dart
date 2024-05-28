@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/widget/common/auth_text_field.dart';
 import 'package:wash_it/widget/common/button_widget.dart';
@@ -16,6 +17,8 @@ class LoginPageScreen extends GetView<LoginPageController> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
+    final _emailKey = GlobalKey<FormState>();
+    final _passwordKey = GlobalKey<FormState>();
     return Scaffold(
         body: Container(
       margin: EdgeInsets.symmetric(horizontal: defaultMargin),
@@ -46,6 +49,7 @@ class LoginPageScreen extends GetView<LoginPageController> {
             ),
             AuthTextField(
               hintText: "Masukkan Email",
+              formKey: _emailKey,
               validator: (value) {
                 final emailRegex = RegExp(
                   r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
@@ -72,6 +76,7 @@ class LoginPageScreen extends GetView<LoginPageController> {
             Obx(() => AuthTextField(
                   hintText: "Masukkan Password",
                   onChanged: (value) {},
+                  formKey: _passwordKey,
                   isObsecure: controller.isObsecure.value,
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -99,13 +104,34 @@ class LoginPageScreen extends GetView<LoginPageController> {
             SizedBox(
               height: 15,
             ),
-            ButtonWidget(
-              text: "Login",
-              backgroundColor: secondaryColor,
-              onPressed: () {
-                controller.login();
-              },
-            ),
+            Obx(() => ButtonWidget(
+                  child: controller.isLoading.value
+                      ? Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Transform.scale(
+                            scale: 0.4,
+                            child: CircularProgressIndicator(
+                              color: primaryColor,
+                              strokeWidth: 5,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          child: Text(
+                            "Login",
+                            style: tsBodyMediumSemibold(primaryColor),
+                          ),
+                        ),
+                  backgroundColor: secondaryColor,
+                  onPressed: () {
+                    if (_emailKey.currentState!.validate() &&
+                        _passwordKey.currentState!.validate()) {
+                      controller.login(); 
+                    }
+                      
+                  },
+                )),
             SizedBox(
               height: 15,
             ),
@@ -177,7 +203,7 @@ class LoginPageScreen extends GetView<LoginPageController> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Get.back();
+                    Get.offNamed(Routes.REGISTER_PAGE);
                   },
                   child: Text(
                     "Daftar Sekarang",

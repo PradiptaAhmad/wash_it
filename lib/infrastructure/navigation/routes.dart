@@ -1,6 +1,6 @@
 class Routes {
   static Future<String> get initialRoute async {
-    return ONBOARDING_PAGE;
+    return REGISTER_PAGE;
   }
 
   static const HISTORY_DETAIL_PAGE = '/history-detail-page';
@@ -12,12 +12,7 @@ class Routes {
   static const REGISTER_PAGE = '/register-page';
   static const REVIEW_PAGE = '/review-page';
   static const SPLASH_SCREEN = '/splash_screen';
-  static const HOME = '/home';
-  static const LOGIN_PAGE = '/login-page.screen';
-  static const REGISTER_PAGE = '/register-page';
   static const ORDERANTARJEMPUT_PAGE = '/order_antarjemput';
   static const PROFILE_PAGE = '/profile_page';
-  static const HISTORY_PAGE = '/history_page';
-  static const HISTORY_DETAIL_PAGE = '/history_detail_page';
-  static const REVIEW_PAGE = '/review_page';
+  static const VERIFICATION_PAGE = '/verification-page';
 }
