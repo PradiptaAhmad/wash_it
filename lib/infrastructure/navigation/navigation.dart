@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:wash_it/infrastructure/navigation/bindings/controllers/order_antarjemput.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 import 'package:wash_it/presentation/order_antarjemput/order_view.dart';
 import 'package:wash_it/presentation/profile_page/profile_controller.dart';
@@ -73,12 +73,13 @@ class Nav {
       binding: OrderAntarJemputPageControllerBinding(),
     ),
     GetPage(
+        name: Routes.CHAT_PAGE,
+        page: () => MessageScreen()
+    )
     GetPage(
       name: Routes.PROFILE_PAGE,
       page: () => ProfilePage(),
       binding: BindingsBuilder(() {
-      Get.lazyPut<ProfileController>(() => ProfileController());
-    }),
     ),
     GetPage(
       name: Routes.HISTORY_PAGE,
@@ -89,10 +90,14 @@ class Nav {
       name: Routes.HISTORY_DETAIL_PAGE,
       page: () => HistoryDetailPage(),
     ),
-    GetPage(name: Routes.REVIEW_PAGE, page: () => ReviewPage()),
     GetPage(
-        name: Routes.CHAT_PAGE,
-        page: () => MessageScreen()
+      name: Routes.REVIEW_PAGE, 
+      page: () => ReviewPage()
+    ),
+    GetPage(
+      name: Routes.VERIFICATION_PAGE,
+      page: () => const VerificationPageScreen(),
+      binding: VerificationPageControllerBinding(),
     ),
   ];
 }
