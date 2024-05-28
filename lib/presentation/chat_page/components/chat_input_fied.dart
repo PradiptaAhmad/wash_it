@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ChatInputField extends StatelessWidget {
   const ChatInputField({Key? key}) : super(key: key);

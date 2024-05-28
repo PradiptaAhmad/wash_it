@@ -5,12 +5,10 @@ import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.co
 import 'package:wash_it/presentation/order_antarjemput/order_view.dart';
 import 'package:wash_it/presentation/profile_page/profile_controller.dart';
 import 'package:wash_it/presentation/profile_page/profile_page.dart';
-import 'package:wash_it/presentation/splash_screen/controllers/splash_screen.controller.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
 import 'package:wash_it/presentation/chat_page/message_screen.dart';
 import 'package:wash_it/presentation/history_page/review_page.dart';
 import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
-import 'package:wash_it/presentation/chat_page/message_screen.dart';
 
 import '../../config.dart';
 import '../../presentation/history_page/history_detail_page.dart';
@@ -73,9 +71,6 @@ class Nav {
       binding: OrderAntarJemputPageControllerBinding(),
     ),
     GetPage(
-        name: Routes.CHAT_PAGE,
-        page: () => MessageScreen()
-    )
     GetPage(
       name: Routes.PROFILE_PAGE,
       page: () => ProfilePage(),
