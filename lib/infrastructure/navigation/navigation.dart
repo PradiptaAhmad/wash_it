@@ -62,7 +62,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.REGISTER_PAGE,
-      page: () => const RegisterPageScreen(),
+      page: () =>  RegisterPageScreen(),
       binding: RegisterPageControllerBinding(),
     ),
     GetPage(
@@ -77,7 +77,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.HISTORY_PAGE,
-      page: () => const HistoryPageScreen(),
+      page: () =>  HistoryPageScreen(),
       binding: HistoryPageControllerBinding(),
     ),
     GetPage(
@@ -90,7 +90,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.VERIFICATION_PAGE,
-      page: () => const VerificationPageScreen(),
+      page: () =>  VerificationPageScreen(),
       binding: VerificationPageControllerBinding(),
     ),
   ];

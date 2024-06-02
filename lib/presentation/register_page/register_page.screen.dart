@@ -10,16 +10,16 @@ import 'package:wash_it/widget/common/button_widget.dart';
 import 'controllers/register_page.controller.dart';
 
 class RegisterPageScreen extends GetView<RegisterPageController> {
-  const RegisterPageScreen({Key? key}) : super(key: key);
+  final _usernameKey = GlobalKey<FormState>();
+  final _emailKey = GlobalKey<FormState>();
+  final _phoneKey = GlobalKey<FormState>();
+  final _passwordKey = GlobalKey<FormState>();
+
+  RegisterPageScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-
-    final _usernameKey = GlobalKey<FormState>();
-    final _emailKey = GlobalKey<FormState>();
-    final _phoneKey = GlobalKey<FormState>();
-    final _passwordKey = GlobalKey<FormState>();
   
     return Scaffold(
       body: Container(
@@ -53,7 +53,7 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                 hintText: "Masukkan Username",
                 formKey: _usernameKey,
                 // onChanged: controller.username,
-
+                
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Username tidak boleh kosong";

@@ -28,7 +28,8 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
               SizedBox(height: 10),
               Row(
                 children: [
-                  Text("+62-851-7431-0736", style: tsBodySmallMedium(black)),
+                  Text(controller.formatPhoneNumber(),
+                      style: tsBodySmallMedium(black)),
                   SizedBox(
                     width: 10,
                   ),
@@ -39,13 +40,31 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
               SizedBox(height: 10),
               OtpFormWidget(),
               SizedBox(height: 5),
-              InkWell(
-                borderRadius: BorderRadius.circular(4),
-                onTap: () {},
-                child: Text(
-                  "Kirim Ulang?",
-                  style: tsLabelLargeSemibold(secondaryColor),
-                ),
+              Row(
+                children: [
+                  Obx(
+                    () => controller.timeleft.value == 0
+                        ? InkWell(
+                            borderRadius: BorderRadius.circular(4),
+                            onTap: () {},
+                            child: Text(
+                              "Kirim Ulang?",
+                              style: tsLabelLargeSemibold(secondaryColor),
+                            ),
+                          )
+                        : Text(
+                            "Kirim Ulang?",
+                            style: tsLabelLargeSemibold(darkGrey),
+                          ),
+                  ),
+                  Obx(() => controller.timeleft.value > 0
+                      ? Text(
+                          "Kirim Ulang Dalam ${controller.timeleft.value} detik",
+                          style: tsLabelLargeRegular(black),
+                        )
+                      : Text("")),
+                ],
+
               )
             ],
           ),
