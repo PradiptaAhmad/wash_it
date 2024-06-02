@@ -1,6 +1,5 @@
 import 'package:wash_it/presentation/chat_page/components/body.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../infrastructure/theme/themes.dart';
 
