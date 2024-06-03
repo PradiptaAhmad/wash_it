@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../infrastructure/theme/themes.dart';
+import '../../../infrastructure/theme/themes.dart';
 import 'auth_text_field.dart';
 
 class InputFormWidget extends StatelessWidget {
   const InputFormWidget(
-      {Key? key,
-      required this.title,
-      required this.hintText,
-      this.validator,
-      this.textField})
+      {Key? key, this.title, this.hintText, this.validator, this.textField})
       : super(key: key);
   final String? title, hintText;
   final validator;
