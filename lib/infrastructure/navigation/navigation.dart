@@ -15,8 +15,10 @@ import 'package:wash_it/presentation/chat_page/detail_message_screen.dart';
 
 import '../../config.dart';
 import '../../presentation/history_page/history_detail_page.dart';
+import '../../presentation/profile_page/profile_page.dart';
 import '../../presentation/screens.dart';
 import 'bindings/controllers/controllers_bindings.dart';
+import 'bindings/controllers/profile_page.binding.dart';
 import 'routes.dart';
 
 class EnvironmentsBadge extends StatelessWidget {
@@ -91,9 +93,19 @@ class Nav {
     ),
     GetPage(name: Routes.REVIEW_PAGE, page: () => ReviewPage()),
     GetPage(
+      name: Routes.VERIFICATION_PAGE,
+      page: () => VerificationPageScreen(),
+      binding: VerificationPageControllerBinding(),
+    ),
+    GetPage(
       name: Routes.CHAT_PAGE,
       page: () => DetailMessageScreen(),
       binding: ChatControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.STATUS_PAGE,
+      page: () => const StatusPageScreen(),
+      binding: StatusPageControllerBinding(),
     ),
   ];
 }

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/history_page/history_page.screen.dart';
+import 'package:wash_it/presentation/profile_page/profile_page.dart';
+import 'package:wash_it/presentation/screens.dart';
 
 import '../../presentation/home_page/home.screen.dart';
 
@@ -72,8 +74,8 @@ class NavigationController extends GetxController {
 
   final screens = [
     HomeScreen(),
-    Container(color: Colors.blue),
+    StatusPageScreen(),
     HistoryPageScreen(),
-    Container(color: Colors.yellow),
+    ProfilePage(),
   ];
 }
