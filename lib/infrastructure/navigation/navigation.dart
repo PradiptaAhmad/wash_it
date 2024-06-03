@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/order_antarjemput.controller.binding.dart';
-import 'package:wash_it/infrastructure/navigation/bindings/controllers/profile_page.binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 import 'package:wash_it/presentation/order_antarjemput/order_view.dart';
-import 'package:wash_it/presentation/profile_page/profile_page.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
 import 'package:wash_it/presentation/history_page/review_page.dart';
 import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
 
 import '../../config.dart';
 import '../../presentation/history_page/history_detail_page.dart';
+import '../../presentation/profile_page/profile_page.dart';
 import '../../presentation/screens.dart';
 import 'bindings/controllers/controllers_bindings.dart';
+import 'bindings/controllers/profile_page.binding.dart';
 import 'routes.dart';
 
 class EnvironmentsBadge extends StatelessWidget {
@@ -77,7 +77,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.HISTORY_PAGE,
-      page: () => HistoryPageScreen(),
+      page: () => const HistoryPageScreen(),
       binding: HistoryPageControllerBinding(),
     ),
     GetPage(
