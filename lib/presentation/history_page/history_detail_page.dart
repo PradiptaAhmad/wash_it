@@ -20,7 +20,7 @@ class HistoryDetailPage extends StatelessWidget {
             Iconsax.arrow_left_2,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Get.toNamed(Routes.NAVBAR);
           },
         ),
         backgroundColor: primaryColor,
