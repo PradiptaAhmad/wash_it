@@ -1,6 +1,6 @@
 class Routes {
   static Future<String> get initialRoute async {
-    return NAVBAR;
+    return LOGIN_PAGE;
   }
 
   static const NAVBAR = '/navigation_menu';

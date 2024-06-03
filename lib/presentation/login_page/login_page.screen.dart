@@ -4,10 +4,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/widget/common/auth_text_field.dart';
+import 'package:wash_it/widget/common/auth/auth_text_field.dart';
 import 'package:wash_it/widget/common/button_widget.dart';
-import 'package:wash_it/widget/common/input_form_Widget.dart';
 
+import '../../widget/common/auth/divider_widget.dart';
+import '../../widget/common/auth/input_form_widget.dart';
 import 'controllers/login_page.controller.dart';
 
 class LoginPageScreen extends GetView<LoginPageController> {
@@ -160,54 +161,5 @@ class LoginPageScreen extends GetView<LoginPageController> {
         ),
       ),
     ));
-  }
-}
-
-class DividerWidget extends StatelessWidget {
-  const DividerWidget({
-    super.key,
-    required this.screenWidth,
-  });
-
-  final double screenWidth;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 15,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              color: lightGrey,
-              width: screenWidth * 0.39,
-              height: 2,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              "Atau",
-              style: tsBodySmallMedium(darkGrey),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Container(
-              color: lightGrey,
-              width: screenWidth * 0.39,
-              height: 2,
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 15,
-        ),
-      ],
-    );
   }
 }
