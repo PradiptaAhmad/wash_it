@@ -8,6 +8,8 @@ class ButtonWidget extends StatelessWidget {
   final Color? textColor;
   final Widget? child;
 
+  final style;
+
   const ButtonWidget({
     this.onPressed,
     this.key,
@@ -15,23 +17,22 @@ class ButtonWidget extends StatelessWidget {
     this.text,
     this.textColor,
     this.child,
+    this.style,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
+      style: style ??
+          ElevatedButton.styleFrom(
+            backgroundColor: backgroundColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
       child: Container(
-        width: double.infinity,
-        alignment: Alignment.center,
-        child: child
-      ),
+          width: double.infinity, alignment: Alignment.center, child: child),
     );
   }
 }

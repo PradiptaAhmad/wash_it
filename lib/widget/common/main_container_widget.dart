@@ -4,14 +4,14 @@ import '../../infrastructure/theme/themes.dart';
 import 'box_shadow.dart';
 
 class MainContainerWidget extends StatelessWidget {
-  const MainContainerWidget(
-      {Key? key,
-      this.childs,
-      this.onPressed,
-      this.color,
-      this.height,
-      this.width})
-      : super(key: key);
+  const MainContainerWidget({
+    Key? key,
+    this.childs,
+    this.onPressed,
+    this.color,
+    this.height,
+    this.width,
+  }) : super(key: key);
 
   final Color? color;
   final Widget? childs;
