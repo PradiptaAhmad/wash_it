@@ -39,19 +39,24 @@ class LoginPageController extends GetxController {
     );
 
     if (response.statusCode == 200) {
-      final token = json.decode(response.body)['token'];  
+      final token = json.decode(response.body)['token'];
       final user = json.decode(response.body)['user'];
       box.write("token", token);
       if (user['phone_verified_at'] == null) {
         Get.toNamed(Routes.VERIFICATION_PAGE);
       }
-      Get.snackbar("Sukses Login", "Selamat datang ${user['name']}",
-          snackPosition: SnackPosition.TOP, backgroundColor: successColor);
+      Get.snackbar(
+        "Sukses Login",
+        "Selamat datang ${user['name']}",
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: successColor,
+      );
       Get.offAllNamed(Routes.HOME);
-    
     } else {
       Get.snackbar("Gagal Login", json.decode(response.body)['message'],
-          snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: warningColor,
+          colorText: primaryColor);
     }
   }
 

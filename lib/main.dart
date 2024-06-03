@@ -29,6 +29,7 @@ class Main extends StatelessWidget {
       getPages: Nav.routes,
       theme: ThemeData(
         scaffoldBackgroundColor: primaryColor,
+        colorScheme: ColorScheme.light(primary: black, secondary: black),
       ),
     );
   }
