@@ -9,6 +9,7 @@ class Routes {
   static const HOME = '/home';
   static const LOGIN_PAGE = '/login-page.screen';
   static const REGISTER_PAGE = '/register-page';
+  static const CHAT_PAGE = '/message_screen';
   static const ORDERANTARJEMPUT_PAGE = '/order_antarjemput';
   static const PROFILE_PAGE = '/profile_page';
   static const HISTORY_PAGE = '/history_page';
