@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/presentation/history_page/history_page.screen.dart';
+import 'package:wash_it/presentation/profile_page/profile_page.dart';
 import 'package:wash_it/presentation/screens.dart';
+
+import '../../presentation/home_page/home.screen.dart';
 
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({Key? key}) : super(key: key);
@@ -72,6 +76,6 @@ class NavigationController extends GetxController {
     HomeScreen(),
     StatusPageScreen(),
     HistoryPageScreen(),
-    Container(color: Colors.yellow),
+    ProfilePage(),
   ];
 }
