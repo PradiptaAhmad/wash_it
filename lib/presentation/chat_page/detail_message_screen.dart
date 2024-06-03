@@ -79,4 +79,3 @@ class DetailMessageScreen extends GetView<ChatController> {
     );
   }
 }
-

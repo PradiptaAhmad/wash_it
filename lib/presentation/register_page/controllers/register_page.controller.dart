@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:wash_it/config.dart';
+import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 
 class RegisterPageController extends GetxController {
@@ -16,14 +19,17 @@ class RegisterPageController extends GetxController {
   var email = ''.obs;
   var phone = ''.obs;
   var password = ''.obs;
-  
-  //TODO: Implement RegisterPageController
+
+  // Google Signin
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  // GetStorage
+  GetStorage box = GetStorage();
 
   // Register Function
-
   Future<void> register() async {
     isLoading.value = true;
-    final url = ConfigEnvironments.getEnvironments()["url"];
+    final url = ConfigEnvironments.getEnvironments()['url'];
     print(url);
     var data = {
       'username': username.value,
@@ -41,16 +47,30 @@ class RegisterPageController extends GetxController {
       body: data,
     );
 
-    if (response.statusCode == 200) {
-      final user = json.decode(response.body)['user'];
-      Get.snackbar("Sukses Daftar", "Selamat datang ${user['name']}",
-          snackPosition: SnackPosition.TOP, backgroundColor: successColor);
+    if (response.statusCode == 201) {
+      final user = json.decode(response.body)['token'];
+      box.write('token', user);
+      Get.toNamed(Routes.VERIFICATION_PAGE);
     } else {
       Get.snackbar("Gagal Register", json.decode(response.body)['message'],
           snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
     }
     isLoading.value = false;
   }
+
+  // Future<void> googleSignIn() async {
+  //   try {
+  //     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+  //     if (googleUser == null) {
+  //       Get.snackbar('Auth Google Canceled', "You canceled google authentication", backgroundColor: warningColor);
+  //     } else {
+        
+  //     }
+
+  //   } catch(e) {
+  //     throw e;
+  //   }
+  // }
 
   @override
   void onInit() {

@@ -61,7 +61,7 @@ class Nav {
     GetPage(
       name: Routes.LOGIN_PAGE,
       page: () => const LoginPageScreen(),
-      binding:  LoginPageControllerBinding(),
+      binding: LoginPageControllerBinding(),
     ),
     GetPage(
       name: Routes.REGISTER_PAGE,
@@ -77,8 +77,8 @@ class Nav {
       name: Routes.PROFILE_PAGE,
       page: () => ProfilePage(),
       binding: BindingsBuilder(() {
-      Get.lazyPut<ProfileController>(() => ProfileController());
-    }),
+        Get.lazyPut<ProfileController>(() => ProfileController());
+      }),
     ),
     GetPage(
       name: Routes.HISTORY_PAGE,
@@ -91,9 +91,9 @@ class Nav {
     ),
     GetPage(name: Routes.REVIEW_PAGE, page: () => ReviewPage()),
     GetPage(
-        name: Routes.CHAT_PAGE,
-        page: () => DetailMessageScreen(),
-        binding: ChatControllerBinding(),
+      name: Routes.CHAT_PAGE,
+      page: () => DetailMessageScreen(),
+      binding: ChatControllerBinding(),
     ),
   ];
 }
