@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import 'package:wash_it/infrastructure/navigation/bindings/controllers/chat_controller_binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/order_antarjemput.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 import 'package:wash_it/presentation/order_antarjemput/order_view.dart';
+import 'package:wash_it/presentation/profile_page/profile_controller.dart';
+import 'package:wash_it/presentation/profile_page/profile_page.dart';
+import 'package:wash_it/presentation/splash_screen/controllers/splash_screen.controller.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
+import 'package:wash_it/presentation/chat_page/detail_message_screen.dart';
 import 'package:wash_it/presentation/history_page/review_page.dart';
 import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
+import 'package:wash_it/presentation/chat_page/detail_message_screen.dart';
 
 import '../../config.dart';
 import '../../presentation/history_page/history_detail_page.dart';
@@ -73,7 +78,9 @@ class Nav {
     GetPage(
       name: Routes.PROFILE_PAGE,
       page: () => ProfilePage(),
-      binding: ProfilePageControllerBinding(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<ProfileController>(() => ProfileController());
+      }),
     ),
     GetPage(
       name: Routes.HISTORY_PAGE,
@@ -89,6 +96,11 @@ class Nav {
       name: Routes.VERIFICATION_PAGE,
       page: () => VerificationPageScreen(),
       binding: VerificationPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.CHAT_PAGE,
+      page: () => DetailMessageScreen(),
+      binding: ChatControllerBinding(),
     ),
     GetPage(
       name: Routes.STATUS_PAGE,
