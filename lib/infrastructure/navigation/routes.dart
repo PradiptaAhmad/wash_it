@@ -15,4 +15,5 @@ class Routes {
   static const HISTORY_PAGE = '/history_page';
   static const HISTORY_DETAIL_PAGE = '/history_detail_page';
   static const REVIEW_PAGE = '/review_page';
+  static const VERIFICATION_PAGE = '/verification_page';
 }

@@ -65,7 +65,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.REGISTER_PAGE,
-      page: () => const RegisterPageScreen(),
+      page: () => RegisterPageScreen(),
       binding: RegisterPageControllerBinding(),
     ),
     GetPage(
