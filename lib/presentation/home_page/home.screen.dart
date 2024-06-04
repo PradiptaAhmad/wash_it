@@ -62,6 +62,7 @@ class HomeScreen extends GetView<HomeController> {
                     onPressed: () {
                       Get.toNamed(Routes.TRANSACTION_PAGE);
                     },
+                    paddingValues: 10,
                     transcationNum: data['transcationNum'],
                     title: data['title'],
                     subTitle: data['subTitle'],
@@ -86,6 +87,7 @@ class HomeScreen extends GetView<HomeController> {
                   subTitle: data['subTitle'],
                   bottomTitle: data['bottomTitle'],
                   images: data['images'],
+                  paddingValues: 10,
                   childs: Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

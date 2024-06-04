@@ -4,20 +4,22 @@ import 'package:wash_it/widget/common/main_container_widget.dart';
 import '../../infrastructure/theme/themes.dart';
 
 class DetailWidget extends StatelessWidget {
-  const DetailWidget(
-      {Key? key,
-      this.transcationNum,
-      this.title,
-      this.subTitle,
-      this.bottomTitle,
-      this.images,
-      this.childs,
-      this.onPressed})
-      : super(key: key);
+  const DetailWidget({
+    Key? key,
+    this.transcationNum,
+    this.title,
+    this.subTitle,
+    this.bottomTitle,
+    this.images,
+    this.childs,
+    this.onPressed,
+    this.paddingValues,
+  }) : super(key: key);
 
   final String? transcationNum, title, subTitle, bottomTitle, images;
   final Widget? childs;
   final void Function()? onPressed;
+  final double? paddingValues;
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +49,9 @@ class DetailWidget extends StatelessWidget {
                         height: 60,
                         width: 60,
                         child: Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: EdgeInsets.all(paddingValues ?? 0.0),
                           child: Image.asset(
-                            images ?? "Null",
+                            images ?? "assets/img_home/default.png",
                             fit: BoxFit.cover,
                           ),
                         )),
