@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/widget/common/auth/input_form_widget.dart';
+import 'package:get/get.dart';
 
 import '../../widget/common/content_title_widget.dart';
 
@@ -16,44 +18,49 @@ class OrderPageScreen1 extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
+          icon: Icon(
+            Iconsax.arrow_left_2,
+          ),
+          onPressed: () {
+            Get.back();
+          },
         ),
-        title: Text("Pesan Laundry", style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        backgroundColor: primaryColor,
+        title: Text("Pesan Laundry", style: tsBodyLargeMedium(black)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(defaultMargin),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
+              children: [
                 _buildStepIndicator("1", "Isi Form", true),
                 _buildStepIndicator("2", "Pilih Layanan", false),
                 _buildStepIndicator("3", "Konfirmasi", false),
               ],
             ),
-            SizedBox(height: 10),
-            ContentTitleWidget(title: "Silahkan isi data dibawah ini"),
-            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: ContentTitleWidget(title: "Silahkan isi data dibawah ini"),
+            ),
             InputFormWidget(
               title: "Nama Pelanggan",
               hintText: "Masukkan nama Anda",
+              keyboardType: TextInputType.name,
             ),
             InputFormWidget(
               title: "Nomor Telepon",
               hintText: "Masukkan nomor telepon Anda",
-              // keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.phone,
             ),
             InputFormWidget(
               title: "Alamat",
               hintText: "Masukkan alamat Anda",
-              // keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.streetAddress,
             ),
-            SizedBox(height: 80),
           ],
         ),
       ),
@@ -70,8 +77,11 @@ class OrderPageScreen1 extends StatelessWidget {
                   ),
                 ),
                 onPressed: onNext,
-                child:
-                    Text("Selanjutnya", style: TextStyle(color: Colors.white)),
+                child: Padding(
+                  padding: const EdgeInsets.all(defaultMargin),
+                  child: Text("Selanjutnya",
+                      style: tsBodySmallSemibold(primaryColor)),
+                ),
               ),
             ),
           ],
@@ -82,9 +92,8 @@ class OrderPageScreen1 extends StatelessWidget {
   }
 
   Widget _buildStepIndicator(String number, String text, bool isActive) {
-    return Expanded(
+    return Container(
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
             width: 25, // Smaller circle
@@ -101,14 +110,8 @@ class OrderPageScreen1 extends StatelessWidget {
                       color: isActive ? Colors.black : Color(0xFF767676))),
             ),
           ),
-          SizedBox(width: 8),
-          Expanded(
-              child: Text(text,
-                  style: TextStyle(
-                      fontWeight:
-                          isActive ? FontWeight.bold : FontWeight.normal,
-                      color: Color(0xFF767676),
-                      fontSize: 14))), // Smaller text for steps
+          SizedBox(width: 5),
+          Text(text, style: tsLabelLargeMedium(black)) // Smaller text for steps
         ],
       ),
     );

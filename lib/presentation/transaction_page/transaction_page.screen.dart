@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:wash_it/presentation/transaction_page/payment_receipt_page.dart';
+import 'package:wash_it/presentation/transaction_page/widget/detail_text_widget.dart';
 
 import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/themes.dart';
 import '../../widget/common/button_widget.dart';
-import '../history_page/widget/detail_text_widget.dart';
 import 'controllers/transaction_page.controller.dart';
 
 class TransactionPageScreen extends GetView<TransactionPageController> {
@@ -21,12 +22,12 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
             Iconsax.arrow_left_2,
           ),
           onPressed: () {
-            Get.toNamed(Routes.NAVBAR);
+            Get.back();
           },
         ),
         backgroundColor: primaryColor,
         title:
-            Text("Detail Transaksi", style: tsBodyLargeMedium(black)),
+            Text("Detail Riwayat Transaksi", style: tsBodyLargeMedium(black)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -35,82 +36,79 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  children: [
-                    Row(
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Iconsax.receipt,
+                        size: 30,
+                        color: successColor,
+                      ),
+                      DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: 40,
+                        lineThickness: 2,
+                        dashLength: 5,
+                        dashColor: successColor,
+                      ),
+                      Icon(
+                        Iconsax.wallet_1,
+                        size: 30,
+                        color: successColor,
+                      ),
+                      DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: 40,
+                        lineThickness: 2,
+                        dashLength: 5,
+                        dashColor: successColor,
+                      ),
+                      Icon(
+                        Iconsax.bubble,
+                        size: 30,
+                        color: successColor,
+                      ),
+                      DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: 40,
+                        lineThickness: 2,
+                        dashLength: 5,
+                        dashColor: successColor,
+                      ),
+                      Icon(
+                        Iconsax.location,
+                        size: 30,
+                        color: successColor,
+                      ),
+                      DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: 40,
+                        lineThickness: 2,
+                        dashLength: 5,
+                        dashColor: successColor,
+                      ),
+                      Icon(
+                        Iconsax.verify,
+                        size: 30,
+                        color: successColor,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 4),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(
-                          Iconsax.receipt,
-                          size: 30,
-                          color: successColor,
-                        ),
-                        DottedLine(
-                          direction: Axis.horizontal,
-                          lineLength: 40,
-                          lineThickness: 2,
-                          dashLength: 5,
-                          dashColor: successColor,
-                        ),
-                        Icon(
-                          Iconsax.wallet_1,
-                          size: 30,
-                          color: successColor,
-                        ),
-                        DottedLine(
-                          direction: Axis.horizontal,
-                          lineLength: 40,
-                          lineThickness: 2,
-                          dashLength: 5,
-                          dashColor: successColor,
-                        ),
-                        Icon(
-                          Iconsax.bubble,
-                          size: 30,
-                          color: successColor,
-                        ),
-                        DottedLine(
-                          direction: Axis.horizontal,
-                          lineLength: 40,
-                          lineThickness: 2,
-                          dashLength: 5,
-                          dashColor: successColor,
-                        ),
-                        Icon(
-                          Iconsax.location,
-                          size: 30,
-                          color: successColor,
-                        ),
-                        DottedLine(
-                          direction: Axis.horizontal,
-                          lineLength: 40,
-                          lineThickness: 2,
-                          dashLength: 5,
-                          dashColor: successColor,
-                        ),
-                        Icon(
-                          Iconsax.verify,
-                          size: 30,
-                          color: successColor,
-                        ),
+                        Text("23/03", style: tsBodySmallRegular(black)),
+                        Text("Est.", style: tsBodySmallRegular(black)),
+                        Text("25/03", style: tsBodySmallRegular(black)),
                       ],
                     ),
-                    SizedBox(height: 5),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("23/03", style: tsBodySmallRegular(black)),
-                          Text("Est.", style: tsBodySmallRegular(black)),
-                          Text("25/03", style: tsBodySmallRegular(black)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               SizedBox(height: 10),
               Center(
@@ -125,36 +123,25 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                       style: tsBodyMediumMedium(black),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Get.toNamed(Routes.CHAT_PAGE);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: secondaryColor,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      height: 35,
-                      width: 35,
-                      child: Icon(Iconsax.call5, color: primaryColor),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: secondaryColor,
+                      borderRadius: BorderRadius.circular(50),
                     ),
+                    height: 35,
+                    width: 35,
+                    child: Icon(Iconsax.call5, color: primaryColor),
                   ),
                   SizedBox(width: 5),
-                  InkWell(
-                    onTap: () {
-                      Get.toNamed(Routes.CHAT_PAGE);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: secondaryColor,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      height: 35,
-                      width: 35,
-                      child: Icon(Iconsax.message5, color: primaryColor),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: secondaryColor,
+                      borderRadius: BorderRadius.circular(50),
                     ),
-                  ),
-
+                    height: 35,
+                    width: 35,
+                    child: Icon(Iconsax.message5, color: primaryColor),
+                  )
                 ],
               ),
               DetailDataWidget(
@@ -197,18 +184,21 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Divider(color: lightGrey, thickness: 1),
+              ),
               ButtonWidget(
-                backgroundColor: primaryColor,
-                child: Text(
-                  "Bayar Sekarang",
-                  style: tsLabelLargeMedium(black),
+                backgroundColor: secondaryColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(defaultMargin),
+                  child: Text("Bayar Sekarang",
+                      style: tsBodySmallSemibold(primaryColor)),
                 ),
                 onPressed: () {
                   Get.toNamed(Routes.METODE_TRANSACTION);
                 },
               ),
-              SizedBox(height: 20),
             ],
           ),
         ),

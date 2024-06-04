@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
 import 'package:wash_it/widget/common/detail_widget.dart';
 
@@ -31,6 +32,9 @@ class StatusPageScreen extends GetView<StatusPageController> {
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       return DetailWidget(
+                        onPressed: () {
+                          Get.toNamed(Routes.TRANSACTION_PAGE);
+                        },
                         transcationNum: "No. Transaksi - 00414519797419",
                         title: "Cuci Setrika - Marlen",
                         subTitle: "Berat - 5Kg",

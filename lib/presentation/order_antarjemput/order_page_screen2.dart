@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/order_antarjemput/widgets/search_dropdown_widget.dart';
 import 'package:wash_it/widget/common/auth/input_form_widget.dart';
+import 'package:get/get.dart';
 
 import '../../widget/common/content_title_widget.dart';
 
@@ -18,62 +20,54 @@ class OrderPageScreen2 extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: onBack,
+          icon: Icon(
+            Iconsax.arrow_left_2,
+          ),
+          onPressed: () {
+            Get.back();
+          },
         ),
-        title: Text("Pilih Layanan", style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        backgroundColor: primaryColor,
+        title: Text("Pesan Laundry", style: tsBodyLargeMedium(black)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(defaultMargin),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
-              children: <Widget>[
-                _buildStepIndicator(
-                  "✓",
-                  "Isi Form",
-                  true,
-                ),
-                _buildStepIndicator(
-                  "2",
-                  "Pilih Layanan",
-                  true,
-                ),
-                _buildStepIndicator(
-                  "3",
-                  "Konfirmasi",
-                  false,
-                ),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildStepIndicator("✓", "Isi Form", true),
+                _buildStepIndicator("2", "Pilih Layanan", true),
+                _buildStepIndicator("3", "Konfirmasi", false),
               ],
             ),
-            SizedBox(height: 10),
-            ContentTitleWidget(title: "Pilih layanan yang akan kamu gunakan"),
-            SizedBox(height: 20),
-            Text(
-              "Pilih tipe laundry",
-              style: tsBodyMediumMedium(black),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: ContentTitleWidget(
+                  title: "Pilih layanan yang akan kamu gunakan"),
             ),
             SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child:
+                  Text("Pilih tipe laundry", style: tsBodyMediumMedium(black)),
+            ),
             SearchDropdownWidget(
-              // hintTecy: "Tipe Laundry",
-              hintText: "Pilih tipe laundry",
-              suggestions: ["Cuci Kering", "Cuci Basah", "Setrika"]
-                  .map((e) => SearchFieldListItem(e))
-                  .toList(),
-            ),
+                hintText: "Pilih tipe laundry",
+                suggestions: ["Cuci Kering", "Cuci Basah", "Setrika"]
+                    .map((e) => SearchFieldListItem(e))
+                    .toList()),
             InputFormWidget(
-              title: "Catatan",
-              hintText: "Tambahkan catatan (opsional)",
-            ),
-            SizedBox(height: 20),
-            Text(
-              "Tanggal Pengambilan",
-              style: tsBodyMediumMedium(black),
-            ),
+                title: "Catatan", hintText: "Tambahkan catatan (opsional)"),
             SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child:
+                  Text("Tanggal Pengambilan", style: tsBodyMediumMedium(black)),
+            ),
             TextField(
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
@@ -108,16 +102,18 @@ class OrderPageScreen2 extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Expanded(
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Color(0xFF535C6B),
-                  backgroundColor: Color(0xFFE1E3E7), // Text color
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: lightGrey,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 onPressed: onBack,
-                child: Text("Kembali"),
+                child: Padding(
+                  padding: const EdgeInsets.all(defaultMargin),
+                  child: Text("Kembali", style: tsBodySmallSemibold(black)),
+                ),
               ),
             ),
             SizedBox(width: defaultMargin), // Add some space (horizontal space
@@ -130,8 +126,11 @@ class OrderPageScreen2 extends StatelessWidget {
                   ),
                 ),
                 onPressed: onNext,
-                child:
-                    Text("Selanjutnya", style: TextStyle(color: Colors.white)),
+                child: Padding(
+                  padding: const EdgeInsets.all(defaultMargin),
+                  child: Text("Selanjutnya",
+                      style: tsBodySmallSemibold(primaryColor)),
+                ),
               ),
             ),
           ],
@@ -142,9 +141,8 @@ class OrderPageScreen2 extends StatelessWidget {
   }
 
   Widget _buildStepIndicator(String number, String text, bool isActive) {
-    return Expanded(
+    return Container(
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
             width: 25, // Smaller circle
@@ -161,14 +159,8 @@ class OrderPageScreen2 extends StatelessWidget {
                       color: isActive ? Colors.black : Color(0xFF767676))),
             ),
           ),
-          SizedBox(width: 8),
-          Expanded(
-              child: Text(text,
-                  style: TextStyle(
-                      fontWeight:
-                          isActive ? FontWeight.bold : FontWeight.normal,
-                      color: Color(0xFF767676),
-                      fontSize: 14))), // Smaller text for steps
+          SizedBox(width: 5),
+          Text(text, style: tsLabelLargeMedium(black)) // Smaller text for steps
         ],
       ),
     );

@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
 
 import '../../infrastructure/navigation/routes.dart';
@@ -36,21 +37,25 @@ class OrderPageScreen3 extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: onBack,
+          icon: Icon(
+            Iconsax.arrow_left_2,
+          ),
+          onPressed: () {
+            Get.back();
+          },
         ),
-        title:
-            Text("Konfirmasi Pesanan", style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        backgroundColor: primaryColor,
+        title: Text("Pesan Laundry", style: tsBodyLargeMedium(black)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(defaultMargin),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             Row(
-              children: <Widget>[
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 _buildStepIndicator("✓", "Isi Form", true),
                 _buildStepIndicator("✓", "Pilih Layanan", true),
                 _buildStepIndicator("3", "Konfirmasi", false),
@@ -60,19 +65,13 @@ class OrderPageScreen3 extends StatelessWidget {
             ContentTitleWidget(title: "Pastikan data kamu telah sesuai"),
             SizedBox(height: 20),
             _buildDataBox("Data Pelanggan dan Pesanan", [
-              Text(
-                "Data Pelanggan",
-                style: tsBodySmallSemibold(black),
-              ),
+              Text("Data Pelanggan", style: tsBodySmallSemibold(black)),
               SizedBox(height: 10),
               _buildDataItem("Nama", "Marlen Edzel"),
               _buildDataItem("Nomor Telepon", "nomorTelepon"),
               _buildDataItem("Alamat", "alamat"),
               SizedBox(height: 10),
-              Text(
-                "Detail Pesanan",
-                style: tsBodySmallSemibold(black),
-              ),
+              Text("Detail Pesanan", style: tsBodySmallSemibold(black)),
               SizedBox(height: 10),
               _buildDataItem("Tipe Laundry", "tipeLaundry"),
               _buildDataItem("Jadwal Pengambilan",
@@ -82,22 +81,15 @@ class OrderPageScreen3 extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Harga per Kg",
-                    style: tsBodySmallSemibold(black),
-                  ),
-                  Text(
-                    "Rp. 5.000,00",
-                    style: tsBodySmallSemibold(black),
-                  ),
+                  Text("Harga per Kg", style: tsBodySmallSemibold(black)),
+                  Text("Rp. 5.000,00", style: tsBodySmallSemibold(black)),
                 ],
               )
             ]),
             SizedBox(height: 20),
             Text(
-              "*Untuk layanan antar jemput diwajibkan membayar biaya minimal per kg",
-              style: TextStyle(color: Color(0xFF535C6B)),
-            ),
+                "*Untuk layanan antar jemput diwajibkan membayar biaya minimal per kg",
+                style: TextStyle(color: Color(0xFF535C6B))),
           ],
         ),
       ),
@@ -106,16 +98,17 @@ class OrderPageScreen3 extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Expanded(
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Color(0xFF535C6B),
-                  backgroundColor: Color(0xFFE1E3E7), // Text color
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: lightGrey,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                      borderRadius: BorderRadius.circular(8)),
                 ),
                 onPressed: onBack,
-                child: Text("Kembali"),
+                child: Padding(
+                  padding: const EdgeInsets.all(defaultMargin),
+                  child: Text("Kembali", style: tsBodySmallSemibold(black)),
+                ),
               ),
             ),
             SizedBox(width: defaultMargin), // Add some space (horizontal space
@@ -128,8 +121,11 @@ class OrderPageScreen3 extends StatelessWidget {
                   ),
                 ),
                 onPressed: () => Get.offNamed(Routes.TRANSACTION_PAGE),
-                child:
-                    Text("Selanjutnya", style: TextStyle(color: Colors.white)),
+                child: Padding(
+                  padding: const EdgeInsets.all(defaultMargin),
+                  child: Text("Selanjutnya",
+                      style: tsBodySmallSemibold(primaryColor)),
+                ),
               ),
             ),
           ],
@@ -140,12 +136,11 @@ class OrderPageScreen3 extends StatelessWidget {
   }
 
   Widget _buildStepIndicator(String number, String text, bool isActive) {
-    return Expanded(
+    return Container(
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            width: 25,
+            width: 25, // Smaller circle
             height: 25,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -159,28 +154,12 @@ class OrderPageScreen3 extends StatelessWidget {
                       color: isActive ? Colors.black : Color(0xFF767676))),
             ),
           ),
-          SizedBox(width: 8),
-          Expanded(
-              child: Text(text,
-                  style: TextStyle(
-                      fontWeight:
-                          isActive ? FontWeight.bold : FontWeight.normal,
-                      color: Color(0xFF767676),
-                      fontSize: 14))),
+          SizedBox(width: 5),
+          Text(text, style: tsLabelLargeMedium(black)) // Smaller text for steps
         ],
       ),
     );
   }
-
-  // _buildDataItem("Nama", nama),
-  // _buildDataItem("Nomor Telepon", nomorTelepon),
-  // _buildDataItem("Alamat", alamat),
-  // _buildDataItem("Tipe Laundry", tipeLaundry),
-  // _buildDataItem("Catatan", catatan),
-  // _buildDataItem("Jadwal Pengambilan",
-  //     "${jadwalPengambilan.day}/${jadwalPengambilan.month}/${jadwalPengambilan.year}"),
-  // _buildDataItemBold(
-  //     "Harga Per Kg", "Rp. ${hargaPerKg.toStringAsFixed(2)}"),
 
   Widget _buildDataBox(String title, List<Widget> children) {
     return Container(
