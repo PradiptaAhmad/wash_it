@@ -4,6 +4,8 @@ import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/order_antarjemput/widgets/search_dropdown_widget.dart';
 import 'package:wash_it/widget/common/auth/input_form_widget.dart';
 
+import '../../widget/common/content_title_widget.dart';
+
 class OrderPageScreen2 extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback onBack;
@@ -47,10 +49,9 @@ class OrderPageScreen2 extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 30),
-            Text("Pilih layanan yang akan anda gunakan",
-                style: tsBodyMediumSemibold(black)),
             SizedBox(height: 10),
+            ContentTitleWidget(title: "Pilih layanan yang akan kamu gunakan"),
+            SizedBox(height: 20),
             Text(
               "Pilih tipe laundry",
               style: tsBodyMediumMedium(black),

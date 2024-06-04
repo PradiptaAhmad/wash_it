@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/widget/common/auth/input_form_widget.dart';
 
+import '../../widget/common/content_title_widget.dart';
+
 class OrderPageScreen1 extends StatelessWidget {
   final VoidCallback onNext;
 
@@ -34,9 +36,8 @@ class OrderPageScreen1 extends StatelessWidget {
                 _buildStepIndicator("3", "Konfirmasi", false),
               ],
             ),
-            SizedBox(height: 30),
-            Text("Silahkan isi data dibawah ini",
-                style: tsBodyMediumSemibold(black)),
+            SizedBox(height: 10),
+            ContentTitleWidget(title: "Silahkan isi data dibawah ini"),
             SizedBox(height: 10),
             InputFormWidget(
               title: "Nama Pelanggan",
