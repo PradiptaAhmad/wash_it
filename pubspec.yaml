@@ -6,22 +6,23 @@ environment:
   sdk: '>=3.3.0-279.2.beta <4.0.0'
 
 dependencies:
-  cupertino_icons: ^1.0.6
-  get_cli: any
-  iconsax: any
-  get: 4.6.6
-  google_fonts: any
-  introduction_screen: any
-  http: any
-  get_storage: any
-  flutter_svg: any
-  flutter_rating_bar: ^4.0.1
+  cupertino_icons: ^1.0.8
   dotted_line: ^3.2.2
-  image_picker: any
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.0.10+1
+  flutter_rating_bar: ^4.0.1
+  iconsax: ^0.0.8
 
-  firebase_core: any
-  firebase_messaging: any
-  flutter_local_notifications: any
+  get: 4.6.6
+  get_cli: ^1.8.4
+  get_storage: ^2.1.1
+  http: ^1.2.1
+  introduction_screen: ^3.1.14
+  image_picker: ^1.1.2
+
+  firebase_core: ^3.0.0
+  firebase_messaging: ^15.0.0
+  flutter_local_notifications: ^17.1.2
     
   flutter: 
     sdk: flutter
