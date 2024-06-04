@@ -18,6 +18,8 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   dotted_line: ^3.2.2
   image_picker: any
+  dropdown_search: any
+  searchfield: any
   google_sign_in: any
 
   firebase_core: any

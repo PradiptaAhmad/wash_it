@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:wash_it/widget/common/content_title_widget.dart';
+
+import '../../infrastructure/navigation/routes.dart';
+import '../../infrastructure/theme/themes.dart';
 
 class OrderPageScreen3 extends StatelessWidget {
   final VoidCallback onBack;
@@ -32,7 +38,8 @@ class OrderPageScreen3 extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: onBack,
         ),
-        title: Text("Konfirmasi Pesanan", style: TextStyle(color: Colors.black)),
+        title:
+            Text("Konfirmasi Pesanan", style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         centerTitle: true,
       ),
@@ -48,8 +55,10 @@ class OrderPageScreen3 extends StatelessWidget {
                 _buildStepIndicator("3", "Konfirmasi", false),
               ],
             ),
-            SizedBox(height: 30),
-            Text("Pastikan data kamu telah sesuai", style: TextStyle(fontWeight: FontWeight.bold)),
+            SizedBox(height: 10),
+            ContentTitleWidget(title: "Pastikan data kamu telah sesuai"),
+            Text("Pastikan data kamu telah sesuai",
+                style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(height: 20),
             _buildDataBox("Data Pelanggan dan Pesanan", [
               _buildDataItem("Nama", nama),
@@ -57,49 +66,54 @@ class OrderPageScreen3 extends StatelessWidget {
               _buildDataItem("Alamat", alamat),
               _buildDataItem("Tipe Laundry", tipeLaundry),
               _buildDataItem("Catatan", catatan),
-              _buildDataItem("Jadwal Pengambilan", "${jadwalPengambilan.day}/${jadwalPengambilan.month}/${jadwalPengambilan.year}"),
-              _buildDataItemBold("Harga Per Kg", "Rp. ${hargaPerKg.toStringAsFixed(2)}"),
+              _buildDataItem("Jadwal Pengambilan",
+                  "${jadwalPengambilan.day}/${jadwalPengambilan.month}/${jadwalPengambilan.year}"),
+              _buildDataItemBold(
+                  "Harga Per Kg", "Rp. ${hargaPerKg.toStringAsFixed(2)}"),
             ]),
             SizedBox(height: 20),
             Text(
               "*Untuk layanan antar jemput diwajibkan membayar biaya minimal per kg",
               style: TextStyle(color: Color(0xFF535C6B)),
             ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      foregroundColor: Color(0xFF535C6B),
-                      backgroundColor: Color(0xFFE1E3E7),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: onBack,
-                    child: Text("Kembali"),
+          ],
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(defaultMargin),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: Color(0xFF535C6B),
+                  backgroundColor: Color(0xFFE1E3E7), // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF76ABAE),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: onFinish,
-                    child: Text("Selesai", style: TextStyle(color: Colors.white)),
+                onPressed: onBack,
+                child: Text("Kembali"),
+              ),
+            ),
+            SizedBox(width: defaultMargin), // Add some space (horizontal space
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF76ABAE),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-              ],
+                onPressed: () => Get.offNamed(Routes.TRANSACTION_PAGE),
+                child:
+                    Text("Selanjutnya", style: TextStyle(color: Colors.white)),
+              ),
             ),
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -117,11 +131,20 @@ class OrderPageScreen3 extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Center(
-              child: Text(number, style: TextStyle(fontWeight: FontWeight.bold, color: isActive ? Colors.black : Color(0xFF767676))),
+              child: Text(number,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isActive ? Colors.black : Color(0xFF767676))),
             ),
           ),
           SizedBox(width: 8),
-          Expanded(child: Text(text, style: TextStyle(fontWeight: isActive ? FontWeight.bold : FontWeight.normal, color: Color(0xFF767676), fontSize: 14))),
+          Expanded(
+              child: Text(text,
+                  style: TextStyle(
+                      fontWeight:
+                          isActive ? FontWeight.bold : FontWeight.normal,
+                      color: Color(0xFF767676),
+                      fontSize: 14))),
         ],
       ),
     );

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
+
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/chat_controller_binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/order_antarjemput.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
-import 'package:wash_it/presentation/order_antarjemput/order_view.dart';
-import 'package:wash_it/presentation/profile_page/profile_controller.dart';
-import 'package:wash_it/presentation/profile_page/profile_page.dart';
-import 'package:wash_it/presentation/splash_screen/controllers/splash_screen.controller.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
 import 'package:wash_it/presentation/chat_page/detail_message_screen.dart';
-import 'package:wash_it/presentation/history_page/review_page.dart';
-import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
 import 'package:wash_it/presentation/chat_page/detail_message_screen.dart';
+import 'package:wash_it/presentation/history_page/review_page.dart';
+import 'package:wash_it/presentation/order_antarjemput/order_view.dart';
+import 'package:wash_it/presentation/profile_page/controllers/profile_page.controller.dart';
+import 'package:wash_it/presentation/profile_page/profile_page.dart';
+import 'package:wash_it/presentation/splash_screen/controllers/splash_screen.controller.dart';
+import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
 
 import '../../config.dart';
 import '../../presentation/history_page/history_detail_page.dart';
@@ -106,6 +108,11 @@ class Nav {
       name: Routes.STATUS_PAGE,
       page: () => const StatusPageScreen(),
       binding: StatusPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.TRANSACTION_PAGE,
+      page: () => const TransactionPageScreen(),
+      binding: TransactionPageControllerBinding(),
     ),
   ];
 }

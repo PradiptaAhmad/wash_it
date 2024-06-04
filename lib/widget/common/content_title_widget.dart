@@ -4,11 +4,18 @@ import '../../infrastructure/theme/themes.dart';
 
 class ContentTitleWidget extends StatelessWidget {
   const ContentTitleWidget(
-      {Key? key, required this.title, this.subtitle, this.childs})
+      {Key? key,
+      required this.title,
+      this.subtitle,
+      this.childs,
+      this.lefttextSize,
+      this.righttextSize})
       : super(key: key);
 
   final String? title, subtitle;
   final Widget? childs;
+
+  final lefttextSize, righttextSize;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,11 +25,11 @@ class ContentTitleWidget extends StatelessWidget {
           Expanded(
               child: Text(
             title ?? "",
-            style: tsBodyMediumSemibold(black),
+            style: lefttextSize ?? tsBodyMediumSemibold(black),
           )),
           Text(
             subtitle ?? "",
-            style: tsLabelLargeMedium(darkGrey),
+            style: righttextSize ?? tsLabelLargeMedium(darkGrey),
           ),
           childs ?? SizedBox(),
         ],
