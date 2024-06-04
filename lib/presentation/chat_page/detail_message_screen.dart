@@ -30,7 +30,7 @@ class DetailMessageScreen extends GetView<ChatController> {
               children: <Widget>[
                 IconButton(
                   onPressed: () {
-                    Get.toNamed(Routes.HISTORY_DETAIL_PAGE);
+                    Get.back();
                   },
                   icon: Icon(Icons.arrow_back, color: Colors.black),
                 ),

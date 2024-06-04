@@ -1,6 +1,6 @@
 class Routes {
   static Future<String> get initialRoute async {
-    return NAVBAR;
+    return TRANSACTION_PAGE;
   }
 
   static const CHAT_PAGE = '/message_screen';
@@ -18,4 +18,5 @@ class Routes {
   static const STATUS_PAGE = '/status_page';
   static const VERIFICATION_PAGE = '/verification_page';
   static const TRANSACTION_PAGE = '/transaction-page';
+  static const METODE_TRANSACTION = '/metode_transaction_screen';
 }

@@ -38,6 +38,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/img_transaction/
     - assets/icons/
     - assets/bg_boarding/
     - assets/img_home/
