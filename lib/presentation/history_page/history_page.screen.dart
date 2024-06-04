@@ -20,51 +20,60 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ContentTitleWidget(title: "Riwayat"),
-          HistoryWidget(),
+          ContentTitleWidget(
+            title: "Riwayat Transaksi",
+            lefttextSize: tsTitleSmallSemibold(black),
+          ),
+          SizedBox(height: 10),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: 5,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return DetailWidget(
+                onPressed: () {
+                  Get.toNamed(Routes.TRANSACTION_PAGE);
+                },
+                transcationNum: "No. Transaksi - 00414519797419",
+                title: "Cuci Setrika - Marlen",
+                subTitle: "Berat - 5Kg",
+                bottomTitle: "Rp. 25.000",
+                childs: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        "23 Maret 2024",
+                        style: tsLabelLargeRegular(black),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          print("Button Telah Dipencet");
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: successColor,
+                          ),
+                          height: 30,
+                          width: 80,
+                          child: Expanded(
+                            child: Center(
+                              child: Text("Selesai",
+                                  style: tsLabelLargeSemibold(primaryColor)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
         ],
       ),
     ))));
   }
-}
-
-Widget HistoryWidget() {
-  return DetailWidget(
-    onPressed: () {
-      Get.toNamed(Routes.HISTORY_DETAIL_PAGE);
-    },
-    transcationNum: "TRX-0001",
-    title: "Cuci Setrika - Bawwaz",
-    subTitle: "Berat - 5Kg",
-    bottomTitle: "Rp. 25.000",
-    images: 'assets/img_home/default.png',
-    childs: Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            "23 Maret 2024",
-            style: tsLabelLargeRegular(black),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              color: successColor,
-            ),
-            height: 30,
-            width: 80,
-            child: Expanded(
-              child: Center(
-                child: Text(
-                  "Selesai",
-                  style: tsLabelLargeSemibold(primaryColor),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
 }
