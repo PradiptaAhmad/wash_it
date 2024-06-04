@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wash_it/infrastructure/theme/themes.dart';
 
 class ButtonWidget extends StatelessWidget {
   final void Function()? onPressed;
@@ -7,8 +8,7 @@ class ButtonWidget extends StatelessWidget {
   final String? text;
   final Color? textColor;
   final Widget? child;
-
-  final style;
+  final ButtonStyle? style;
 
   const ButtonWidget({
     this.onPressed,
@@ -29,6 +29,9 @@ class ButtonWidget extends StatelessWidget {
             backgroundColor: backgroundColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
+              side: BorderSide(
+                color: darkGrey,
+              ),
             ),
           ),
       child: Container(
