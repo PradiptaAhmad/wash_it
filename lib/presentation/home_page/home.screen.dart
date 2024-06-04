@@ -59,6 +59,9 @@ class HomeScreen extends GetView<HomeController> {
                 itemBuilder: (context, index) {
                   final data = visualData[index];
                   return DetailWidget(
+                    onPressed: () {
+                      Get.toNamed(Routes.TRANSACTION_PAGE);
+                    },
                     transcationNum: data['transcationNum'],
                     title: data['title'],
                     subTitle: data['subTitle'],
@@ -74,6 +77,9 @@ class HomeScreen extends GetView<HomeController> {
               itemBuilder: (context, index) {
                 final data = visualData[index];
                 return DetailWidget(
+                  onPressed: () {
+                    Get.toNamed(Routes.TRANSACTION_PAGE);
+                  },
                   transcationNum: data['transcationNum'],
                   title: data['title'],
                   subTitle: data['subTitle'],
