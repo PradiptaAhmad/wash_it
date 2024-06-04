@@ -26,7 +26,7 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
         ),
         backgroundColor: primaryColor,
         title:
-            Text("Detail Riwayat Transaksi", style: tsBodyLargeMedium(black)),
+            Text("Detail Transaksi", style: tsBodyLargeMedium(black)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -125,25 +125,36 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                       style: tsBodyMediumMedium(black),
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: secondaryColor,
-                      borderRadius: BorderRadius.circular(50),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.CHAT_PAGE);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: secondaryColor,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      height: 35,
+                      width: 35,
+                      child: Icon(Iconsax.call5, color: primaryColor),
                     ),
-                    height: 35,
-                    width: 35,
-                    child: Icon(Iconsax.call5, color: primaryColor),
                   ),
                   SizedBox(width: 5),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: secondaryColor,
-                      borderRadius: BorderRadius.circular(50),
+                  InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.CHAT_PAGE);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: secondaryColor,
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      height: 35,
+                      width: 35,
+                      child: Icon(Iconsax.message5, color: primaryColor),
                     ),
-                    height: 35,
-                    width: 35,
-                    child: Icon(Iconsax.message5, color: primaryColor),
-                  )
+                  ),
+
                 ],
               ),
               DetailDataWidget(
@@ -188,13 +199,13 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
               ),
               SizedBox(height: 20),
               ButtonWidget(
-                backgroundColor: secondaryColor,
+                backgroundColor: primaryColor,
                 child: Text(
-                  "Beri Penilaian",
-                  style: tsBodySmallSemibold(primaryColor),
+                  "Bayar Sekarang",
+                  style: tsLabelLargeMedium(black),
                 ),
                 onPressed: () {
-                  Get.toNamed(Routes.REVIEW_PAGE);
+                  Get.toNamed(Routes.METODE_TRANSACTION);
                 },
               ),
               SizedBox(height: 20),

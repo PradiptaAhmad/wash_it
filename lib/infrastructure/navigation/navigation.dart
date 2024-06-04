@@ -14,6 +14,7 @@ import 'package:wash_it/presentation/profile_page/controllers/profile_page.contr
 import 'package:wash_it/presentation/profile_page/profile_page.dart';
 import 'package:wash_it/presentation/splash_screen/controllers/splash_screen.controller.dart';
 import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
+import 'package:wash_it/presentation/transaction_page/metode_transaction_screen.dart';
 
 import '../../config.dart';
 import '../../presentation/history_page/history_detail_page.dart';
@@ -112,6 +113,11 @@ class Nav {
     GetPage(
       name: Routes.TRANSACTION_PAGE,
       page: () => const TransactionPageScreen(),
+      binding: TransactionPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.METODE_TRANSACTION,
+      page: () => const MetodeTransaction(),
       binding: TransactionPageControllerBinding(),
     ),
   ];
