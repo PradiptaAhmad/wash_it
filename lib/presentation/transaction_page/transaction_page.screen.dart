@@ -22,7 +22,7 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
             Iconsax.arrow_left_2,
           ),
           onPressed: () {
-            Get.toNamed(Routes.NAVBAR);
+            Get.back();
           },
         ),
         backgroundColor: primaryColor,
@@ -36,82 +36,79 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 30),
-                child: Column(
-                  children: [
-                    Row(
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Iconsax.receipt,
+                        size: 30,
+                        color: successColor,
+                      ),
+                      DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: 40,
+                        lineThickness: 2,
+                        dashLength: 5,
+                        dashColor: successColor,
+                      ),
+                      Icon(
+                        Iconsax.wallet_1,
+                        size: 30,
+                        color: successColor,
+                      ),
+                      DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: 40,
+                        lineThickness: 2,
+                        dashLength: 5,
+                        dashColor: successColor,
+                      ),
+                      Icon(
+                        Iconsax.bubble,
+                        size: 30,
+                        color: successColor,
+                      ),
+                      DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: 40,
+                        lineThickness: 2,
+                        dashLength: 5,
+                        dashColor: successColor,
+                      ),
+                      Icon(
+                        Iconsax.location,
+                        size: 30,
+                        color: successColor,
+                      ),
+                      DottedLine(
+                        direction: Axis.horizontal,
+                        lineLength: 40,
+                        lineThickness: 2,
+                        dashLength: 5,
+                        dashColor: successColor,
+                      ),
+                      Icon(
+                        Iconsax.verify,
+                        size: 30,
+                        color: successColor,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 4),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(
-                          Iconsax.receipt,
-                          size: 30,
-                          color: successColor,
-                        ),
-                        DottedLine(
-                          direction: Axis.horizontal,
-                          lineLength: 40,
-                          lineThickness: 2,
-                          dashLength: 5,
-                          dashColor: successColor,
-                        ),
-                        Icon(
-                          Iconsax.wallet_1,
-                          size: 30,
-                          color: successColor,
-                        ),
-                        DottedLine(
-                          direction: Axis.horizontal,
-                          lineLength: 40,
-                          lineThickness: 2,
-                          dashLength: 5,
-                          dashColor: successColor,
-                        ),
-                        Icon(
-                          Iconsax.bubble,
-                          size: 30,
-                          color: successColor,
-                        ),
-                        DottedLine(
-                          direction: Axis.horizontal,
-                          lineLength: 40,
-                          lineThickness: 2,
-                          dashLength: 5,
-                          dashColor: successColor,
-                        ),
-                        Icon(
-                          Iconsax.location,
-                          size: 30,
-                          color: successColor,
-                        ),
-                        DottedLine(
-                          direction: Axis.horizontal,
-                          lineLength: 40,
-                          lineThickness: 2,
-                          dashLength: 5,
-                          dashColor: successColor,
-                        ),
-                        Icon(
-                          Iconsax.verify,
-                          size: 30,
-                          color: successColor,
-                        ),
+                        Text("23/03", style: tsBodySmallRegular(black)),
+                        Text("Est.", style: tsBodySmallRegular(black)),
+                        Text("25/03", style: tsBodySmallRegular(black)),
                       ],
                     ),
-                    SizedBox(height: 5),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("23/03", style: tsBodySmallRegular(black)),
-                          Text("Est.", style: tsBodySmallRegular(black)),
-                          Text("25/03", style: tsBodySmallRegular(black)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               SizedBox(height: 10),
               Center(
@@ -199,7 +196,7 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                       style: tsBodySmallSemibold(primaryColor)),
                 ),
                 onPressed: () {
-                  Get.to(PaymentReceiptPage());
+                  Get.toNamed(Routes.METODE_TRANSACTION);
                 },
               ),
             ],

@@ -29,9 +29,6 @@ class ButtonWidget extends StatelessWidget {
             backgroundColor: backgroundColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
-              side: BorderSide(
-                color: darkGrey,
-              ),
             ),
           ),
       child: Container(

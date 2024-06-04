@@ -1,6 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:get/get.dart';
 import 'package:wash_it/presentation/transaction_page/widget/detail_text_widget.dart';
@@ -86,7 +87,7 @@ class PaymentReceiptPage extends StatelessWidget {
                       Text("Selesai", style: tsBodySmallSemibold(primaryColor)),
                 ),
                 onPressed: () {
-                  Get.to(PaymentReceiptPage());
+                  Get.offNamed(Routes.NAVBAR);
                 },
               ),
             ],

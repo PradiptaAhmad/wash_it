@@ -19,4 +19,5 @@ class Routes {
   static const VERIFICATION_PAGE = '/verification_page';
   static const TRANSACTION_PAGE = '/transaction-page';
   static const METODE_TRANSACTION = '/metode_transaction_screen';
+  static const PAYMENT_RECEIPT = '/payment_receipt_page';
 }

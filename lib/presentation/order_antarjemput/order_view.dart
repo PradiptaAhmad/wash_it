@@ -28,10 +28,13 @@ class _OrderViewState extends State<OrderView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         children: [
-          OrderPageScreen1(onNext: _navigateToNextPage, onFinish: _finishProcess),
-          OrderPageScreen2(onNext: _navigateToNextPage, onBack: _navigateToPreviousPage),
+          OrderPageScreen1(
+              onNext: _navigateToNextPage, onFinish: _finishProcess),
+          OrderPageScreen2(
+              onNext: _navigateToNextPage, onBack: _navigateToPreviousPage),
           OrderPageScreen3(
             onBack: _navigateToPreviousPage,
             onFinish: _finishProcess,
