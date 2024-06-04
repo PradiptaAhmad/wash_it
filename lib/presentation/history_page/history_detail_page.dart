@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/presentation/history_page/widget/detail_text_widget.dart';
 import 'package:wash_it/widget/common/button_widget.dart';
 
 import '../../infrastructure/navigation/routes.dart';
+import '../transaction_page/widget/detail_text_widget.dart';
 
 class HistoryDetailPage extends StatelessWidget {
   const HistoryDetailPage({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class HistoryDetailPage extends StatelessWidget {
             Iconsax.arrow_left_2,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Get.toNamed(Routes.NAVBAR);
           },
         ),
         backgroundColor: primaryColor,

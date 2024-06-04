@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/widget/common/content_title_widget.dart';
+import 'package:wash_it/widget/common/detail_widget.dart';
+import 'package:wash_it/widget/common/main_container_widget.dart';
 
 import 'controllers/home.controller.dart';
 
@@ -17,186 +21,101 @@ class HomeScreen extends GetView<HomeController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Selamat Pagi, Mau Cuci Apa Hari Ini?",
-                    style: tsBodyMediumSemibold(black),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/img_home/user.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    height: 40,
-                    width: 40,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 15,
+            MainWelcomeTitle(
+              userName: "Bapak Bajuri",
             ),
             Container(
+              padding: EdgeInsets.only(top: defaultMargin),
               child: Row(
                 children: [
                   Expanded(
-                      child: mainChoiceWidget(
-                          'Antar Jemput', 'assets/img_home/delivery1.png')),
+                      child: MainChoiceWidget(
+                    onPressed: () {
+                      Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
+                    },
+                    imageAssets: 'assets/img_home/delivery1.png',
+                    mainTitle: 'Antar Jemput',
+                  )),
                   SizedBox(
                     width: 10,
                   ),
                   Expanded(
-                      child: mainChoiceWidget(
-                          'Antar Mandiri', 'assets/img_home/delivery2.png')),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Text(
-                    "Sedang Berlangsung",
-                    style: tsBodyMediumSemibold(black),
+                      child: MainChoiceWidget(
+                    onPressed: () {
+                      Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
+                    },
+                    imageAssets: 'assets/img_home/delivery2.png',
+                    mainTitle: 'Antar Mandiri',
                   )),
-                  Text(
-                    "Lihat Selengkapnya",
-                    style: tsLabelLargeMedium(darkGrey),
-                  )
                 ],
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            onGoingWidget("Cuci Setrika - Marlen", "Berat - 5Kg", "Rp. 25.000"),
-            SizedBox(
-              height: 20,
-            ),
-            onGoingWidget("Cuci Setrika - Bawwaz", "Berat - 5Kg", "Rp. 25.000"),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Text(
-                    "Riwayat Transaksi",
-                    style: tsBodyMediumSemibold(black),
-                  )),
-                  Text(
-                    "Lihat Selengkapnya",
-                    style: tsLabelLargeMedium(darkGrey),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 1.5,
-                    blurRadius: 2,
-                    offset: Offset(0.5, 2), // changes position of shadow
-                  ),
-                ],
-              ),
-              height: 150,
-              width: double.infinity,
-              child: Container(
-                margin: EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "No. Transaksi - 00414519797419",
-                      style: tsLabelLargeRegular(darkGrey),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
+            ContentTitleWidget(
+                title: "Sedang Berlangsung", subtitle: "Lihat Selengkapnya"),
+            ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: visualData.length,
+                itemBuilder: (context, index) {
+                  final data = visualData[index];
+                  return DetailWidget(
+                    onPressed: () {
+                      Get.toNamed(Routes.TRANSACTION_PAGE);
+                    },
+                    paddingValues: 10,
+                    transcationNum: data['transcationNum'],
+                    title: data['title'],
+                    subTitle: data['subTitle'],
+                    bottomTitle: data['bottomTitle'],
+                    images: data['images'],
+                  );
+                }),
+            ContentTitleWidget(
+                title: "Riwayat Transaksi", subtitle: "Lihat Selengkapnya"),
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: visualData.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                final data = visualData[index];
+                return DetailWidget(
+                  onPressed: () {
+                    Get.toNamed(Routes.TRANSACTION_PAGE);
+                  },
+                  transcationNum: data['transcationNum'],
+                  title: data['title'],
+                  subTitle: data['subTitle'],
+                  bottomTitle: data['bottomTitle'],
+                  images: data['images'],
+                  paddingValues: 10,
+                  childs: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
+                        Text(
+                          "23 Maret 2024",
+                          style: tsLabelLargeRegular(black),
+                        ),
                         Container(
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/img_home/default.png'),
-                              fit: BoxFit.cover,
-                            ),
                             borderRadius: BorderRadius.circular(6),
+                            color: successColor,
                           ),
-                          height: 60,
-                          width: 60,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Cuci Setrika - Bawwaz",
-                              style: tsBodySmallSemibold(black),
+                          height: 30,
+                          width: 80,
+                          child: Expanded(
+                            child: Center(
+                              child: Text("Selesai",
+                                  style: tsLabelLargeSemibold(primaryColor)),
                             ),
-                            Text(
-                              "Berat - 5Kg",
-                              style: tsLabelLargeSemibold(darkGrey),
-                            ),
-                            Text(
-                              "Rp. 25.000",
-                              style: tsLabelLargeBold(successColor),
-                            )
-                          ],
-                        )
+                          ),
+                        ),
                       ],
                     ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            "23 Maret 2024",
-                            style: tsLabelLargeRegular(black),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              color: successColor,
-                            ),
-                            height: 30,
-                            width: 80,
-                            child: Expanded(
-                              child: Center(
-                                child: Text(
-                                  "Selesai",
-                                  style: tsLabelLargeSemibold(primaryColor),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             )
           ],
         ),
@@ -205,111 +124,87 @@ class HomeScreen extends GetView<HomeController> {
   }
 }
 
-Widget mainChoiceWidget(mainTitle, imageAssets) {
-  return Container(
-    decoration: BoxDecoration(
-      color: primaryColor,
-      borderRadius: BorderRadius.circular(10),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
-          spreadRadius: 1.5,
-          blurRadius: 2,
-          offset: Offset(0.5, 2), // changes position of shadow
-        ),
-      ],
-    ),
-    height: 110,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+class MainWelcomeTitle extends StatelessWidget {
+  const MainWelcomeTitle({
+    this.userName,
+    super.key,
+  });
+
+  final String? userName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Selamat Datang", style: tsLabelLargeSemibold(darkGrey)),
+            Text(userName ?? "Anon", style: tsTitleMediumSemibold(black)),
+          ],
+        ),
         Container(
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(imageAssets),
-              fit: BoxFit.cover,
-            ),
+            borderRadius: BorderRadius.circular(50),
+            color: grey,
           ),
-          height: 50,
-          width: 50,
+          height: 45,
+          width: 45,
+          child: const Icon(
+            Icons.person,
+            color: primaryColor,
+          ),
         ),
-        SizedBox(
-          height: 5,
-        ),
-        Text(
-          mainTitle,
-          style: tsBodySmallSemibold(black),
-        )
       ],
-    ),
-  );
+    );
+  }
 }
 
-Widget onGoingWidget(upText, midText, botText) {
-  return Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.2),
-          spreadRadius: 1.5,
-          blurRadius: 2,
-          offset: Offset(0.5, 2), // changes position of shadow
-        ),
-      ],
-    ),
-    height: 120,
-    width: double.infinity,
-    child: Container(
-      margin: EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+Widget MainChoiceWidget({required imageAssets, required mainTitle, onPressed}) {
+  return InkWell(
+    onTap: onPressed,
+    child: MainContainerWidget(
+      height: 110,
+      childs: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "No. Transaksi - 00414519797419",
-            style: tsLabelLargeRegular(darkGrey),
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(imageAssets),
+                fit: BoxFit.cover,
+              ),
+            ),
+            height: 50,
+            width: 50,
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
-          Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  image: DecorationImage(
-                    image: AssetImage('assets/img_home/default.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                height: 60,
-                width: 60,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    upText,
-                    style: tsBodySmallSemibold(black),
-                  ),
-                  Text(
-                    midText,
-                    style: tsLabelLargeSemibold(darkGrey),
-                  ),
-                  Text(
-                    botText,
-                    style: tsLabelLargeBold(successColor),
-                  )
-                ],
-              )
-            ],
+          Text(
+            mainTitle,
+            style: tsBodySmallSemibold(black),
           )
         ],
       ),
     ),
   );
 }
+
+final List<Map<String, dynamic>> visualData = [
+  {
+    'transcationNum': "No. Transaksi - 00414519797419",
+    'title': "Cuci Setrika - Marlen",
+    'subTitle': "Berat - 5Kg",
+    'bottomTitle': "Rp. 25.000",
+    'images': 'assets/img_home/delivery1.png',
+  },
+  {
+    'transcationNum': "No. Transaksi - 00414519797419",
+    'title': "Cuci Setrika - Bawwaz",
+    'subTitle': "Berat - 5Kg",
+    'bottomTitle': "Rp. 25.000",
+    'images': 'assets/img_home/delivery2.png',
+  },
+];

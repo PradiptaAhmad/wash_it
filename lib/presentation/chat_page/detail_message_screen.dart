@@ -1,15 +1,11 @@
-import 'package:wash_it/presentation/chat_page/components/body.dart';
+import 'package:wash_it/infrastructure/navigation/routes.dart';
+import 'package:wash_it/presentation/chat_page/controllers/chat_controller.dart';
+import 'package:wash_it/presentation/chat_page/widgets/chat_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../infrastructure/theme/themes.dart';
 
-class MessageScreen extends StatefulWidget {
-  @override
-  _MessageScreenState createState() => _MessageScreenState();
-}
-
-class _MessageScreenState extends State<MessageScreen> {
+class DetailMessageScreen extends GetView<ChatController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +29,9 @@ class _MessageScreenState extends State<MessageScreen> {
             child: Row(
               children: <Widget>[
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.back();
+                  },
                   icon: Icon(Icons.arrow_back, color: Colors.black),
                 ),
                 SizedBox(width: 2),
@@ -77,9 +75,7 @@ class _MessageScreenState extends State<MessageScreen> {
           ),
         ],
       ),
-      body: Body(),
+      body: ChatViewWidget(),
     );
   }
 }
-
-
