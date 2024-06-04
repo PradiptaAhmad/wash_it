@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:wash_it/presentation/transaction_page/payment_receipt_page.dart';
+import 'package:wash_it/presentation/transaction_page/widget/detail_text_widget.dart';
 
 import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/themes.dart';
 import '../../widget/common/button_widget.dart';
-import '../history_page/widget/detail_text_widget.dart';
 import 'controllers/transaction_page.controller.dart';
 
 class TransactionPageScreen extends GetView<TransactionPageController> {
@@ -186,18 +187,21 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Divider(color: lightGrey, thickness: 1),
+              ),
               ButtonWidget(
                 backgroundColor: secondaryColor,
-                child: Text(
-                  "Beri Penilaian",
-                  style: tsBodySmallSemibold(primaryColor),
+                child: Padding(
+                  padding: const EdgeInsets.all(defaultMargin),
+                  child: Text("Bayar Sekarang",
+                      style: tsBodySmallSemibold(primaryColor)),
                 ),
                 onPressed: () {
-                  Get.toNamed(Routes.REVIEW_PAGE);
+                  Get.to(PaymentReceiptPage());
                 },
               ),
-              SizedBox(height: 20),
             ],
           ),
         ),
