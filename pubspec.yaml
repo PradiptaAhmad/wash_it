@@ -21,6 +21,7 @@ dependencies:
   dropdown_search: any
   searchfield: any
   google_sign_in: any
+  dotted_border: ^2.1.0
 
   firebase_core: any
   firebase_messaging: any

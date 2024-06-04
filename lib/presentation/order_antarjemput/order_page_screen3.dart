@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -57,19 +58,40 @@ class OrderPageScreen3 extends StatelessWidget {
             ),
             SizedBox(height: 10),
             ContentTitleWidget(title: "Pastikan data kamu telah sesuai"),
-            Text("Pastikan data kamu telah sesuai",
-                style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(height: 20),
             _buildDataBox("Data Pelanggan dan Pesanan", [
-              _buildDataItem("Nama", nama),
-              _buildDataItem("Nomor Telepon", nomorTelepon),
-              _buildDataItem("Alamat", alamat),
-              _buildDataItem("Tipe Laundry", tipeLaundry),
-              _buildDataItem("Catatan", catatan),
+              Text(
+                "Data Pelanggan",
+                style: tsBodySmallSemibold(black),
+              ),
+              SizedBox(height: 10),
+              _buildDataItem("Nama", "Marlen Edzel"),
+              _buildDataItem("Nomor Telepon", "nomorTelepon"),
+              _buildDataItem("Alamat", "alamat"),
+              SizedBox(height: 10),
+              Text(
+                "Detail Pesanan",
+                style: tsBodySmallSemibold(black),
+              ),
+              SizedBox(height: 10),
+              _buildDataItem("Tipe Laundry", "tipeLaundry"),
               _buildDataItem("Jadwal Pengambilan",
                   "${jadwalPengambilan.day}/${jadwalPengambilan.month}/${jadwalPengambilan.year}"),
-              _buildDataItemBold(
-                  "Harga Per Kg", "Rp. ${hargaPerKg.toStringAsFixed(2)}"),
+              _buildDataItem("Catatan", "catatan"),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Harga per Kg",
+                    style: tsBodySmallSemibold(black),
+                  ),
+                  Text(
+                    "Rp. 5.000,00",
+                    style: tsBodySmallSemibold(black),
+                  ),
+                ],
+              )
             ]),
             SizedBox(height: 20),
             Text(
@@ -150,24 +172,34 @@ class OrderPageScreen3 extends StatelessWidget {
     );
   }
 
+  // _buildDataItem("Nama", nama),
+  // _buildDataItem("Nomor Telepon", nomorTelepon),
+  // _buildDataItem("Alamat", alamat),
+  // _buildDataItem("Tipe Laundry", tipeLaundry),
+  // _buildDataItem("Catatan", catatan),
+  // _buildDataItem("Jadwal Pengambilan",
+  //     "${jadwalPengambilan.day}/${jadwalPengambilan.month}/${jadwalPengambilan.year}"),
+  // _buildDataItemBold(
+  //     "Harga Per Kg", "Rp. ${hargaPerKg.toStringAsFixed(2)}"),
+
   Widget _buildDataBox(String title, List<Widget> children) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-        SizedBox(height: 10),
-        Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            border: Border.all(color: Color(0xFF767676)),
-            borderRadius: BorderRadius.circular(8),
-          ),
+    return Container(
+      width: double.infinity,
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: Radius.circular(8),
+        color: darkGrey,
+        strokeWidth: 2,
+        dashPattern: [10, 5],
+        padding: EdgeInsets.all(10),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
           ),
         ),
-      ],
+      ),
     );
   }
 
@@ -175,10 +207,10 @@ class OrderPageScreen3 extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label + ":", style: TextStyle(fontWeight: FontWeight.bold)),
-          SizedBox(width: 10),
-          Expanded(child: Text(value)),
+          Text(label, style: tsBodySmallMedium(darkBlue)),
+          Text(value, style: tsBodySmallMedium(darkBlue)),
         ],
       ),
     );
