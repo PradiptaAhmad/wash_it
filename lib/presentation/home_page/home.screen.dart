@@ -66,6 +66,7 @@ class HomeScreen extends GetView<HomeController> {
                     title: data['title'],
                     subTitle: data['subTitle'],
                     bottomTitle: data['bottomTitle'],
+                    images: data['images'],
                   );
                 }),
             ContentTitleWidget(
@@ -84,6 +85,7 @@ class HomeScreen extends GetView<HomeController> {
                   title: data['title'],
                   subTitle: data['subTitle'],
                   bottomTitle: data['bottomTitle'],
+                  images: data['images'],
                   childs: Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -194,11 +196,13 @@ final List<Map<String, dynamic>> visualData = [
     'title': "Cuci Setrika - Marlen",
     'subTitle': "Berat - 5Kg",
     'bottomTitle': "Rp. 25.000",
+    'images': 'assets/img_home/delivery1.png',
   },
   {
     'transcationNum': "No. Transaksi - 00414519797419",
     'title': "Cuci Setrika - Bawwaz",
     'subTitle': "Berat - 5Kg",
     'bottomTitle': "Rp. 25.000",
+    'images': 'assets/img_home/delivery2.png',
   },
 ];

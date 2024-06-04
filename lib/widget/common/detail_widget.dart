@@ -41,16 +41,18 @@ class DetailWidget extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/img_home/default.png'),
-                          fit: BoxFit.cover,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6),
                         ),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      height: 60,
-                      width: 60,
-                    ),
+                        height: 60,
+                        width: 60,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Image.asset(
+                            images ?? "Null",
+                            fit: BoxFit.cover,
+                          ),
+                        )),
                     SizedBox(
                       width: 10,
                     ),
