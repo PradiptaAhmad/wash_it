@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:wash_it/config.dart';
@@ -10,6 +11,8 @@ import 'package:wash_it/infrastructure/theme/themes.dart';
 class LoginPageController extends GetxController {
   // Password Visibility
   var isObsecure = true.obs;
+
+  final _firebaseMessaging = FirebaseMessaging.instance;
 
   // Email and Password
   var email = ''.obs;
@@ -23,18 +26,18 @@ class LoginPageController extends GetxController {
 
   Future<void> login() async {
     isLoading.value = true;
-    final notificationToken = box.read("notification_token");
+    final notificationToken = _firebaseMessaging.getToken();
     final url = ConfigEnvironments.getEnvironments()["url"];
     print(url);
     var data = {
       'email': email.value,
       'password': password.value,
-      'notification_token': notificationToken,
+      'notification_token': notificationToken.toString(),
     };
     var headers = {
       'Accept': 'application/json',
     };
-      
+
     var response = await http.post(
       Uri.parse("$url/users/login"),
       headers: headers,
@@ -47,14 +50,15 @@ class LoginPageController extends GetxController {
       box.write("token", token);
       if (user['phone_verified_at'] == null) {
         Get.toNamed(Routes.VERIFICATION_PAGE);
+      } else {
+        Get.snackbar(
+          "Sukses Login",
+          "Selamat datang ${user['name']}",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: successColor,
+        );
+        Get.offAllNamed(Routes.NAVBAR);
       }
-      Get.snackbar(
-        "Sukses Login",
-        "Selamat datang ${user['name']}",
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: successColor,
-      );
-      Get.offAllNamed(Routes.HOME);
     } else {
       Get.snackbar("Gagal Login", json.decode(response.body)['message'],
           snackPosition: SnackPosition.TOP,
@@ -62,7 +66,6 @@ class LoginPageController extends GetxController {
           colorText: primaryColor);
       isLoading.value = false;
     }
-    
   }
 
   @override

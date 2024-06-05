@@ -64,7 +64,6 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
                         )
                       : Text("")),
                 ],
-
               )
             ],
           ),
@@ -76,7 +75,9 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
           children: [
             Expanded(
               child: FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.verifyOtp();
+                },
                 elevation: 3,
                 backgroundColor: secondaryColor,
                 shape: RoundedRectangleBorder(

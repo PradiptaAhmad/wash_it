@@ -24,8 +24,7 @@ class HomeController extends GetxController {
     try {
       isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()["url"];
-      final token = '4|T8OMJQ5F9mkowaXzd4ewrj1t2IaQVh5x2r8WDMPM8013043f';
-      // final token = box.read('token');
+      final token = box.read('token');
 
       var headers = {
         'Accept': 'application/json',

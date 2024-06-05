@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/presentation/verification_page/controllers/verification_page.controller.dart';
 
-class OtpFormWidget extends StatelessWidget {
+class OtpFormWidget extends GetView<VerificationPageController> {
   const OtpFormWidget({Key? key}) : super(key: key);
 
   @override
@@ -23,14 +25,18 @@ class OtpFormWidget extends StatelessWidget {
 }
 
 Widget SingleFormWidget(BuildContext context) {
+  final controller = Get.find<VerificationPageController>();
   return SizedBox(
     height: 68,
     width: 60,
     child: TextField(
       onChanged: (value) {
         if (value.length == 1) {
+          controller.otp.value += value;
           FocusScope.of(context).nextFocus();
         } else if (value.isEmpty) {
+          controller.otp.value = controller.otp.value
+              .substring(0, controller.otp.value.length - 1);
           FocusScope.of(context).previousFocus();
         }
       },
