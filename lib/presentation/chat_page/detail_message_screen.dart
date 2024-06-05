@@ -3,6 +3,7 @@ import 'package:wash_it/presentation/chat_page/controllers/chat_controller.dart'
 import 'package:wash_it/presentation/chat_page/widgets/chat_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wash_it/widget/common/box_shadow.dart';
 import '../../infrastructure/theme/themes.dart';
 
 class DetailMessageScreen extends GetView<ChatController> {
@@ -16,16 +17,9 @@ class DetailMessageScreen extends GetView<ChatController> {
         flexibleSpace: SafeArea(
           child: Container(
             padding: EdgeInsets.only(right: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 4,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
+            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+              localMainShadow(),
+            ]),
             child: Row(
               children: <Widget>[
                 IconButton(
