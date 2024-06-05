@@ -20,6 +20,7 @@ import '../../presentation/history_page/history_detail_page.dart';
 import '../../presentation/screens.dart';
 import 'bindings/controllers/controllers_bindings.dart';
 import 'bindings/controllers/payment_receipt_controller.binding.dart';
+import 'bindings/controllers/profile_page.binding.dart';
 import 'routes.dart';
 
 class EnvironmentsBadge extends StatelessWidget {
@@ -79,9 +80,7 @@ class Nav {
     GetPage(
       name: Routes.PROFILE_PAGE,
       page: () => ProfilePage(),
-      binding: BindingsBuilder(() {
-        Get.lazyPut<ProfileController>(() => ProfileController());
-      }),
+      binding: ProfilePageControllerBinding(),
     ),
     GetPage(
       name: Routes.HISTORY_PAGE,
