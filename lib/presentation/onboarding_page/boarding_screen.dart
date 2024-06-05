@@ -129,7 +129,7 @@ class _BoardingScreenState extends State<BoardingScreen> {
               InkWell(
                 onTap: () {
                   if (_currentPage == (_pages.length - 1)) {
-                    Get.toNamed(Routes.LOGIN_PAGE);
+                    Get.toNamed(Routes.REGISTER_PAGE);
                   } else {
                     _controller.nextPage(
                       duration: Duration(milliseconds: 800),
