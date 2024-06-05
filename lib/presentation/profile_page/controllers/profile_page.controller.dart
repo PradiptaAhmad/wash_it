@@ -6,6 +6,10 @@ import 'package:wash_it/config.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileController extends GetxController {
+  //TODO: Implement HomeController
+
+  final count = 0.obs;
+
   var userName = 'Nama Pengguna'.obs;
   var email = 'email@example.com'.obs;
   var phoneNumber = '081234567890'.obs;
@@ -26,7 +30,7 @@ class ProfileController extends GetxController {
     };
 
     final response = await http.get(
-      Uri.parse('$url/user'),
+      Uri.parse('$url/user/me'),
       headers: headers,
     );
 
@@ -61,4 +65,21 @@ class ProfileController extends GetxController {
   void updatePassword(String newPassword) {
     // Handle password update logic
   }
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
+  void increment() => count.value++;
 }
