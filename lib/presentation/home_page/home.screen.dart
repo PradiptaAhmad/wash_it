@@ -13,6 +13,8 @@ class HomeScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    final HomeController controller = Get.put(HomeController());
+
     return Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(
@@ -52,24 +54,41 @@ class HomeScreen extends GetView<HomeController> {
             ),
             ContentTitleWidget(
                 title: "Sedang Berlangsung", subtitle: "Lihat Selengkapnya"),
-            ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: visualData.length,
-                itemBuilder: (context, index) {
-                  final data = visualData[index];
-                  return DetailWidget(
-                    onPressed: () {
-                      Get.toNamed(Routes.TRANSACTION_PAGE);
-                    },
-                    paddingValues: 10,
-                    transcationNum: data['transcationNum'],
-                    title: data['title'],
-                    subTitle: data['subTitle'],
-                    bottomTitle: data['bottomTitle'],
-                    images: data['images'],
-                  );
-                }),
+            Obx(() {
+              if (controller.isLoading.value) {
+                return Padding(
+                  padding: const EdgeInsets.all(defaultMargin),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+              if (controller.ordersList.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(defaultMargin),
+                  child: Center(
+                      child: Text(
+                    'Order Tidak Bisa Ditemukan',
+                    style: tsBodySmallMedium(black),
+                  )),
+                );
+              }
+              return ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: controller.ordersList.length,
+                  itemBuilder: (context, index) {
+                    final order = controller.ordersList[index];
+                    return DetailWidget(
+                      onPressed: () {
+                        Get.toNamed(Routes.TRANSACTION_PAGE);
+                      },
+                      paddingValues: 10,
+                      transcationNum: order.noPemesanan ?? "",
+                      title: 'Cuci Setrika - ${order.namaPemesan}',
+                      subTitle: 'Berat - ${order.beratLaundry}Kg',
+                      bottomTitle: 'Rp. ${order.totalHarga}',
+                    );
+                  });
+            }),
             ContentTitleWidget(
                 title: "Riwayat Transaksi", subtitle: "Lihat Selengkapnya"),
             ListView.builder(
