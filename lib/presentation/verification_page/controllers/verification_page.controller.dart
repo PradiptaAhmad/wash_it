@@ -13,6 +13,8 @@ class VerificationPageController extends GetxController {
   final url = ConfigEnvironments.getEnvironments()['url'];
   final userData = {}.obs;
 
+  var otp = "".obs;
+
   // Rundown Timer
   Timer _timer = Timer(Duration(seconds: 60), () {});
   var timeleft = 120.obs;
@@ -69,44 +71,44 @@ class VerificationPageController extends GetxController {
       Get.snackbar("Gagal", "Kode OTP gagal dikirim",
           snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
     }
+  }
 
-    Future<void> verifyOtp(String otp) async {
-      final token = box.read('token');
+  Future<void> verifyOtp() async {
+    final token = box.read('token');
 
-      var headers = {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-      var data = {
-        'otp': otp,
-      };
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    var data = {
+      'otp': int.parse(otp.value),
+    };
 
-      try {
-        final response = await http.post(
-          Uri.parse("${url}/users/verify-otp"),
-          headers: headers,
-          body: data,
-        );
+    try {
+      final response = await http.post(
+        Uri.parse("${url}/users/verify-otp"),
+        headers: headers,
+        body: data,
+      );
 
-        if (response.statusCode == 200) {
-          Get.snackbar("Berhasil", "Kode OTP berhasil diverifikasi",
-              snackPosition: SnackPosition.TOP, backgroundColor: successColor);
-        } else {
-          Get.snackbar("Gagal", "Kode OTP gagal diverifikasi",
-              snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
-        }
-      } catch (e) {
+      if (response.statusCode == 200) {
+        Get.snackbar("Berhasil", "Kode OTP berhasil diverifikasi",
+            snackPosition: SnackPosition.TOP, backgroundColor: successColor);
+      } else {
         Get.snackbar("Gagal", "Kode OTP gagal diverifikasi",
             snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
       }
+    } catch (e) {
+      Get.snackbar("Gagal", "Kode OTP gagal diverifikasi",
+          snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
     }
   }
 
   String formatPhoneNumber() {
-    final phone = userData['phone'];
-    final formattedPhone =
-        "+62-${phone.substring(1, 4)}-${phone.substring(4, 8)}-${phone.substring(8, 12)}";
-    return formattedPhone;
+    final phone = userData['phone'].toString();
+    // final formattedPhone =
+    //     "+62-${phone.substring(1, 4)}-${phone.substring(4, 8)}-${phone.substring(8, 12)}";
+    return phone;
   }
 
   Future<void> startTimer() async {

@@ -6,9 +6,7 @@ import 'package:wash_it/widget/common/button_widget.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
 import 'controllers/profile_page.controller.dart';
 
-class ProfilePage extends StatelessWidget {
-  final ProfileController _controller = Get.put(ProfileController());
-
+class ProfilePage extends GetView<ProfileController> {
   ProfilePage({Key? key}) : super(key: key);
 
   @override
@@ -24,7 +22,46 @@ class ProfilePage extends StatelessWidget {
             padding: const EdgeInsets.all(defaultMargin),
             child: Column(
               children: [
-                MainProfileWidget(controller: _controller),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundColor: grey,
+                          backgroundImage: NetworkImage(controller
+                                  .userData['image_path'] ??
+                              "https://www.pradiptaahmad.tech/image/${controller.userData['image_path']}"
+                                  'https://via.placeholder.com/150'),
+                        ),
+                        Positioned(
+                            bottom: 0,
+                            right: 4,
+                            child: GestureDetector(
+                                onTap: () {
+                                  // Handle profile picture change
+                                },
+                                child: CircleAvatar(
+                                    radius: 15,
+                                    backgroundColor: Colors.white,
+                                    child: Icon(
+                                      Icons.edit,
+                                      size: 15,
+                                      color: Colors.black,
+                                    )))),
+                      ],
+                    ),
+                    Text(
+                      controller.userName.value,
+                      style: tsBodyMediumMedium(black),
+                    ),
+                    Text(
+                      controller.email.value,
+                      style: tsBodySmallMedium(black),
+                    ),
+                  ],
+                ),
                 SizedBox(height: 10),
                 Divider(color: lightGrey, thickness: 1),
                 Padding(
@@ -38,26 +75,32 @@ class ProfilePage extends StatelessWidget {
                 ListTileButton(
                     context: context,
                     label: 'Nama Lengkap',
-                    value: _controller.userName.value,
+                    value: controller.isLoading.value
+                        ? 'Loading...'
+                        : controller.userData['username'],
                     editTitle: 'Ganti Username',
                     onSave: (newVal) {
-                      _controller.updateUserName(newVal);
+                      controller.updateUserName(newVal);
                     }),
                 ListTileButton(
                     context: context,
                     label: 'Email',
-                    value: _controller.email.value,
+                    value: controller.isLoading.value
+                        ? 'Loading...'
+                        : controller.userData['email'],
                     editTitle: 'Ganti Email',
                     onSave: (newVal) {
-                      _controller.updateEmail(newVal);
+                      controller.updateEmail(newVal);
                     }),
                 ListTileButton(
                   context: context,
                   label: 'Nomor Telepon',
-                  value: _controller.phoneNumber.value,
+                  value: controller.isLoading.value
+                      ? 'Loading...'
+                      : controller.userData['phone'],
                   editTitle: 'Ganti Nomor Telepon',
                   onSave: (newVal) {
-                    _controller.updatePhoneNumber(newVal);
+                    controller.updatePhoneNumber(newVal);
                   },
                 ),
                 ListTileButton(
@@ -66,7 +109,7 @@ class ProfilePage extends StatelessWidget {
                   value: '',
                   editTitle: 'Ganti Password',
                   onSave: (newVal) {
-                    _controller.updatePassword(newVal);
+                    controller.updatePassword(newVal);
                   },
                 ),
                 Divider(color: lightGrey, thickness: 1),
@@ -179,54 +222,4 @@ void showDialogFunction(BuildContext context, String headTitle,
       );
     },
   );
-}
-
-class MainProfileWidget extends StatelessWidget {
-  const MainProfileWidget({
-    super.key,
-    required ProfileController controller,
-  }) : _controller = controller;
-
-  final ProfileController _controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Stack(
-          children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: grey,
-              backgroundImage: NetworkImage('https://via.placeholder.com/150'),
-            ),
-            Positioned(
-                bottom: 0,
-                right: 4,
-                child: GestureDetector(
-                    onTap: () {
-                      // Handle profile picture change
-                    },
-                    child: CircleAvatar(
-                        radius: 15,
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.edit,
-                          size: 15,
-                          color: Colors.black,
-                        )))),
-          ],
-        ),
-        Text(
-          _controller.userName.value,
-          style: tsBodyMediumMedium(black),
-        ),
-        Text(
-          _controller.email.value,
-          style: tsBodySmallMedium(black),
-        ),
-      ],
-    );
-  }
 }
