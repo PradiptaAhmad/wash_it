@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:wash_it/presentation/transaction_page/controllers/metode_transaction_controller.dart';
 import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/themes.dart';
-import '../../widget/common/button_widget.dart';
 
 class MetodeTransaction extends StatefulWidget {
   const MetodeTransaction({Key? key}) : super(key: key);

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:wash_it/presentation/transaction_page/payment_receipt_page.dart';
 import 'package:wash_it/presentation/transaction_page/widget/detail_text_widget.dart';
 
 import '../../infrastructure/navigation/routes.dart';

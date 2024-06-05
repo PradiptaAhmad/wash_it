@@ -1,4 +1,3 @@
-import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/presentation/chat_page/controllers/chat_controller.dart';
 import 'package:wash_it/presentation/chat_page/widgets/chat_view_widget.dart';
 import 'package:flutter/material.dart';
