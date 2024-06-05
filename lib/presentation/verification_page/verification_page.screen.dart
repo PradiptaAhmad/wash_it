@@ -10,6 +10,13 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _pinController1 = TextEditingController();
+    final TextEditingController _pinController2 = TextEditingController();
+    final TextEditingController _pinController3 = TextEditingController();
+    final TextEditingController _pinController4 = TextEditingController();
+    final TextEditingController _pinController5 = TextEditingController();
+    final TextEditingController _pinController6 = TextEditingController();
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -38,7 +45,20 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
                 ],
               ),
               SizedBox(height: 10),
-              OtpFormWidget(),
+              // OtpFormWidget(),
+              Form(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    PinFormInput(controller: _pinController1),
+                    PinFormInput(controller: _pinController2),
+                    PinFormInput(controller: _pinController3),
+                    PinFormInput(controller: _pinController4),
+                    PinFormInput(controller: _pinController5),
+                    PinFormInput(controller: _pinController6),
+                  ],
+                ),
+              ),
               SizedBox(height: 5),
               Row(
                 children: [
@@ -76,7 +96,15 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
             Expanded(
               child: FloatingActionButton(
                 onPressed: () {
-                  controller.verifyOtp();
+                  String pinCode = _pinController1.text +
+                      _pinController2.text +
+                      _pinController3.text +
+                      _pinController4.text +
+                      _pinController5.text +
+                      _pinController6.text;
+
+                  print('Extracted PIN: $pinCode');
+                  controller.verifyOtp(pinCode);
                 },
                 elevation: 3,
                 backgroundColor: secondaryColor,

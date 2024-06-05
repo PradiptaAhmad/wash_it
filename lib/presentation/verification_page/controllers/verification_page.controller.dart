@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:wash_it/config.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 
+import '../../../infrastructure/navigation/routes.dart';
+
 class VerificationPageController extends GetxController {
   final count = 0.obs;
   final box = GetStorage();
@@ -73,7 +75,7 @@ class VerificationPageController extends GetxController {
     }
   }
 
-  Future<void> verifyOtp() async {
+  Future<void> verifyOtp(String pinCode) async {
     final token = box.read('token');
 
     var headers = {
@@ -81,7 +83,7 @@ class VerificationPageController extends GetxController {
       'Authorization': 'Bearer $token',
     };
     var data = {
-      'otp': int.parse(otp.value),
+      'otp': '$pinCode',
     };
 
     try {
@@ -94,13 +96,18 @@ class VerificationPageController extends GetxController {
       if (response.statusCode == 200) {
         Get.snackbar("Berhasil", "Kode OTP berhasil diverifikasi",
             snackPosition: SnackPosition.TOP, backgroundColor: successColor);
+        Get.offAllNamed(Routes.NAVBAR);
       } else {
-        Get.snackbar("Gagal", "Kode OTP gagal diverifikasi",
+        Get.snackbar(
+            "Gagal ${response.statusCode}", "Kode OTP gagal diverifikasi $data",
             snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
       }
     } catch (e) {
-      Get.snackbar("Gagal", "Kode OTP gagal diverifikasi",
+      // Get.snackbar("Gagal", "Kode OTP gagal terprogress",
+      //     snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+      Get.snackbar("Gagal", e.toString(),
           snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+      print(e);
     }
   }
 
