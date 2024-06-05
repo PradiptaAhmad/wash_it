@@ -53,6 +53,7 @@ class LoginPageScreen extends GetView<LoginPageController> {
                   } else if (!emailRegex.hasMatch(value)) {
                     return "Email tidak valid";
                   } else {
+                    controller.email.value = value;
                     return null;
                   }
                 },
@@ -62,7 +63,9 @@ class LoginPageScreen extends GetView<LoginPageController> {
                 hintText: "Masukkan Password",
                 textField: Obx(() => AuthTextField(
                       hintText: "Masukkan Password",
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        controller.password.value = value;
+                      },
                       isObsecure: controller.isObsecure.value,
                       suffixIcon: IconButton(
                         onPressed: () {
@@ -92,19 +95,29 @@ class LoginPageScreen extends GetView<LoginPageController> {
               SizedBox(
                 height: 15,
               ),
-              ButtonWidget(
-                backgroundColor: secondaryColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(defaultMargin),
-                  child: Text(
-                    "Login",
-                    style: tsBodySmallSemibold(primaryColor),
-                  ),
-                ),
-                onPressed: () {
-                  controller.login();
-                },
-              ),
+              Obx(() => ButtonWidget(
+                    backgroundColor: secondaryColor,
+                    child: controller.isLoading.value
+                        ? Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: Transform.scale(
+                              scale: 0.5,
+                              child: CircularProgressIndicator(
+                                color: primaryColor,
+                              ),
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: Text(
+                              "Login",
+                              style: tsBodyMediumRegular(primaryColor),
+                            ),
+                          ),
+                    onPressed: () {
+                      controller.login();
+                    },
+                  )),
               DividerWidget(screenWidth: screenWidth),
               ButtonWidget(
                 onPressed: () {},

@@ -6,7 +6,6 @@ import 'package:wash_it/widget/common/content_title_widget.dart';
 import 'package:wash_it/widget/common/detail_widget.dart';
 
 import '../../infrastructure/theme/themes.dart';
-import '../history_page/history_page.screen.dart';
 import 'controllers/status_page.controller.dart';
 
 class StatusPageScreen extends GetView<StatusPageController> {

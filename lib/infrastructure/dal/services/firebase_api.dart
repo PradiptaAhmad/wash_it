@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:wash_it/infrastructure/dal/services/firebase_options.dart';
 
 class FirebaseApi {
+  static final box = GetStorage();
   static final _firebaseMessaging = FirebaseMessaging.instance;
   static final channel = AndroidNotificationChannel(
     'high_importance_channel',
@@ -28,6 +30,7 @@ class FirebaseApi {
       sound: true,
     );
     final token = await _firebaseMessaging.getToken();
+    box.write('notification_token', token);
     FirebaseApi.initLocalNotification();
     FirebaseMessaging.onMessage.listen(FirebaseApi.handleMessage);
     FirebaseMessaging.onBackgroundMessage(FirebaseApi.handleBackgroundMessage);

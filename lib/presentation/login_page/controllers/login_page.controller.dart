@@ -9,7 +9,7 @@ import 'package:wash_it/infrastructure/theme/themes.dart';
 
 class LoginPageController extends GetxController {
   // Password Visibility
-  var isObsecure = false.obs;
+  var isObsecure = true.obs;
 
   // Email and Password
   var email = ''.obs;
@@ -23,15 +23,18 @@ class LoginPageController extends GetxController {
 
   Future<void> login() async {
     isLoading.value = true;
+    final notificationToken = box.read("notification_token");
     final url = ConfigEnvironments.getEnvironments()["url"];
+    print(url);
     var data = {
       'email': email.value,
       'password': password.value,
+      'notification_token': notificationToken,
     };
     var headers = {
       'Accept': 'application/json',
     };
-
+      
     var response = await http.post(
       Uri.parse("$url/users/login"),
       headers: headers,
@@ -57,7 +60,9 @@ class LoginPageController extends GetxController {
           snackPosition: SnackPosition.TOP,
           backgroundColor: warningColor,
           colorText: primaryColor);
+      isLoading.value = false;
     }
+    
   }
 
   @override
