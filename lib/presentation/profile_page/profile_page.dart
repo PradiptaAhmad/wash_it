@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:wash_it/infrastructure/navigation/bindings/controllers/profile_page.binding.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/profile_page/profile_change_page.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
@@ -11,7 +12,6 @@ class ProfilePage extends GetView<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController controller = Get.put(ProfileController());
 
     return Scaffold(
       appBar: AppBar(
@@ -27,7 +27,7 @@ class ProfilePage extends GetView<ProfileController> {
                 if (controller.isLoading.value) {
                   return Center(child: CircularProgressIndicator());
                 } else {
-                  return MainProfileWidget(controller: controller);
+                  return MainProfileWidget();
                 }
               }),
               SizedBox(height: 10),
@@ -124,13 +124,10 @@ class ProfilePage extends GetView<ProfileController> {
   }
 }
 
-class MainProfileWidget extends StatelessWidget {
+class MainProfileWidget extends GetView<ProfileController> {
   const MainProfileWidget({
     super.key,
-    required this.controller,
   });
-
-  final ProfileController controller;
 
   @override
   Widget build(BuildContext context) {

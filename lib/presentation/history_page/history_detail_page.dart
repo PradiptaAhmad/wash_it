@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/presentation/history_page/controllers/history_detail.controller.dart';
+import 'package:wash_it/presentation/history_page/controllers/history_page.controller.dart';
 import 'package:wash_it/widget/common/button_widget.dart';
 
 import '../../infrastructure/navigation/routes.dart';
 import '../transaction_page/widget/detail_text_widget.dart';
 
-class HistoryDetailPage extends StatelessWidget {
-  const HistoryDetailPage({Key? key}) : super(key: key);
+class HistoryDetailPage extends GetView<HistoryDetailPage> {
+  HistoryDetailPage({Key? key}) : super(key: key);
+  final Map<String, dynamic> productData = Get.arguments as Map<String, dynamic>;
 
   @override
   Widget build(BuildContext context) {
@@ -146,18 +149,20 @@ class HistoryDetailPage extends StatelessWidget {
                 ],
               ),
               DetailDataWidget(
-                  leftTitle: "No. Pemesanan", rightTitle: "0441768479184"),
+                  leftTitle: "No. Pemesanan", rightTitle: "${productData['no_pemesanan']}"),
               DetailDataWidget(
-                  leftTitle: "Nama Pelanggan", rightTitle: "081245678908"),
+                  leftTitle: "Nama Pelanggan", rightTitle: "${productData['nama_pemesan']}"),
               DetailDataWidget(
-                  leftTitle: "Nomor Ponsel", rightTitle: "081245678908"),
+                  leftTitle: "Nomor Ponsel", rightTitle: "${productData['nomor_telepon']}"),
               DetailDataWidget(
-                  leftTitle: "Alamat", rightTitle: "Sanggrahan, Karanganyar"),
+                  leftTitle: "Alamat", rightTitle: "${productData['alamat']}"),
               DetailDataWidget(
                   leftTitle: "Tipe Laundry", rightTitle: "Cuci Regular"),
-              DetailDataWidget(leftTitle: "Berat (Kg)", rightTitle: "4 Kg"),
+              DetailDataWidget(leftTitle: "Berat (Kg)", rightTitle: productData['berat_laundry'] != null && productData['berat_laundry'].isNotEmpty
+                  ? "${productData['berat_laundry']}"
+                  : "Belum ada",),
               DetailDataWidget(
-                  leftTitle: "Tanggal Pemesanan", rightTitle: "23 Maret 2024"),
+                  leftTitle: "Tanggal Pemesanan", rightTitle: "${productData['tanggal_pemesanan']}"),
               SizedBox(height: 20),
               Text(
                 "Detail Pembayaran",
