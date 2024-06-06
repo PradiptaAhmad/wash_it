@@ -13,7 +13,11 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
   Widget build(BuildContext context) {
     final HistoryPageController controller = Get.put(HistoryPageController());
     return Scaffold(
-      body: SafeArea(
+        body: SafeArea(
+      child: RefreshIndicator(
+        onRefresh: () async {
+          await controller.fetchOrdersData();
+        },
         child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.all(defaultMargin),
@@ -42,10 +46,16 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                           onPressed: () {
                             controller.goToDetailRiwayatPage(index);
                           },
-                          transcationNum: "No. Transaksi - ${order.noPemesanan}",
-                          title: "${order.jenisPemesanan} - ${order.namaPemesan}",
-                          subTitle: order.beratLaundry == null ? "Berat Belum Ada " : "${order.beratLaundry}",
-                          bottomTitle: order.totalHarga == null ? "Harga Belum Ada" : "Rp. ${order.totalHarga}",
+                          transcationNum:
+                              "No. Transaksi - ${order.noPemesanan}",
+                          title:
+                              "${order.jenisPemesanan} - ${order.namaPemesan}",
+                          subTitle: order.beratLaundry == null
+                              ? "Berat Belum Di Hitung "
+                              : "${order.beratLaundry}",
+                          bottomTitle: order.totalHarga == null
+                              ? "Harga Belum Di Hitung"
+                              : "Rp. ${order.totalHarga}",
                           childs: Container(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,7 +78,8 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                                     width: 80,
                                     child: Center(
                                       child: Text("Selesai",
-                                          style: tsLabelLargeSemibold(primaryColor)),
+                                          style: tsLabelLargeSemibold(
+                                              primaryColor)),
                                     ),
                                   ),
                                 ),
@@ -85,6 +96,6 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

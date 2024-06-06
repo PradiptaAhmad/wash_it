@@ -17,145 +17,171 @@ class HomeScreen extends GetView<HomeController> {
 
     return Scaffold(
         body: SafeArea(
-            child: SingleChildScrollView(
-              child: Container(
-                margin: EdgeInsets.all(defaultMargin),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    MainWelcomeTitle(
-                      userName: "Bapak Bajuri",
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: defaultMargin),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: MainChoiceWidget(
+            child: RefreshIndicator(
+                onRefresh: () async {
+                  await controller.fetchOrdersData();
+                },
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Container(
+                    margin: EdgeInsets.all(defaultMargin),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MainWelcomeTitle(
+                          userName: "Bapak Bajuri",
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: defaultMargin),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: MainChoiceWidget(
                                 onPressed: () {
                                   Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
                                 },
                                 imageAssets: 'assets/img_home/delivery1.png',
                                 mainTitle: 'Antar Jemput',
                               )),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                              child: MainChoiceWidget(
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                  child: MainChoiceWidget(
                                 onPressed: () {
                                   Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
                                 },
                                 imageAssets: 'assets/img_home/delivery2.png',
                                 mainTitle: 'Antar Mandiri',
                               )),
-                        ],
-                      ),
-                    ),
-                    ContentTitleWidget(
-                        title: "Sedang Berlangsung", subtitle: "Lihat Selengkapnya"),
-                    Obx(() {
-                      if (controller.isLoading.value) {
-                        return Padding(
-                          padding: const EdgeInsets.all(defaultMargin),
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
-                      if (controller.ordersList.isEmpty) {
-                        return Padding(
-                          padding: const EdgeInsets.all(defaultMargin),
-                          child: Center(
-                              child: Text(
+                            ],
+                          ),
+                        ),
+                        ContentTitleWidget(
+                            title: "Sedang Berlangsung",
+                            subtitle: "Lihat Selengkapnya"),
+                        Obx(() {
+                          if (controller.isLoading.value) {
+                            return Padding(
+                              padding: const EdgeInsets.all(defaultMargin),
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          }
+                          if (controller.ordersList.isEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.all(defaultMargin),
+                              child: Center(
+                                  child: Text(
                                 'Order Tidak Bisa Ditemukan',
                                 style: tsBodySmallMedium(black),
                               )),
-                        );
-                      }
-                      return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: controller.ordersList.length > 3 ? 3 : controller.ordersList.length,
-                          reverse: true,
-                          itemBuilder: (context, index) {
-                            final order = controller.ordersList[index];
-                            return DetailWidget(
-                              onPressed: () {
-                                controller.goToDetailTransactionPage(index);
-                              },
-                              paddingValues: 10,
-                              transcationNum: order.noPemesanan ?? "",
-                              title: 'Cuci Setrika - ${order.namaPemesan}',
-                              subTitle: order.beratLaundry == null ? "Berat Belum Ada " : "${order.beratLaundry}",
-                              bottomTitle: order.totalHarga == null ? "Harga Belum Ada" : "Rp. ${order.totalHarga}",
                             );
-                          });
-                    }),
-                    ContentTitleWidget(
-                        title: "Riwayat Transaksi", subtitle: "Lihat Selengkapnya"),
-                    Obx(() {
-                      if (controller.isLoading.value) {
-                        return Padding(
-                          padding: const EdgeInsets.all(defaultMargin),
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
-                      if (controller.ordersList.isEmpty) {
-                        return Padding(
-                          padding: const EdgeInsets.all(defaultMargin),
-                          child: Center(
-                              child: Text(
+                          }
+                          return ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: controller.ordersList.length > 3
+                                  ? 3
+                                  : controller.ordersList.length,
+                              // reverse: true,
+                              itemBuilder: (context, index) {
+                                final order = controller.ordersList[
+                                    controller.ordersList.length - 1 - index];
+                                return DetailWidget(
+                                  onPressed: () {
+                                    controller.goToDetailTransactionPage(index);
+                                  },
+                                  paddingValues: 10,
+                                  transcationNum: order.noPemesanan ?? "",
+                                  title: 'Cuci Setrika - ${order.namaPemesan}',
+                                  subTitle: order.beratLaundry == null
+                                      ? "Berat Belum Di Hitung"
+                                      : "${order.beratLaundry}",
+                                  bottomTitle: order.totalHarga == null
+                                      ? "Harga Belum Di Hitung"
+                                      : "Rp. ${order.totalHarga}",
+                                );
+                              });
+                        }),
+                        ContentTitleWidget(
+                            title: "Riwayat Transaksi",
+                            subtitle: "Lihat Selengkapnya"),
+                        Obx(() {
+                          if (controller.isLoading.value) {
+                            return Padding(
+                              padding: const EdgeInsets.all(defaultMargin),
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          }
+                          if (controller.ordersList.isEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.all(defaultMargin),
+                              child: Center(
+                                  child: Text(
                                 'Tidak ada Riwayat',
                                 style: tsBodySmallMedium(black),
                               )),
-                        );
-                      }
-                      return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: controller.ordersList.length > 2 ? 2 : controller.ordersList.length,
-                          reverse: true,
-                          itemBuilder: (context, index) {
-                            final order = controller.ordersList[index];
-                            return DetailWidget(
-                              onPressed: () {
-                                controller.goToDetailRiwayatPage(index);
-                              },
-                              paddingValues: 10,
-                              transcationNum: "No. Transaksi - ${order.noPemesanan}",
-                              title: "${order.jenisPemesanan} - ${order.namaPemesan}",
-                              subTitle: order.beratLaundry == null ? "Berat Belum Ada " : "${order.beratLaundry}",
-                              bottomTitle: order.totalHarga == null ? "Harga Belum Ada" : "Rp. ${order.totalHarga}",
-                              childs: Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      order.tanggalPemesanan ?? "",
-                                      style: tsLabelLargeRegular(black),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(6),
-                                        color: successColor,
-                                      ),
-                                      height: 30,
-                                      width: 80,
-                                      child: Center(
-                                        child: Text("Selesai",
-                                            style: tsLabelLargeSemibold(primaryColor)),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                             );
-                          });
-                    }),
-                  ],
-                ),
-              ),
-            )));
+                          }
+                          return ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: controller.ordersList.length > 3
+                                  ? 3
+                                  : controller.ordersList.length,
+                              itemBuilder: (context, index) {
+                                final order = controller.ordersList[
+                                    controller.ordersList.length - 1 - index];
+                                return DetailWidget(
+                                  onPressed: () {
+                                    controller.goToDetailRiwayatPage(index);
+                                  },
+                                  paddingValues: 10,
+                                  transcationNum:
+                                      "No. Transaksi - ${order.noPemesanan}",
+                                  title:
+                                      "${order.jenisPemesanan} - ${order.namaPemesan}",
+                                  subTitle: order.beratLaundry == null
+                                      ? "Berat Belum Di Hitung"
+                                      : "${order.beratLaundry}",
+                                  bottomTitle: order.totalHarga == null
+                                      ? "Harga Belum Di Hitung"
+                                      : "Rp. ${order.totalHarga}",
+                                  childs: Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          order.tanggalPemesanan ?? "",
+                                          style: tsLabelLargeRegular(black),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                            color: successColor,
+                                          ),
+                                          height: 30,
+                                          width: 80,
+                                          child: Center(
+                                            child: Text("Selesai",
+                                                style: tsLabelLargeSemibold(
+                                                    primaryColor)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              });
+                        }),
+                      ],
+                    ),
+                  ),
+                ))));
   }
 }
 

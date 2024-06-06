@@ -2,12 +2,13 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:wash_it/presentation/order_antarjemput/controllers/order_antarjemput.controller.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
 
 import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/themes.dart';
 
-class OrderPageScreen3 extends StatelessWidget {
+class OrderPageScreen3 extends GetView<OrderAntarJemputController> {
   final VoidCallback onBack;
   final VoidCallback onFinish;
   final String nama;
@@ -66,22 +67,38 @@ class OrderPageScreen3 extends StatelessWidget {
             _buildDataBox("Data Pelanggan dan Pesanan", [
               Text("Data Pelanggan", style: tsBodySmallSemibold(black)),
               SizedBox(height: 10),
-              _buildDataItem("Nama", "Marlen Edzel"),
-              _buildDataItem("Nomor Telepon", "nomorTelepon"),
-              _buildDataItem("Alamat", "alamat"),
+              _buildDataItem(
+                "Nama",
+                "${controller.ordername.value}",
+              ),
+              _buildDataItem(
+                "Nomor Telepon",
+                "${controller.phonenumber.value}",
+              ),
+              _buildDataItem(
+                "Alamat",
+                "${controller.address.value}",
+              ),
               SizedBox(height: 10),
               Text("Detail Pesanan", style: tsBodySmallSemibold(black)),
               SizedBox(height: 10),
-              _buildDataItem("Tipe Laundry", "tipeLaundry"),
-              _buildDataItem("Jadwal Pengambilan",
-                  "${jadwalPengambilan.day}/${jadwalPengambilan.month}/${jadwalPengambilan.year}"),
+              _buildDataItem(
+                "Tipe Laundry",
+                "${controller.ordertype.value}",
+              ),
+              _buildDataItem(
+                "Jadwal Pengambilan",
+                "${controller.pickupdate.value}",
+              ),
               _buildDataItem("Catatan", "catatan"),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Harga per Kg", style: tsBodySmallSemibold(black)),
-                  Text("Rp. 5.000,00", style: tsBodySmallSemibold(black)),
+                  Text(
+                      "${controller.laundries[controller.laundryIndex.value]['harga'].toString()}",
+                      style: tsBodySmallSemibold(black)),
                 ],
               )
             ]),
@@ -119,7 +136,8 @@ class OrderPageScreen3 extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                onPressed: () => Get.offNamed(Routes.TRANSACTION_PAGE),
+                onPressed: controller.createOrder,
+                // onPressed: () => Get.offNamed(Routes.TRANSACTION_PAGE),
                 child: Padding(
                   padding: const EdgeInsets.all(defaultMargin),
                   child: Text("Selanjutnya",

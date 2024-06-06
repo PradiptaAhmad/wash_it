@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/presentation/order_antarjemput/controllers/order_antarjemput.controller.dart';
 import 'package:wash_it/presentation/order_antarjemput/widgets/search_dropdown_widget.dart';
 import 'package:wash_it/widget/common/auth/input_form_widget.dart';
 import 'package:get/get.dart';
 
 import '../../widget/common/content_title_widget.dart';
 
-class OrderPageScreen2 extends StatelessWidget {
+class OrderPageScreen2 extends GetView<OrderAntarJemputController> {
   final VoidCallback onNext;
   final VoidCallback onBack;
 
@@ -56,44 +57,66 @@ class OrderPageScreen2 extends StatelessWidget {
                   Text("Pilih tipe laundry", style: tsBodyMediumMedium(black)),
             ),
             SearchDropdownWidget(
-                hintText: "Pilih tipe laundry",
-                suggestions: ["Cuci Kering", "Cuci Basah", "Setrika"]
-                    .map((e) => SearchFieldListItem(e))
-                    .toList()),
+              hintText: "Pilih tipe laundry",
+              suggestions: controller.jenisList
+                  .map((e) => SearchFieldListItem(e))
+                  .toList(),
+              validator: (newValue) {
+                if (controller.jenisList.contains(newValue)) {
+                  controller.getIdLaundries(newValue!);
+                  controller.updateOrderType(newValue!);
+                } else {
+                  return "Pilih tipe laundry";
+                }
+
+                return null;
+              },
+            ),
             InputFormWidget(
-                title: "Catatan", hintText: "Tambahkan catatan (opsional)"),
+              title: "Catatan",
+              hintText: "Tambahkan catatan (opsional)",
+              onChanged: (value) {},
+            ),
             SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child:
                   Text("Tanggal Pengambilan", style: tsBodyMediumMedium(black)),
             ),
-            TextField(
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: lightGrey, width: 2),
-                  borderRadius: BorderRadius.circular(10),
+            Obx(
+              () => TextField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: lightGrey, width: 2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  border: OutlineInputBorder(),
+                  hintText: '${controller.pickupdate.value}',
+                  hintStyle: tsBodySmallMedium(black),
+                  suffixIcon: Icon(Icons.calendar_today, color: darkGrey),
+                  isDense: true,
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 12, horizontal: 15),
                 ),
-                border: OutlineInputBorder(),
-                hintText: 'Pilih tanggal',
-                hintStyle: tsBodySmallMedium(darkGrey),
-                suffixIcon: Icon(Icons.calendar_today, color: darkGrey),
-                isDense: true,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2101),
+                  );
+
+                  if (pickedDate != null) {
+                    int year = pickedDate.year;
+                    int month = pickedDate.month;
+                    int day = pickedDate.day;
+
+                    controller.updatePickupDate('$year-$month-$day');
+                  }
+                },
               ),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime(2101),
-                );
-                if (pickedDate != null) {
-                  // Logic to save or use the selected date
-                }
-              },
-            ),
+            )
           ],
         ),
       ),
@@ -116,7 +139,7 @@ class OrderPageScreen2 extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: defaultMargin), // Add some space (horizontal space
+            SizedBox(width: defaultMargin), // Add some space (horizontal space)
             Expanded(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(

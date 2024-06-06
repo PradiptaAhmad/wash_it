@@ -33,7 +33,8 @@ class StatusPageScreen extends GetView<StatusPageController> {
                   ),
                   SizedBox(height: 10),
                   Obx(() {
-                    if (controller.isLoading.value && controller.ordersList.isEmpty) {
+                    if (controller.isLoading.value &&
+                        controller.ordersList.isEmpty) {
                       return Center(child: CircularProgressIndicator());
                     } else if (controller.ordersList.isEmpty) {
                       return Padding(
@@ -60,8 +61,12 @@ class StatusPageScreen extends GetView<StatusPageController> {
                             paddingValues: 10,
                             transcationNum: order.noPemesanan ?? "",
                             title: 'Cuci Setrika - ${order.namaPemesan}',
-                            subTitle: order.beratLaundry == null ? "Berat Belum Ada " : "${order.beratLaundry}",
-                            bottomTitle: order.totalHarga == null ? "Harga Belum Ada" : "Rp. ${order.totalHarga}",
+                            subTitle: order.beratLaundry == null
+                                ? "Berat Belum Di Hitung"
+                                : "${order.beratLaundry}",
+                            bottomTitle: order.totalHarga == null
+                                ? "Harga Belum Di Hitung"
+                                : "Rp. ${order.totalHarga}",
                           );
                         },
                       );

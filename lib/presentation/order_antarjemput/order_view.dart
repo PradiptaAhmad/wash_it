@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:wash_it/presentation/order_antarjemput/controllers/order_antarjemput.controller.dart';
+import '../../infrastructure/navigation/routes.dart';
+import '../../widget/common/detail_widget.dart';
 import 'order_page_screen1.dart';
 import 'order_page_screen2.dart';
 import 'order_page_screen3.dart';
 
-class OrderView extends StatefulWidget {
-  @override
-  _OrderViewState createState() => _OrderViewState();
-}
-
-class _OrderViewState extends State<OrderView> {
+class OrderView extends GetView<OrderAntarJemputController> {
   final PageController _pageController = PageController(initialPage: 0);
+
   String nama = "";
   String nomorTelepon = "";
   String alamat = "";
@@ -17,12 +17,6 @@ class _OrderViewState extends State<OrderView> {
   String catatan = "";
   DateTime jadwalPengambilan = DateTime.now();
   double hargaPerKg = 0.0;
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +59,31 @@ class _OrderViewState extends State<OrderView> {
     );
   }
 
-  void _finishProcess() {
-    // Add logic to handle finishing the order process
-    // For example, show a confirmation dialog or navigate to a success page
+  void _finishProcess() {}
+
+  Widget buildOrderList() {
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return Center(child: CircularProgressIndicator());
+      }
+      return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: controller.ordersList.length,
+        itemBuilder: (context, index) {
+          final order = controller.ordersList[index];
+          return DetailWidget(
+            onPressed: () {
+              Get.toNamed(Routes.TRANSACTION_PAGE);
+            },
+            paddingValues: 10,
+            transcationNum: order.noPemesanan ?? "",
+            title: 'Cuci Setrika - ${order.namaPemesan}',
+            subTitle: 'Berat - ${order.beratLaundry}Kg',
+            bottomTitle: 'Rp. ${order.totalHarga}',
+          );
+        },
+      );
+    });
   }
 }
