@@ -31,6 +31,7 @@ class AuthTextField extends StatelessWidget {
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: TextFormField(
+        style: tsBodySmallMedium(black),
         onTap: onTap,
         onChanged: onChanged,
         validator: validator,
@@ -54,8 +55,7 @@ class AuthTextField extends StatelessWidget {
               borderSide: BorderSide(color: warningColor, width: 2),
               borderRadius: BorderRadius.circular(10),
             ),
-            suffixIcon: suffixIcon
-        ),
+            suffixIcon: suffixIcon),
       ),
     );
   }

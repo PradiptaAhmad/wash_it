@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/widget/common/button_widget.dart';
+import 'package:wash_it/presentation/profile_page/profile_change_page.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
 import 'controllers/profile_page.controller.dart';
 
@@ -11,215 +11,190 @@ class ProfilePage extends GetView<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
+    final ProfileController controller = Get.put(ProfileController());
+
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('Profile', style: tsTitleSmallMedium(black))),
         backgroundColor: primaryColor,
       ),
       body: SafeArea(
-        child: Obx(() {
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(defaultMargin),
-            child: Column(
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundColor: grey,
-                          backgroundImage: NetworkImage(controller
-                                  .userData['image_path'] ??
-                              "https://www.pradiptaahmad.tech/image/${controller.userData['image_path']}"
-                                  'https://via.placeholder.com/150'),
-                        ),
-                        Positioned(
-                            bottom: 0,
-                            right: 4,
-                            child: GestureDetector(
-                                onTap: () {
-                                  // Handle profile picture change
-                                },
-                                child: CircleAvatar(
-                                    radius: 15,
-                                    backgroundColor: Colors.white,
-                                    child: Icon(
-                                      Icons.edit,
-                                      size: 15,
-                                      color: Colors.black,
-                                    )))),
-                      ],
-                    ),
-                    Text(
-                      controller.userName.value,
-                      style: tsBodyMediumMedium(black),
-                    ),
-                    Text(
-                      controller.email.value,
-                      style: tsBodySmallMedium(black),
-                    ),
-                  ],
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(defaultMargin),
+          child: Column(
+            children: [
+              Obx(() {
+                if (controller.isLoading.value) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  return MainProfileWidget(controller: controller);
+                }
+              }),
+              SizedBox(height: 10),
+              Divider(color: lightGrey, thickness: 1),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+                child: ContentTitleWidget(
+                  title: "Pengaturan Edit Profile",
+                  lefttextSize: tsBodyMediumMedium(black),
                 ),
-                SizedBox(height: 10),
-                Divider(color: lightGrey, thickness: 1),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultMargin),
-                  child: ContentTitleWidget(
-                    title: "Pengaturan Edit Profile",
-                    lefttextSize: tsBodyMediumMedium(black),
+              ),
+              ListTileButton(
+                label: 'Username',
+                onTap: () => Get.to(
+                  ProfileChangePage(
+                    title: 'Username',
+                    hintText: controller.userData['username'],
+                    validator: (newValue) {
+                      controller.updateUserName(newValue);
+                      return null;
+                    },
+                    onTap: () => controller.updateUserNameData(),
                   ),
                 ),
-                ListTileButton(
-                    context: context,
-                    label: 'Nama Lengkap',
-                    value: controller.isLoading.value
-                        ? 'Loading...'
-                        : controller.userData['username'],
-                    editTitle: 'Ganti Username',
-                    onSave: (newVal) {
-                      controller.updateUserName(newVal);
-                    }),
-                ListTileButton(
-                    context: context,
-                    label: 'Email',
-                    value: controller.isLoading.value
-                        ? 'Loading...'
-                        : controller.userData['email'],
-                    editTitle: 'Ganti Email',
-                    onSave: (newVal) {
-                      controller.updateEmail(newVal);
-                    }),
-                ListTileButton(
-                  context: context,
-                  label: 'Nomor Telepon',
-                  value: controller.isLoading.value
-                      ? 'Loading...'
-                      : controller.userData['phone'],
-                  editTitle: 'Ganti Nomor Telepon',
-                  onSave: (newVal) {
-                    controller.updatePhoneNumber(newVal);
-                  },
-                ),
-                ListTileButton(
-                  context: context,
-                  label: 'Ganti Password',
-                  value: '',
-                  editTitle: 'Ganti Password',
-                  onSave: (newVal) {
-                    controller.updatePassword(newVal);
-                  },
-                ),
-                Divider(color: lightGrey, thickness: 1),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: defaultMargin),
-                  child: ContentTitleWidget(
-                    title: 'Pengaturan Akun',
-                    lefttextSize: tsBodyMediumMedium(black),
+              ),
+              ListTileButton(
+                label: 'Email',
+                onTap: () => Get.to(
+                  ProfileChangePage(
+                    title: 'Email',
+                    hintText: controller.userData['email'],
+                    validator: (newValue) {
+                      controller.updateEmail(newValue);
+                      return null;
+                    },
+                    onTap: () => controller.updateEmailData(),
                   ),
                 ),
-                ListTile(
-                    dense: true,
-                    title: Text('Nonaktifkan Akun',
-                        style: tsBodySmallRegular(warningColor)),
-                    onTap: () {}),
-                Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Divider(color: Color(0xFFDEDEDE), thickness: 1),
+              ),
+              ListTileButton(
+                label: 'Nomor Telepon',
+                onTap: () => Get.to(
+                  ProfileChangePage(
+                    title: 'Nomor Telepon',
+                    hintText: controller.userData['phone'],
+                    validator: (newValue) {
+                      controller.updatePhoneNumber(newValue);
+                      return null;
+                    },
+                    onTap: () => controller.updateUserPhoneData(),
+                  ),
                 ),
-                ListTile(
-                    title:
-                        Text('Logout', style: tsBodyMediumMedium(warningColor)),
-                    onTap: () {}),
-              ],
-            ),
-          );
-        }),
+              ),
+              ListTileButton(
+                label: 'Ganti Password',
+                onTap: () => Get.to(
+                  ProfileChangePage(
+                    title: 'Password',
+                    // validator: (newValue) {
+                    //   controller.updateEmail(newValue);
+                    //   return null;
+                    // },
+                  ),
+                ),
+              ),
+              Divider(color: lightGrey, thickness: 1),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+                child: ContentTitleWidget(
+                  title: 'Pengaturan Akun',
+                  lefttextSize: tsBodyMediumMedium(black),
+                ),
+              ),
+              ListTile(
+                  dense: true,
+                  title: Text('Nonaktifkan Akun',
+                      style: tsBodySmallRegular(warningColor)),
+                  onTap: () {}),
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: Divider(color: Color(0xFFDEDEDE), thickness: 1),
+              ),
+              ListTile(
+                  title:
+                      Text('Logout', style: tsBodyMediumMedium(warningColor)),
+                  onTap: () {
+                    controller.logout();
+                  }),
+            ],
+          ),
+        ),
       ),
+    );
+  }
+}
+
+class MainProfileWidget extends StatelessWidget {
+  const MainProfileWidget({
+    super.key,
+    required this.controller,
+  });
+
+  final ProfileController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Stack(
+          children: [
+            CircleAvatar(
+              radius: 50,
+              backgroundColor: grey,
+              backgroundImage: NetworkImage(controller.userData['image_path'] ??
+                  // "https://www.pradiptaahmad.tech/image/${controller.userData['image_path']}" ??
+                  'https://via.placeholder.com/150'),
+            ),
+            Positioned(
+                bottom: 0,
+                right: 4,
+                child: GestureDetector(
+                    onTap: () {
+                      // Handle profile picture change
+                    },
+                    child: CircleAvatar(
+                        radius: 15,
+                        backgroundColor: Colors.white,
+                        child: Icon(
+                          Icons.edit,
+                          size: 15,
+                          color: Colors.black,
+                        )))),
+          ],
+        ),
+        Text(
+          controller.userData['username'],
+          style: tsBodyMediumMedium(black),
+        ),
+        Text(
+          controller.userData['email'],
+          style: tsBodySmallMedium(black),
+        ),
+      ],
     );
   }
 }
 
 class ListTileButton extends StatelessWidget {
-  ListTileButton(
-      {super.key,
-      required this.context,
-      this.label,
-      this.value,
-      this.editTitle,
-      this.onSave});
+  ListTileButton({
+    super.key,
+    this.label,
+    required this.onTap,
+  });
 
-  final BuildContext context;
-  final String? label, value, editTitle;
-  final Function(String)? onSave;
+  final String? label;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      dense: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
       title: Text('$label', style: tsBodySmallRegular(darkBlue)),
       trailing: Icon(Iconsax.arrow_right_3, size: 16),
-      onTap: () {
-        showDialogFunction(context, editTitle!, value!, onSave!);
-      },
+      onTap: onTap,
     );
   }
-}
-
-void showDialogFunction(BuildContext context, String headTitle,
-    String currentValue, Function(String) onSave) {
-  TextEditingController _textController =
-      TextEditingController(text: currentValue);
-
-  showDialog(
-    useSafeArea: true,
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(headTitle, style: tsBodyMediumMedium(black)),
-        content: TextField(
-          controller: _textController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: lightGrey, width: 2),
-            ),
-          ),
-        ),
-        actionsAlignment: MainAxisAlignment.spaceBetween,
-        actionsOverflowDirection: VerticalDirection.down,
-        actions: <Widget>[
-          ButtonWidget(
-              text: 'Batal',
-              onPressed: () {
-                Get.back();
-              },
-              child: Padding(
-                  padding: const EdgeInsets.all(defaultMargin),
-                  child: Text(
-                    'Batal',
-                    style: tsBodySmallMedium(black),
-                  ))),
-          SizedBox(height: 10),
-          ButtonWidget(
-              backgroundColor: secondaryColor,
-              onPressed: () {
-                Get.back();
-              },
-              child: Padding(
-                  padding: const EdgeInsets.all(defaultMargin),
-                  child: Text(
-                    'Konfirmasi',
-                    style: tsBodySmallMedium(primaryColor),
-                  ))),
-        ],
-      );
-    },
-  );
 }
