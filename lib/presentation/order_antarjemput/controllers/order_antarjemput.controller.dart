@@ -4,21 +4,25 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../config.dart';
-import '../../home_page/models/OrdersModel.dart';
+import 'package:http/http.dart' as http;
 
 class OrderAntarJemputController extends GetxController {
-  var tipeLaundry = ''.obs;
-  var catatan = ''.obs;
-  var jadwalPengambilan = Rx<DateTime?>(null);
 
   final count = 0.obs;
-  var ordersList = <OrdersModel>[].obs;
-  var isLoading = false.obs;
+  var ordername = ''.obs;
+  var phonenumber = ''.obs;
+  var ordertype = ''.obs;
+  var address = ''.obs;
+  var pickupdate = ''.obs;
+
+  var isLoading = true.obs;
+  final userData = {}.obs;
+
   GetStorage box = GetStorage();
 
-  get http => null;
+  get ordersList => null;
 
-  Future<void> fetchOrdersData() async {
+  Future<void> fetchUserData() async {
     try {
       isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()["url"];
@@ -30,36 +34,36 @@ class OrderAntarJemputController extends GetxController {
       };
 
       final response = await http.get(
-        Uri.parse('$url/orders/all'),
+        Uri.parse('$url/orders/new'),
         headers: headers,
       );
 
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body)['order'] as List<dynamic>;
-        List<OrdersModel> orders = jsonResponse.map((data) => OrdersModel.fromJson(data)).toList();
-        ordersList.value = orders;
+        final jsonResponse = jsonDecode(response.body)['user'];
       } else {
         Get.snackbar('Error', '${response.statusCode}');
-        print(response.statusCode);
       }
     } catch (e) {
-      Get.snackbar('Error ', e.toString());
-      print(e);
+      Get.snackbar('Error', e.toString());
     } finally {
       isLoading.value = false;
     }
   }
 
-  void setTipeLaundry(String tipe) {
-    tipeLaundry.value = tipe;
+  void updateOrderName(String newOrderName) {
+    ordername.value = newOrderName;
   }
-
-  void setCatatan(String note) {
-    catatan.value = note;
+  void updatePhoneNumber(String newPhoneNumber) {
+    phonenumber.value = newPhoneNumber;
   }
-
-  void setJadwalPengambilan(DateTime jadwal) {
-    jadwalPengambilan.value = jadwal;
+  void updateOrderType(String newOrderType) {
+    ordertype.value = newOrderType;
+  }
+  void updateAddress(String newAddress) {
+    address.value = newAddress;
+  }
+  void updatePickupDate(String newPickupDate) {
+    pickupdate.value = newPickupDate;
   }
 
   @override
@@ -76,4 +80,6 @@ class OrderAntarJemputController extends GetxController {
   void onClose() {
     super.onClose();
   }
+
+  void fetchOrdersData() {}
 }
