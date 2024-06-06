@@ -60,8 +60,8 @@ class StatusPageScreen extends GetView<StatusPageController> {
                             paddingValues: 10,
                             transcationNum: order.noPemesanan ?? "",
                             title: 'Cuci Setrika - ${order.namaPemesan}',
-                            subTitle: 'Berat - ${order.beratLaundry}Kg',
-                            bottomTitle: 'Rp. ${order.totalHarga}',
+                            subTitle: order.beratLaundry == null ? "Berat Belum Ada " : "${order.beratLaundry}",
+                            bottomTitle: order.totalHarga == null ? "Harga Belum Ada" : "Rp. ${order.totalHarga}",
                           );
                         },
                       );
