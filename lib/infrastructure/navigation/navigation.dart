@@ -17,6 +17,7 @@ import 'package:wash_it/presentation/transaction_page/payment_receipt_page.dart'
 
 import '../../config.dart';
 import '../../presentation/history_page/history_detail_page.dart';
+import '../../presentation/profile_page/profile_change_page.dart';
 import '../../presentation/screens.dart';
 import 'bindings/controllers/controllers_bindings.dart';
 import 'bindings/controllers/payment_receipt_controller.binding.dart';
@@ -121,6 +122,10 @@ class Nav {
       name: Routes.PAYMENT_RECEIPT,
       page: () => PaymentReceiptPage(),
       binding: PaymentReceiptControllerBinding(),
-    )
+    ),
+    GetPage(
+      name: Routes.PROFILE_CHANGE_PAGE,
+      page: () => ProfileChangePage(),
+    ),
   ];
 }
