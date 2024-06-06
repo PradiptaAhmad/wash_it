@@ -111,7 +111,7 @@ class LoginPageScreen extends GetView<LoginPageController> {
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             child: Text(
                               "Login",
-                              style: tsBodyMediumRegular(primaryColor),
+                              style: tsBodySmallSemibold(primaryColor),
                             ),
                           ),
                     onPressed: () {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
 
 import '../../../config.dart';
@@ -53,6 +54,55 @@ class HomeController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Map<String, dynamic> detailtrasaction(int index, OrdersModel product) {
+    return {
+      'id': product.id,
+      'index': index,
+      'no_pemesanan': product.noPemesanan,
+      'jenis_pemesanan': product.jenisPemesanan,
+      'nama_pemesan': product.namaPemesan,
+      'nomor_telepon': product.nomorTelepon,
+      'alamat': product.alamat,
+      'berat_laundry': product.beratLaundry,
+      'total_harga': product.totalHarga,
+      'payment_method': product.paymentMethod,
+      'tanggal_pemesanan': product.tanggalPemesanan,
+      'tanggal_pengambilan': product.tanggalPengambilan,
+    };
+  }
+
+  void goToDetailTransactionPage(int index) {
+    var product = ordersList[index];
+    var productDetail = detailtrasaction(index, product);
+
+    Get.toNamed(Routes.TRANSACTION_PAGE, arguments: productDetail);
+  }
+
+
+  Map<String, dynamic> detailriwayat(int index, OrdersModel product) {
+    return {
+      'id': product.id,
+      'index': index,
+      'no_pemesanan': product.noPemesanan,
+      'jenis_pemesanan': product.jenisPemesanan,
+      'nama_pemesan': product.namaPemesan,
+      'nomor_telepon': product.nomorTelepon,
+      'alamat': product.alamat,
+      'berat_laundry': product.beratLaundry,
+      'total_harga': product.totalHarga,
+      'payment_method': product.paymentMethod,
+      'tanggal_pemesanan': product.tanggalPemesanan,
+      'tanggal_pengambilan': product.tanggalPengambilan,
+    };
+  }
+
+  void goToDetailRiwayatPage(int index) {
+    var product = ordersList[index];
+    var productDetail = detailriwayat(index, product);
+
+    Get.toNamed(Routes.HISTORY_DETAIL_PAGE, arguments: productDetail);
   }
 
   @override

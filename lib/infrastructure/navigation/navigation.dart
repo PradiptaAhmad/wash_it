@@ -91,6 +91,7 @@ class Nav {
     GetPage(
       name: Routes.HISTORY_DETAIL_PAGE,
       page: () => HistoryDetailPage(),
+      binding: HistoryPageControllerBinding(),
     ),
     GetPage(name: Routes.REVIEW_PAGE, page: () => ReviewPage()),
     GetPage(
