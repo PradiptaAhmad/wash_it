@@ -149,11 +149,22 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                             ),
                       backgroundColor: secondaryColor,
                       onPressed: () {
-                        if (_usernameKey.currentState!.validate() &&
-                            _emailKey.currentState!.validate() &&
-                            _phoneKey.currentState!.validate() &&
-                            _passwordKey.currentState!.validate()) {
+                        // if (_usernameKey.currentState!.validate() &&
+                        //     _emailKey.currentState!.validate() &&
+                        //     _phoneKey.currentState!.validate() &&
+                        //     _passwordKey.currentState!.validate()) {
+                        //   controller.register();
+                        // }
+                        if (controller.email.value.isNotEmpty &&
+                            controller.phone.value.isNotEmpty &&
+                            controller.password.value.isNotEmpty &&
+                            controller.username.value.isNotEmpty) {
                           controller.register();
+                        } else {
+                          Get.snackbar("Gagal", "Data tidak boleh kosong",
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: warningColor,
+                              colorText: primaryColor);
                         }
                       },
                     )),
