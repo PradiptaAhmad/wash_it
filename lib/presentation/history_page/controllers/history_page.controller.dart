@@ -9,6 +9,8 @@ import '../../../config.dart';
 class HistoryPageController extends GetxController {
   final count = 0.obs;
   var ordersList = <OrdersModel>[].obs;
+  final laundries = [].obs;
+  final jenisList = [].obs;
   var isLoading = false.obs;
   GetStorage box = GetStorage();
 
@@ -29,8 +31,10 @@ class HistoryPageController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body)['order'] as List<dynamic>;
-        List<OrdersModel> orders = jsonResponse.map((data) => OrdersModel.fromJson(data)).toList();
+        final jsonResponse =
+            jsonDecode(response.body)['order'] as List<dynamic>;
+        List<OrdersModel> orders =
+            jsonResponse.map((data) => OrdersModel.fromJson(data)).toList();
         ordersList.value = orders;
       } else {
         Get.snackbar('Error', '${response.statusCode}');
@@ -44,7 +48,40 @@ class HistoryPageController extends GetxController {
     }
   }
 
-  Map<String, dynamic> detailriwayat(int index, OrdersModel product) {
+  Future<void> getLaundries() async {
+    try {
+      isLoading.value = true;
+      final url = ConfigEnvironments.getEnvironments()['url'];
+      final token = box.read('token');
+
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+
+      var response = await http.get(
+        Uri.parse('$url/admin/laundry/all'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body)['data'];
+        laundries.value = jsonResponse;
+
+        jsonResponse.forEach((element) {
+          jenisList.add(element['nama_laundry']);
+        });
+      } else {
+        Get.snackbar('Error', '${response.statusCode}');
+      }
+    } catch (e) {
+      Get.snackbar('Error', e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Map<String, dynamic> detailTransaksi(int index, OrdersModel product) {
     return {
       'id': product.id,
       'index': index,
@@ -56,15 +93,16 @@ class HistoryPageController extends GetxController {
       'berat_laundry': product.beratLaundry,
       'total_harga': product.totalHarga,
       'payment_method': product.paymentMethod,
-      'tanggal_pemesanan': product.tanggalPemesanan,
+      'tanggal_pemesanan': product.tanggalPemesanan!
+          .substring(0, product.tanggalPemesanan!.length - 3),
       'tanggal_pengambilan': product.tanggalPengambilan,
+      'laundry_id': jenisList[int.parse(product.laundryId.toString()) - 1],
     };
   }
 
   void goToDetailRiwayatPage(int index) {
     var product = ordersList[index];
-    var productDetail = detailriwayat(index, product);
-
+    var productDetail = detailTransaksi(index, product);
     Get.toNamed(Routes.HISTORY_DETAIL_PAGE, arguments: productDetail);
   }
 
@@ -72,6 +110,7 @@ class HistoryPageController extends GetxController {
   void onInit() {
     super.onInit();
     fetchOrdersData();
+    getLaundries();
   }
 
   @override

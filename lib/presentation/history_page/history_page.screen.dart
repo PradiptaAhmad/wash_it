@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/widget/common/detail_widget.dart';
+import 'package:wash_it/widget/common/mainpage_appbar_widget.dart';
 import '../../widget/common/content_title_widget.dart';
 import 'controllers/history_page.controller.dart';
 
@@ -19,6 +19,7 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
           await controller.fetchOrdersData();
         },
         child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           child: Container(
             margin: EdgeInsets.all(defaultMargin),
             child: Column(
@@ -26,12 +27,16 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
               children: [
                 ContentTitleWidget(
                   title: "Riwayat Transaksi",
-                  lefttextSize: tsTitleSmallSemibold(black),
+                  lefttextSize: tsTitleSmallMedium(black),
                 ),
                 SizedBox(height: 10),
                 Obx(() {
                   if (controller.isLoading.value) {
-                    return Center(child: CircularProgressIndicator());
+                    return Center(
+                        child: Padding(
+                      padding: const EdgeInsets.all(defaultMargin),
+                      child: CircularProgressIndicator(),
+                    ));
                   } else if (controller.ordersList.isEmpty) {
                     return Center(child: Text("Tidak ada Riwayat"));
                   } else {
@@ -42,14 +47,17 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         final order = controller.ordersList[index];
+                        int safeIndex = 0;
+                        safeIndex = int.parse(order.laundryId.toString()) - 1;
+                        final jenisPesanan =
+                            controller.jenisList[safeIndex].toString();
                         return DetailWidget(
                           onPressed: () {
                             controller.goToDetailRiwayatPage(index);
                           },
                           transcationNum:
-                              "No. Transaksi - ${order.noPemesanan}",
-                          title:
-                              "${order.jenisPemesanan} - ${order.namaPemesan}",
+                              "No. Transaksi - " + order.noPemesanan!,
+                          title: "${jenisPesanan} - ${order.namaPemesan}",
                           subTitle: order.beratLaundry == null
                               ? "Berat Belum Di Hitung "
                               : "${order.beratLaundry}",
@@ -62,25 +70,23 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  order.tanggalPemesanan ?? "",
+                                  order.tanggalPemesanan.toString().substring(
+                                      0,
+                                      order.tanggalPemesanan.toString().length -
+                                          3),
                                   style: tsLabelLargeRegular(black),
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    print("Button Telah Dipencet");
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      color: successColor,
-                                    ),
-                                    height: 30,
-                                    width: 80,
-                                    child: Center(
-                                      child: Text("Selesai",
-                                          style: tsLabelLargeSemibold(
-                                              primaryColor)),
-                                    ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    color: successColor,
+                                  ),
+                                  height: 30,
+                                  width: 80,
+                                  child: Center(
+                                    child: Text("Selesai",
+                                        style:
+                                            tsLabelLargeSemibold(primaryColor)),
                                   ),
                                 ),
                               ],

@@ -85,7 +85,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.HISTORY_PAGE,
-      page: () => const HistoryPageScreen(),
+      page: () => HistoryPageScreen(),
       binding: HistoryPageControllerBinding(),
     ),
     GetPage(
