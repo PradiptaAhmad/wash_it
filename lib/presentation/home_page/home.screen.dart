@@ -74,19 +74,19 @@ class HomeScreen extends GetView<HomeController> {
                       return ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          reverse: true,
                           itemCount: controller.ordersList.length > 3 ? 3 : controller.ordersList.length,
+                          reverse: true,
                           itemBuilder: (context, index) {
                             final order = controller.ordersList[index];
                             return DetailWidget(
                               onPressed: () {
-                                Get.toNamed(Routes.TRANSACTION_PAGE);
+                                controller.goToDetailTransactionPage(index);
                               },
                               paddingValues: 10,
                               transcationNum: order.noPemesanan ?? "",
                               title: 'Cuci Setrika - ${order.namaPemesan}',
-                              subTitle: 'Berat - ${order.beratLaundry}Kg',
-                              bottomTitle: 'Rp. ${order.totalHarga}',
+                              subTitle: order.beratLaundry == null ? "Berat Belum Ada " : "${order.beratLaundry}",
+                              bottomTitle: order.totalHarga == null ? "Harga Belum Ada" : "Rp. ${order.totalHarga}",
                             );
                           });
                     }),
