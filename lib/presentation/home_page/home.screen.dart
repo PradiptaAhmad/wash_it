@@ -130,8 +130,12 @@ class HomeScreen extends GetView<HomeController> {
                                   ? 3
                                   : controller.ordersList.length,
                               itemBuilder: (context, index) {
-                                final order = controller.ordersList[
-                                    controller.ordersList.length - 1 - index];
+                                final order = controller.ordersList[index];
+                                int safeIndex = 0;
+                                safeIndex =
+                                    int.parse(order.laundryId.toString()) - 1;
+                                final jenisPesanan =
+                                    controller.jenisList[safeIndex].toString();
                                 return DetailWidget(
                                   onPressed: () {
                                     controller.goToDetailRiwayatPage(index);
@@ -140,7 +144,7 @@ class HomeScreen extends GetView<HomeController> {
                                   transcationNum:
                                       "No. Transaksi - ${order.noPemesanan}",
                                   title:
-                                      "${order.jenisPemesanan} - ${order.namaPemesan}",
+                                      "${jenisPesanan} - ${order.namaPemesan}",
                                   subTitle: order.beratLaundry == null
                                       ? "Berat Belum Di Hitung"
                                       : "${order.beratLaundry}",

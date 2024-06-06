@@ -36,8 +36,8 @@ class VerificationPageController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        userData.value = data['user'];
+        final jsonResponse = jsonDecode(response.body)['user'];
+        userData.value = jsonResponse;
       } else {
         Get.snackbar("Gagal", "Gagal mengambil data user",
             snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
