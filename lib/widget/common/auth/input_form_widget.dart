@@ -6,15 +6,17 @@ import 'auth_text_field.dart';
 class InputFormWidget extends StatelessWidget {
   const InputFormWidget(
       {Key? key,
-      this.title,
-      this.hintText,
-      this.validator,
-      this.textField,
-      this.keyboardType})
+        this.title,
+        this.hintText,
+        this.validator,
+        this.textField,
+        this.keyboardType,
+        this.onChanged})
       : super(key: key);
   final String? title, hintText;
   final validator, keyboardType;
   final Widget? textField;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class InputFormWidget extends StatelessWidget {
                 hintText: hintText ?? "",
                 validator: validator,
                 keyboardType: keyboardType,
+                onChanged: onChanged,
               ),
         ],
       ),

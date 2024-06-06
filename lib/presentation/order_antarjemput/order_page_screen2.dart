@@ -53,7 +53,7 @@ class OrderPageScreen2 extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child:
-                  Text("Pilih tipe laundry", style: tsBodyMediumMedium(black)),
+              Text("Pilih tipe laundry", style: tsBodyMediumMedium(black)),
             ),
             SearchDropdownWidget(
                 hintText: "Pilih tipe laundry",
@@ -61,12 +61,12 @@ class OrderPageScreen2 extends StatelessWidget {
                     .map((e) => SearchFieldListItem(e))
                     .toList()),
             InputFormWidget(
-                title: "Catatan", hintText: "Tambahkan catatan (opsional)"),
+              title: "Catatan", hintText: "Tambahkan catatan (opsional)", onChanged: (value) {  },),
             SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child:
-                  Text("Tanggal Pengambilan", style: tsBodyMediumMedium(black)),
+              Text("Tanggal Pengambilan", style: tsBodyMediumMedium(black)),
             ),
             TextField(
               decoration: InputDecoration(
@@ -80,7 +80,7 @@ class OrderPageScreen2 extends StatelessWidget {
                 suffixIcon: Icon(Icons.calendar_today, color: darkGrey),
                 isDense: true,
                 contentPadding:
-                    EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+                EdgeInsets.symmetric(vertical: 12, horizontal: 15),
               ),
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(

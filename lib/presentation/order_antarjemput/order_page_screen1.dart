@@ -49,17 +49,17 @@ class OrderPageScreen1 extends StatelessWidget {
             InputFormWidget(
               title: "Nama Pelanggan",
               hintText: "Masukkan nama Anda",
-              keyboardType: TextInputType.name,
+              keyboardType: TextInputType.name, onChanged: (value) {  },
             ),
             InputFormWidget(
               title: "Nomor Telepon",
               hintText: "Masukkan nomor telepon Anda",
-              keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.phone, onChanged: (value) {  },
             ),
             InputFormWidget(
               title: "Alamat",
               hintText: "Masukkan alamat Anda",
-              keyboardType: TextInputType.streetAddress,
+              keyboardType: TextInputType.streetAddress, onChanged: (value) {  },
             ),
           ],
         ),
@@ -111,7 +111,7 @@ class OrderPageScreen1 extends StatelessWidget {
             ),
           ),
           SizedBox(width: 5),
-          Text(text, style: tsLabelLargeMedium(black)) // Smaller text for steps
+          Text(text, style: tsLabelLargeMedium(black))
         ],
       ),
     );
