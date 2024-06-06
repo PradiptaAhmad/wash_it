@@ -191,16 +191,6 @@ class HistoryDetailPage extends GetView<HistoryDetailPage> {
                 ],
               ),
               SizedBox(height: 20),
-              ButtonWidget(
-                backgroundColor: secondaryColor,
-                child: Text(
-                  "Beri Penilaian",
-                  style: tsBodySmallSemibold(primaryColor),
-                ),
-                onPressed: () {
-                  Get.toNamed(Routes.REVIEW_PAGE);
-                },
-              ),
               SizedBox(height: 20),
             ],
           ),

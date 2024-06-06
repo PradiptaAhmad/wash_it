@@ -12,7 +12,7 @@ class ProfilePage extends GetView<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
-
+    final ProfileController controller = Get.put(ProfileController());
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text('Profile', style: tsTitleSmallMedium(black))),
