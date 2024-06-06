@@ -53,15 +53,22 @@ class OrderPageScreen2 extends GetView<OrderAntarJemputController> {
             SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text("Pilih tipe laundry", style: tsBodyMediumMedium(black)),
+              child:
+                  Text("Pilih tipe laundry", style: tsBodyMediumMedium(black)),
             ),
             SearchDropdownWidget(
               hintText: "Pilih tipe laundry",
-              suggestions: ["Cuci Kering", "Cuci Basah", "Setrika"]
+              suggestions: controller.jenisList
                   .map((e) => SearchFieldListItem(e))
                   .toList(),
               validator: (newValue) {
-                controller.updateOrderType(newValue!);
+                if (controller.jenisList.contains(newValue)) {
+                  controller.getIdLaundries(newValue!);
+                  controller.updateOrderType(newValue!);
+                } else {
+                  return "Pilih tipe laundry";
+                }
+
                 return null;
               },
             ),
@@ -73,7 +80,8 @@ class OrderPageScreen2 extends GetView<OrderAntarJemputController> {
             SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text("Tanggal Pengambilan", style: tsBodyMediumMedium(black)),
+              child:
+                  Text("Tanggal Pengambilan", style: tsBodyMediumMedium(black)),
             ),
             TextField(
               decoration: InputDecoration(
@@ -87,7 +95,7 @@ class OrderPageScreen2 extends GetView<OrderAntarJemputController> {
                 suffixIcon: Icon(Icons.calendar_today, color: darkGrey),
                 isDense: true,
                 contentPadding:
-                EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+                    EdgeInsets.symmetric(vertical: 12, horizontal: 15),
               ),
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
@@ -96,8 +104,13 @@ class OrderPageScreen2 extends GetView<OrderAntarJemputController> {
                   firstDate: DateTime.now(),
                   lastDate: DateTime(2101),
                 );
+
                 if (pickedDate != null) {
-                  // Logic to save or use the selected date
+                  int year = pickedDate.year;
+                  int month = pickedDate.month;
+                  int day = pickedDate.day;
+
+                  controller.updatePickupDate('$year-$month-$day');
                 }
               },
             ),

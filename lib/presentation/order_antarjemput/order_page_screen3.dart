@@ -67,22 +67,38 @@ class OrderPageScreen3 extends GetView<OrderAntarJemputController> {
             _buildDataBox("Data Pelanggan dan Pesanan", [
               Text("Data Pelanggan", style: tsBodySmallSemibold(black)),
               SizedBox(height: 10),
-              _buildDataItem("Nama", "Marlen Edzel"),
-              _buildDataItem("Nomor Telepon", "nomorTelepon"),
-              _buildDataItem("Alamat", "alamat"),
+              _buildDataItem(
+                "Nama",
+                "${controller.ordername.value}",
+              ),
+              _buildDataItem(
+                "Nomor Telepon",
+                "${controller.phonenumber.value}",
+              ),
+              _buildDataItem(
+                "Alamat",
+                "${controller.address.value}",
+              ),
               SizedBox(height: 10),
               Text("Detail Pesanan", style: tsBodySmallSemibold(black)),
               SizedBox(height: 10),
-              _buildDataItem("Tipe Laundry", "tipeLaundry"),
-              _buildDataItem("Jadwal Pengambilan",
-                  "${jadwalPengambilan.day}/${jadwalPengambilan.month}/${jadwalPengambilan.year}"),
+              _buildDataItem(
+                "Tipe Laundry",
+                "${controller.ordertype.value}",
+              ),
+              _buildDataItem(
+                "Jadwal Pengambilan",
+                "${controller.pickupdate.value}",
+              ),
               _buildDataItem("Catatan", "catatan"),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Harga per Kg", style: tsBodySmallSemibold(black)),
-                  Text("Rp. 5.000,00", style: tsBodySmallSemibold(black)),
+                  Text(
+                      "${controller.laundries[controller.laundryIndex.value]['harga'].toString()}",
+                      style: tsBodySmallSemibold(black)),
                 ],
               )
             ]),
@@ -120,7 +136,8 @@ class OrderPageScreen3 extends GetView<OrderAntarJemputController> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                onPressed: () => Get.offNamed(Routes.TRANSACTION_PAGE),
+                onPressed: controller.createOrder,
+                // onPressed: () => Get.offNamed(Routes.TRANSACTION_PAGE),
                 child: Padding(
                   padding: const EdgeInsets.all(defaultMargin),
                   child: Text("Selanjutnya",
