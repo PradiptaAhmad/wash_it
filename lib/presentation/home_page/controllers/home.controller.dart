@@ -39,9 +39,9 @@ class HomeController extends GetxController {
       if (response.statusCode == 200) {
         // Get.snackbar('Berhasil Fetch', '${response.statusCode}');
         final jsonResponse =
-            jsonDecode(response.body)['order'] as List<dynamic>;
+        jsonDecode(response.body)['order'] as List<dynamic>;
         List<OrdersModel> orders =
-            jsonResponse.map((data) => OrdersModel.fromJson(data)).toList();
+        jsonResponse.map((data) => OrdersModel.fromJson(data)).toList();
         ordersList.value = orders;
       } else {
         Get.snackbar('Error', '${response.statusCode}');
