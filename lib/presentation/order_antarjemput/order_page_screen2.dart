@@ -83,37 +83,40 @@ class OrderPageScreen2 extends GetView<OrderAntarJemputController> {
               child:
                   Text("Tanggal Pengambilan", style: tsBodyMediumMedium(black)),
             ),
-            TextField(
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: lightGrey, width: 2),
-                  borderRadius: BorderRadius.circular(10),
+            Obx(
+              () => TextField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: lightGrey, width: 2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  border: OutlineInputBorder(),
+                  hintText: '${controller.pickupdate.value}',
+                  hintStyle: tsBodySmallMedium(black),
+                  suffixIcon: Icon(Icons.calendar_today, color: darkGrey),
+                  isDense: true,
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 12, horizontal: 15),
                 ),
-                border: OutlineInputBorder(),
-                hintText: 'Pilih tanggal',
-                hintStyle: tsBodySmallMedium(darkGrey),
-                suffixIcon: Icon(Icons.calendar_today, color: darkGrey),
-                isDense: true,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 12, horizontal: 15),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2101),
+                  );
+
+                  if (pickedDate != null) {
+                    int year = pickedDate.year;
+                    int month = pickedDate.month;
+                    int day = pickedDate.day;
+
+                    controller.updatePickupDate('$year-$month-$day');
+                  }
+                },
               ),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime(2101),
-                );
-
-                if (pickedDate != null) {
-                  int year = pickedDate.year;
-                  int month = pickedDate.month;
-                  int day = pickedDate.day;
-
-                  controller.updatePickupDate('$year-$month-$day');
-                }
-              },
-            ),
+            )
           ],
         ),
       ),

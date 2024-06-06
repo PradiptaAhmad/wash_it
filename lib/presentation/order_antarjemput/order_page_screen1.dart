@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/order_antarjemput/controllers/order_antarjemput.controller.dart';
@@ -50,7 +51,8 @@ class OrderPageScreen1 extends GetView<OrderAntarJemputController> {
             InputFormWidget(
               title: "Nama Pelanggan",
               hintText: "Masukkan nama Anda",
-              keyboardType: TextInputType.name, onChanged: (value) {  },
+              keyboardType: TextInputType.name,
+              onChanged: (value) {},
               validator: (newValue) {
                 controller.updateOrderName(newValue);
                 return null;
@@ -58,8 +60,10 @@ class OrderPageScreen1 extends GetView<OrderAntarJemputController> {
             ),
             InputFormWidget(
               title: "Nomor Telepon",
+              formatter: [FilteringTextInputFormatter.digitsOnly],
               hintText: "Masukkan nomor telepon Anda",
-              keyboardType: TextInputType.phone, onChanged: (value) {  },
+              keyboardType: TextInputType.phone,
+              onChanged: (value) {},
               validator: (newValue) {
                 controller.updatePhoneNumber(newValue);
                 return null;
@@ -68,7 +72,8 @@ class OrderPageScreen1 extends GetView<OrderAntarJemputController> {
             InputFormWidget(
               title: "Alamat",
               hintText: "Masukkan alamat Anda",
-              keyboardType: TextInputType.streetAddress, onChanged: (value) {  },
+              keyboardType: TextInputType.streetAddress,
+              onChanged: (value) {},
               validator: (newValue) {
                 controller.updateAddress(newValue);
                 return null;
