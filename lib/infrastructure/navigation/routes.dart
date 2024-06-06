@@ -15,7 +15,7 @@ class Routes {
   static const REGISTER_PAGE = '/register-page';
   static const REVIEW_PAGE = '/review_page';
   static const SPLASH_SCREEN = '/splash_screen';
-  static const STATUS_PAGE = '/status_page';
+  static const STATUS_PAGE = '/status_page.screen';
   static const VERIFICATION_PAGE = '/verification_page';
   static const TRANSACTION_PAGE = '/transaction-page';
   static const METODE_TRANSACTION = '/metode_transaction_screen';

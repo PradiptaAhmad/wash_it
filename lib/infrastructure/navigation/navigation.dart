@@ -110,7 +110,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.TRANSACTION_PAGE,
-      page: () => const TransactionPageScreen(),
+      page: () => TransactionPageScreen(),
       binding: TransactionPageControllerBinding(),
     ),
     GetPage(
