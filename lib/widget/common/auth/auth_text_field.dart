@@ -41,7 +41,7 @@ class AuthTextField extends StatelessWidget {
         decoration: InputDecoration(
             isCollapsed: true,
             isDense: true,
-            contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+            contentPadding: EdgeInsets.all(defaultMargin),
             hintText: hintText,
             hintStyle: tsBodySmallMedium(darkGrey),
             focusedBorder: OutlineInputBorder(
