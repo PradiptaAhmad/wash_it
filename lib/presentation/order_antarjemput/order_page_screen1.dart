@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/presentation/order_antarjemput/controllers/order_antarjemput.controller.dart';
 import 'package:wash_it/widget/common/auth/input_form_widget.dart';
 import 'package:get/get.dart';
 
 import '../../widget/common/content_title_widget.dart';
 
-class OrderPageScreen1 extends StatelessWidget {
+class OrderPageScreen1 extends GetView<OrderAntarJemputController> {
   final VoidCallback onNext;
 
   const OrderPageScreen1(
@@ -50,16 +51,28 @@ class OrderPageScreen1 extends StatelessWidget {
               title: "Nama Pelanggan",
               hintText: "Masukkan nama Anda",
               keyboardType: TextInputType.name, onChanged: (value) {  },
+              validator: (newValue) {
+                controller.updateOrderName(newValue);
+                return null;
+              },
             ),
             InputFormWidget(
               title: "Nomor Telepon",
               hintText: "Masukkan nomor telepon Anda",
               keyboardType: TextInputType.phone, onChanged: (value) {  },
+              validator: (newValue) {
+                controller.updatePhoneNumber(newValue);
+                return null;
+              },
             ),
             InputFormWidget(
               title: "Alamat",
               hintText: "Masukkan alamat Anda",
               keyboardType: TextInputType.streetAddress, onChanged: (value) {  },
+              validator: (newValue) {
+                controller.updateAddress(newValue);
+                return null;
+              },
             ),
           ],
         ),

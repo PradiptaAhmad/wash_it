@@ -7,14 +7,8 @@ import 'order_page_screen1.dart';
 import 'order_page_screen2.dart';
 import 'order_page_screen3.dart';
 
-class OrderView extends StatefulWidget {
-  @override
-  _OrderViewState createState() => _OrderViewState();
-}
-
-class _OrderViewState extends State<OrderView> {
+class OrderView extends GetView<OrderAntarJemputController> {
   final PageController _pageController = PageController(initialPage: 0);
-  final OrderAntarJemputController controller = Get.put(OrderAntarJemputController());
 
   String nama = "";
   String nomorTelepon = "";
@@ -23,18 +17,6 @@ class _OrderViewState extends State<OrderView> {
   String catatan = "";
   DateTime jadwalPengambilan = DateTime.now();
   double hargaPerKg = 0.0;
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    controller.fetchOrdersData();
-  }
 
   @override
   Widget build(BuildContext context) {
