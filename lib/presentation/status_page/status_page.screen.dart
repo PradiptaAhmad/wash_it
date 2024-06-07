@@ -53,11 +53,16 @@ class StatusPageScreen extends GetView<StatusPageController> {
                         itemCount: controller.ordersList.length,
                         itemBuilder: (context, index) {
                           final order = controller.ordersList[index];
-                          int safeIndex = 0;
-                          safeIndex = int.parse(order.laundryId.toString()) - 1;
-                          final jenisPesanan =
-                              controller.jenisList[safeIndex].toString();
+                          final laundryId = int.parse(
+                            order.laundryId.toString(),
+                          );
 
+                          int adjustedIndex = laundryId - 1;
+                          adjustedIndex >= 0 ? adjustedIndex : 0;
+
+                          final jenisPesanan = controller.jenisList.isNotEmpty
+                              ? controller.jenisList[adjustedIndex].toString()
+                              : 'Loading...';
                           return DetailWidget(
                             onPressed: () {
                               controller.goToDetailTransactionPage(index);

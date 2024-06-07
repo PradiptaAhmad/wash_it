@@ -16,51 +16,91 @@ class HomeScreen extends GetView<HomeController> {
     final HomeController controller = Get.put(HomeController());
 
     return Scaffold(
-        body: SafeArea(
-            child: RefreshIndicator(
-                onRefresh: () async {
-                  await controller.fetchOrdersData();
-                },
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  child: Container(
-                    margin: EdgeInsets.all(defaultMargin),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MainWelcomeTitle(
-                          userName: "${controller.userData['username']}",
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(top: defaultMargin),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: MainChoiceWidget(
-                                onPressed: () {
-                                  Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
-                                },
-                                imageAssets: 'assets/img_home/delivery1.png',
-                                mainTitle: 'Antar Jemput',
-                              )),
-                              SizedBox(
-                                width: 10,
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await controller.fetchOrdersData();
+            await controller.fetchUserData();
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                MainTitleWidget(),
+                MainTopWidget(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+                  child: Column(
+                    children: [
+                      ContentTitleWidget(
+                        title: "Sedang Berlangsung",
+                        subtitle: "Lihat Selengkapnya",
+                      ),
+                      Obx(
+                        () {
+                          if (controller.isLoading.value) {
+                            return Padding(
+                              padding: const EdgeInsets.all(defaultMargin),
+                              child: Center(
+                                child: CircularProgressIndicator(),
                               ),
-                              Expanded(
-                                  child: MainChoiceWidget(
+                            );
+                          }
+                          if (controller.ordersList.isEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.all(defaultMargin),
+                              child: Center(
+                                child: Text(
+                                  'Order Tidak Bisa Ditemukan',
+                                  style: tsBodySmallMedium(black),
+                                ),
+                              ),
+                            );
+                          }
+                          return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: controller.ordersList.length > 3
+                                ? 3
+                                : controller.ordersList.length,
+                            itemBuilder: (context, index) {
+                              final order = controller.ordersList[index];
+                              final laundryId = int.parse(
+                                order.laundryId.toString(),
+                              );
+
+                              int adjustedIndex = laundryId - 1;
+                              adjustedIndex >= 0 ? adjustedIndex : 0;
+
+                              final jenisPesanan =
+                                  controller.jenisList.isNotEmpty
+                                      ? controller.jenisList[adjustedIndex]
+                                          .toString()
+                                      : 'Loading...';
+                              return DetailWidget(
                                 onPressed: () {
-                                  Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
+                                  controller.goToDetailTransactionPage(index);
                                 },
-                                imageAssets: 'assets/img_home/delivery2.png',
-                                mainTitle: 'Antar Mandiri',
-                              )),
-                            ],
-                          ),
-                        ),
-                        ContentTitleWidget(
-                            title: "Sedang Berlangsung",
-                            subtitle: "Lihat Selengkapnya"),
-                        Obx(() {
+                                paddingValues: 10,
+                                transcationNum: order.noPemesanan ?? "",
+                                title: '${jenisPesanan} - ${order.namaPemesan}',
+                                subTitle: order.beratLaundry == null
+                                    ? "Berat Belum Di Hitung"
+                                    : "${order.beratLaundry}",
+                                bottomTitle: order.totalHarga == null
+                                    ? "Harga Belum Di Hitung"
+                                    : "Rp. ${order.totalHarga}",
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      ContentTitleWidget(
+                        title: "Riwayat Transaksi",
+                        subtitle: "Lihat Selengkapnya",
+                      ),
+                      Obx(
+                        () {
                           if (controller.isLoading.value) {
                             return Padding(
                               padding: const EdgeInsets.all(defaultMargin),
@@ -71,160 +111,193 @@ class HomeScreen extends GetView<HomeController> {
                             return Padding(
                               padding: const EdgeInsets.all(defaultMargin),
                               child: Center(
-                                  child: Text(
-                                'Order Tidak Bisa Ditemukan',
-                                style: tsBodySmallMedium(black),
-                              )),
+                                child: Text(
+                                  'Tidak ada Riwayat',
+                                  style: tsBodySmallMedium(black),
+                                ),
+                              ),
                             );
                           }
                           return ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: controller.ordersList.length > 3
-                                  ? 3
-                                  : controller.ordersList.length,
-                              // reverse: true,
-                              itemBuilder: (context, index) {
-                                final order = controller.ordersList[index];
-                                int safeIndex = 0;
-                                safeIndex =
-                                    int.parse(order.laundryId.toString()) - 1;
-                                final jenisPesanan =
-                                    controller.jenisList[safeIndex].toString();
-                                return DetailWidget(
-                                  onPressed: () {
-                                    controller.goToDetailTransactionPage(index);
-                                  },
-                                  paddingValues: 10,
-                                  transcationNum: order.noPemesanan ?? "",
-                                  title:
-                                      '${jenisPesanan} - ${order.namaPemesan}',
-                                  subTitle: order.beratLaundry == null
-                                      ? "Berat Belum Di Hitung"
-                                      : "${order.beratLaundry}",
-                                  bottomTitle: order.totalHarga == null
-                                      ? "Harga Belum Di Hitung"
-                                      : "Rp. ${order.totalHarga}",
-                                );
-                              });
-                        }),
-                        ContentTitleWidget(
-                            title: "Riwayat Transaksi",
-                            subtitle: "Lihat Selengkapnya"),
-                        Obx(() {
-                          if (controller.isLoading.value) {
-                            return Padding(
-                              padding: const EdgeInsets.all(defaultMargin),
-                              child: Center(child: CircularProgressIndicator()),
-                            );
-                          }
-                          if (controller.ordersList.isEmpty) {
-                            return Padding(
-                              padding: const EdgeInsets.all(defaultMargin),
-                              child: Center(
-                                  child: Text(
-                                'Tidak ada Riwayat',
-                                style: tsBodySmallMedium(black),
-                              )),
-                            );
-                          }
-                          return ListView.builder(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: controller.ordersList.length > 3
-                                  ? 3
-                                  : controller.ordersList.length,
-                              itemBuilder: (context, index) {
-                                final order = controller.ordersList[index];
-                                int safeIndex = 0;
-                                safeIndex =
-                                    int.parse(order.laundryId.toString()) - 1;
-                                final jenisPesanan =
-                                    controller.jenisList[safeIndex].toString();
-                                return DetailWidget(
-                                  onPressed: () {
-                                    controller.goToDetailRiwayatPage(index);
-                                  },
-                                  paddingValues: 10,
-                                  transcationNum:
-                                      "No. Transaksi - ${order.noPemesanan}",
-                                  title:
-                                      "${jenisPesanan} - ${order.namaPemesan}",
-                                  subTitle: order.beratLaundry == null
-                                      ? "Berat Belum Di Hitung"
-                                      : "${order.beratLaundry}",
-                                  bottomTitle: order.totalHarga == null
-                                      ? "Harga Belum Di Hitung"
-                                      : "Rp. ${order.totalHarga}",
-                                  childs: Container(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          order.tanggalPemesanan ?? "",
-                                          style: tsLabelLargeRegular(black),
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: controller.ordersList.length > 3
+                                ? 3
+                                : controller.ordersList.length,
+                            itemBuilder: (context, index) {
+                              final order = controller.ordersList[index];
+                              final laundryId = int.parse(
+                                order.laundryId.toString(),
+                              );
+
+                              int adjustedIndex = laundryId - 1;
+                              adjustedIndex >= 0 ? adjustedIndex : 0;
+
+                              final jenisPesanan =
+                                  controller.jenisList.isNotEmpty
+                                      ? controller.jenisList[adjustedIndex]
+                                          .toString()
+                                      : 'Loading...';
+                              return DetailWidget(
+                                onPressed: () {
+                                  controller.goToDetailRiwayatPage(index);
+                                },
+                                paddingValues: 10,
+                                transcationNum:
+                                    "No. Transaksi - ${order.noPemesanan}",
+                                title: "${jenisPesanan} - ${order.namaPemesan}",
+                                subTitle: order.beratLaundry == null
+                                    ? "Berat Belum Di Hitung"
+                                    : "${order.beratLaundry}",
+                                bottomTitle: order.totalHarga == null
+                                    ? "Harga Belum Di Hitung"
+                                    : "Rp. ${order.totalHarga}",
+                                childs: Container(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        order.tanggalPemesanan ?? "",
+                                        style: tsLabelLargeRegular(black),
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                          color: successColor,
                                         ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(6),
-                                            color: successColor,
-                                          ),
-                                          height: 30,
-                                          width: 80,
-                                          child: Center(
-                                            child: Text("Selesai",
-                                                style: tsLabelLargeSemibold(
-                                                    primaryColor)),
-                                          ),
+                                        height: 30,
+                                        width: 80,
+                                        child: Center(
+                                          child: Text("Selesai",
+                                              style: tsLabelLargeSemibold(
+                                                  primaryColor)),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              });
-                        }),
-                      ],
-                    ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                ))));
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
-class MainWelcomeTitle extends StatelessWidget {
-  const MainWelcomeTitle({
-    this.userName,
+class MainTitleWidget extends GetView<HomeController> {
+  const MainTitleWidget({
     super.key,
   });
 
-  final String? userName;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: secondaryColor,
+      child: Padding(
+        padding: const EdgeInsets.all(defaultMargin),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Selamat Datang",
+                  style: tsLabelLargeSemibold(primaryColor),
+                ),
+                Obx(() => Text(
+                      controller.userData['username'] ?? "Anon",
+                      style: tsTitleMediumSemibold(primaryColor),
+                    )),
+              ],
+            ),
+            InkWell(
+              onTap: () {
+                // Add your notification logic here
+              },
+              borderRadius: BorderRadius.circular(50),
+              child: Container(
+                height: 45,
+                width: 45,
+                child: const Icon(
+                  Icons.notifications_rounded,
+                  color: primaryColor,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MainTopWidget extends StatelessWidget {
+  const MainTopWidget({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Stack(
+      alignment: Alignment.bottomCenter,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Selamat Datang", style: tsLabelLargeSemibold(darkGrey)),
-            Text(userName ?? "Anon", style: tsTitleMediumSemibold(black)),
-          ],
+        Container(
+          color: secondaryColor,
+          height: 150,
         ),
-        InkWell(
-          onTap: () {},
-          borderRadius: BorderRadius.circular(50),
-          child: Container(
-            decoration: BoxDecoration(),
-            height: 45,
-            width: 45,
-            child: const Icon(
-              Icons.notifications_rounded,
-              color: darkGrey,
+        Container(
+          color: primaryColor,
+          height: 10,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
             ),
+            color: primaryColor,
+          ),
+          padding: EdgeInsets.all(defaultMargin),
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                      child: MainChoiceWidget(
+                    onPressed: () {
+                      Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
+                    },
+                    imageAssets: 'assets/img_home/delivery1.png',
+                    mainTitle: 'Antar Jemput',
+                  )),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: MainChoiceWidget(
+                    onPressed: () {
+                      Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
+                    },
+                    imageAssets: 'assets/img_home/delivery2.png',
+                    mainTitle: 'Antar Mandiri',
+                  )),
+                ],
+              ),
+            ],
           ),
         ),
       ],

@@ -25,7 +25,7 @@ class MainContainerWidget extends StatelessWidget {
           width: width?.toDouble(),
           decoration: BoxDecoration(
             color: color ?? Colors.white,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
             boxShadow: [localMainShadow()],
           ),
           child: childs),
