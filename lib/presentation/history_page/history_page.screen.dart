@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/widget/common/detail_widget.dart';
-import 'package:wash_it/widget/common/mainpage_appbar_widget.dart';
 import '../../widget/common/content_title_widget.dart';
 import 'controllers/history_page.controller.dart';
 
@@ -47,10 +46,16 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         final order = controller.ordersList[index];
-                        int safeIndex = 0;
-                        safeIndex = int.parse(order.laundryId.toString()) - 1;
-                        final jenisPesanan =
-                            controller.jenisList[safeIndex].toString();
+                        final laundryId = int.parse(
+                          order.laundryId.toString(),
+                        );
+
+                        int adjustedIndex = laundryId - 1;
+                        adjustedIndex >= 0 ? adjustedIndex : 0;
+
+                        final jenisPesanan = controller.jenisList.isNotEmpty
+                            ? controller.jenisList[adjustedIndex].toString()
+                            : 'Loading...';
                         return DetailWidget(
                           onPressed: () {
                             controller.goToDetailRiwayatPage(index);
