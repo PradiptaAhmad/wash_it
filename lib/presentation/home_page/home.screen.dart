@@ -29,7 +29,7 @@ class HomeScreen extends GetView<HomeController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         MainWelcomeTitle(
-                          userName: "Bapak Bajuri",
+                          userName: "${controller.userData['username']}",
                         ),
                         Container(
                           padding: EdgeInsets.only(top: defaultMargin),
@@ -85,15 +85,20 @@ class HomeScreen extends GetView<HomeController> {
                                   : controller.ordersList.length,
                               // reverse: true,
                               itemBuilder: (context, index) {
-                                final order = controller.ordersList[
-                                    controller.ordersList.length - 1 - index];
+                                final order = controller.ordersList[index];
+                                int safeIndex = 0;
+                                safeIndex =
+                                    int.parse(order.laundryId.toString()) - 1;
+                                final jenisPesanan =
+                                    controller.jenisList[safeIndex].toString();
                                 return DetailWidget(
                                   onPressed: () {
                                     controller.goToDetailTransactionPage(index);
                                   },
                                   paddingValues: 10,
                                   transcationNum: order.noPemesanan ?? "",
-                                  title: 'Cuci Setrika - ${order.namaPemesan}',
+                                  title:
+                                      '${jenisPesanan} - ${order.namaPemesan}',
                                   subTitle: order.beratLaundry == null
                                       ? "Berat Belum Di Hitung"
                                       : "${order.beratLaundry}",
@@ -209,16 +214,17 @@ class MainWelcomeTitle extends StatelessWidget {
             Text(userName ?? "Anon", style: tsTitleMediumSemibold(black)),
           ],
         ),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
-            color: grey,
-          ),
-          height: 45,
-          width: 45,
-          child: const Icon(
-            Icons.person,
-            color: primaryColor,
+        InkWell(
+          onTap: () {},
+          borderRadius: BorderRadius.circular(50),
+          child: Container(
+            decoration: BoxDecoration(),
+            height: 45,
+            width: 45,
+            child: const Icon(
+              Icons.notifications_rounded,
+              color: darkGrey,
+            ),
           ),
         ),
       ],
