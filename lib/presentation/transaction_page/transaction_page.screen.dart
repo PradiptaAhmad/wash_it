@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
 import 'package:wash_it/presentation/transaction_page/widget/detail_text_widget.dart';
+import 'package:wash_it/widget/common/mainpage_appbar_widget.dart';
 
 import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/themes.dart';
@@ -19,18 +20,8 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Iconsax.arrow_left_2,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        backgroundColor: primaryColor,
-        title: Text("Detail Transaksi", style: tsBodyLargeMedium(black)),
-        centerTitle: true,
+      appBar: MainpageAppbarWidget(
+        title: 'Detail Transaksi',
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -98,15 +89,17 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: 10),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 4),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("23/03", style: tsBodySmallRegular(black)),
-                        Text("Est.", style: tsBodySmallRegular(black)),
-                        Text("25/03", style: tsBodySmallRegular(black)),
+                        Text("${productData['tanggal_pemesanan_only_date']}",
+                            style: tsBodySmallRegular(black)),
+                        Text("Estimasi", style: tsBodySmallRegular(black)),
+                        Text("${productData['tanggal_pengambilan']}",
+                            style: tsBodySmallRegular(black)),
                       ],
                     ),
                   ),
@@ -125,16 +118,6 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                       style: tsBodyMediumMedium(black),
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: secondaryColor,
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                    height: 35,
-                    width: 35,
-                    child: Icon(Iconsax.call5, color: primaryColor),
-                  ),
-                  SizedBox(width: 5),
                   InkWell(
                     onTap: () => Get.toNamed(Routes.CHAT_PAGE),
                     child: Container(
@@ -144,7 +127,11 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                       ),
                       height: 35,
                       width: 35,
-                      child: Icon(Iconsax.message5, color: primaryColor),
+                      child: Icon(
+                        Icons.message_rounded,
+                        color: primaryColor,
+                        size: 20,
+                      ),
                     ),
                   )
                 ],
@@ -171,17 +158,22 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                     : "Belum Di Hitung",
               ),
               DetailDataWidget(
-                  leftTitle: "Tanggal Pemesanan",
-                  rightTitle: "${productData['tanggal_pemesanan']}"),
+                leftTitle: "Tanggal Pemesanan",
+                rightTitle: "${productData['tanggal_pemesanan']}",
+              ),
               SizedBox(height: 20),
               Text(
                 "Detail Pembayaran",
                 style: tsBodyMediumMedium(black),
               ),
               DetailDataWidget(
-                  leftTitle: "Nomor Referensi", rightTitle: "00000876416789"),
+                leftTitle: "Nomor Referensi",
+                rightTitle: "00000876416789",
+              ),
               DetailDataWidget(
-                  leftTitle: "Status Pembayaran", rightTitle: "Sukses"),
+                leftTitle: "Status Pembayaran",
+                rightTitle: "Sukses",
+              ),
               DetailDataWidget(
                   leftTitle: "Waktu Pembayaran",
                   rightTitle: "25-03-2024,  12:22:12"),
@@ -212,7 +204,7 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                       style: tsBodySmallSemibold(primaryColor)),
                 ),
                 onPressed: () {
-                  Get.toNamed(Routes.METODE_TRANSACTION);
+                  Get.toNamed(Routes.PAYMENT_PAGE);
                 },
               ),
             ],

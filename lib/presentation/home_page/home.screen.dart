@@ -16,6 +16,7 @@ class HomeScreen extends GetView<HomeController> {
     final HomeController controller = Get.put(HomeController());
 
     return Scaffold(
+      backgroundColor: secondaryColor,
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async {
@@ -27,11 +28,41 @@ class HomeScreen extends GetView<HomeController> {
             child: Column(
               children: [
                 MainTitleWidget(),
-                MainTopWidget(),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+                Container(
+                  padding: EdgeInsets.all(defaultMargin),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                    color: primaryColor,
+                  ),
                   child: Column(
                     children: [
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: MainChoiceWidget(
+                            onPressed: () {
+                              Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
+                            },
+                            imageAssets: 'assets/img_home/delivery1.png',
+                            mainTitle: 'Antar Jemput',
+                          )),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                              child: MainChoiceWidget(
+                            onPressed: () {
+                              Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
+                            },
+                            imageAssets: 'assets/img_home/delivery2.png',
+                            mainTitle: 'Antar Mandiri',
+                          )),
+                        ],
+                      ),
                       ContentTitleWidget(
                         title: "Sedang Berlangsung",
                         subtitle: "Lihat Selengkapnya",
@@ -140,7 +171,7 @@ class HomeScreen extends GetView<HomeController> {
                                       : 'Loading...';
                               return DetailWidget(
                                 onPressed: () {
-                                  controller.goToDetailRiwayatPage(index);
+                                  controller.goToDetailTransactionPage(index);
                                 },
                                 paddingValues: 10,
                                 transcationNum:
@@ -203,104 +234,43 @@ class MainTitleWidget extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: secondaryColor,
-      child: Padding(
-        padding: const EdgeInsets.all(defaultMargin),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Selamat Datang",
-                  style: tsLabelLargeSemibold(primaryColor),
-                ),
-                Obx(() => Text(
-                      controller.userData['username'] ?? "Anon",
-                      style: tsTitleMediumSemibold(primaryColor),
-                    )),
-              ],
-            ),
-            InkWell(
-              onTap: () {
-                // Add your notification logic here
-              },
-              borderRadius: BorderRadius.circular(50),
-              child: Container(
-                height: 45,
-                width: 45,
-                child: const Icon(
-                  Icons.notifications_rounded,
-                  color: primaryColor,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MainTopWidget extends StatelessWidget {
-  const MainTopWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        Container(
-          color: secondaryColor,
-          height: 150,
-        ),
-        Container(
-          color: primaryColor,
-          height: 10,
-        ),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-            color: primaryColor,
-          ),
-          padding: EdgeInsets.all(defaultMargin),
-          child: Column(
+    return Padding(
+      padding: const EdgeInsets.all(defaultMargin),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                      child: MainChoiceWidget(
-                    onPressed: () {
-                      Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
-                    },
-                    imageAssets: 'assets/img_home/delivery1.png',
-                    mainTitle: 'Antar Jemput',
-                  )),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                      child: MainChoiceWidget(
-                    onPressed: () {
-                      Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
-                    },
-                    imageAssets: 'assets/img_home/delivery2.png',
-                    mainTitle: 'Antar Mandiri',
-                  )),
-                ],
+              Text(
+                "Selamat Datang",
+                style: tsBodySmallSemibold(primaryColor),
               ),
+              Obx(() => ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 300),
+                  child: Text(
+                    controller.userData['username'] ?? "Anon",
+                    style: tsTitleMediumSemibold(primaryColor),
+                    overflow: TextOverflow.ellipsis,
+                  ))),
             ],
           ),
-        ),
-      ],
+          InkWell(
+            onTap: () {
+              Get.toNamed(Routes.NOTIFICATION_PAGE);
+            },
+            borderRadius: BorderRadius.circular(50),
+            child: Container(
+              height: 45,
+              width: 45,
+              child: const Icon(
+                Icons.notifications,
+                color: primaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class PaymentReceiptController extends GetxController {
-  //TODO: Implement PaymentReceiptController
+class ReviewPageController extends GetxController {
+  //TODO: Implement ReviewPageController
 
   final count = 0.obs;
   @override

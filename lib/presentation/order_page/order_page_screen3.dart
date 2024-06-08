@@ -2,11 +2,11 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:wash_it/presentation/order_antarjemput/controllers/order_antarjemput.controller.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
 
 import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/themes.dart';
+import 'controllers/order_page.controller.dart';
 
 class OrderPageScreen3 extends GetView<OrderAntarJemputController> {
   final VoidCallback onBack;

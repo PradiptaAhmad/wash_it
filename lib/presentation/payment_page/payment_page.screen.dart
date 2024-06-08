@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+
 import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/themes.dart';
+import 'controllers/payment_page.controller.dart';
 
-class MetodeTransaction extends StatefulWidget {
-  const MetodeTransaction({Key? key}) : super(key: key);
-
-  @override
-  _MetodeTransactionState createState() => _MetodeTransactionState();
-}
-
-class _MetodeTransactionState extends State<MetodeTransaction> {
-  int _selectedMethod = 0;
-
-  void _selectMethod(int methodIndex) {
-    setState(() {
-      _selectedMethod = methodIndex;
-    });
-  }
+class PaymentPageScreen extends GetView<PaymentPageController> {
+  PaymentPageScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +33,17 @@ class _MetodeTransactionState extends State<MetodeTransaction> {
               ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: 3,
+                itemCount: itemsData.length,
                 itemBuilder: (context, index) {
                   final data = itemsData[index];
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 10),
-                    child: ListViewWidgetItems(data['keyNum'], _selectedMethod,
-                        _selectMethod, data['itemTitle'], data['itemImage']),
+                    child: ListViewWidgetItems(
+                      data['keyNum'],
+                      controller,
+                      data['itemTitle'],
+                      data['itemImage'],
+                    ),
                   );
                 },
               ),
@@ -70,7 +63,7 @@ class _MetodeTransactionState extends State<MetodeTransaction> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
-                onPressed: () => Get.toNamed(Routes.PAYMENT_RECEIPT),
+                onPressed: () => Get.toNamed(Routes.RECEIPT_PAGE),
                 child: Padding(
                   padding: const EdgeInsets.all(defaultMargin),
                   child: Text(
@@ -89,55 +82,59 @@ class _MetodeTransactionState extends State<MetodeTransaction> {
 }
 
 Widget ListViewWidgetItems(
-    numKey, _selectedMethod, _selectMethod, itemTitle, itemImage) {
-  return Container(
-    decoration: BoxDecoration(
-      border: Border.all(
-          color: _selectedMethod == numKey ? successColor : lightGrey,
-          width: 2),
-      borderRadius: BorderRadius.circular(15),
-    ),
-    child: ListTile(
-      leading: Image.asset(
-        itemImage,
-        height: 20,
-        width: 20,
-      ),
-      title: Text(
-        itemTitle,
-        style: tsBodySmallRegular(black),
-      ),
-      trailing: Container(
-        width: 20,
-        height: 20,
+    numKey, PaymentPageController controller, itemTitle, itemImage) {
+  return Obx(() => Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(50)),
-          border: Border.all(color: lightGrey, width: 2),
+          border: Border.all(
+              color: controller.selectedMethod.value == numKey
+                  ? successColor
+                  : lightGrey,
+              width: 2),
+          borderRadius: BorderRadius.circular(15),
         ),
-        child: Container(
-          width: 20,
-          height: 20,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(50)),
-            border: Border.all(color: primaryColor, width: 2),
-            color: _selectedMethod == numKey ? successColor : primaryColor,
+        child: ListTile(
+          leading: Image.asset(
+            itemImage,
+            height: 20,
+            width: 20,
           ),
+          title: Text(
+            itemTitle,
+            style: tsBodySmallRegular(black),
+          ),
+          trailing: Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(50)),
+              border: Border.all(color: lightGrey, width: 2),
+            ),
+            child: Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(50)),
+                border: Border.all(color: primaryColor, width: 2),
+                color: controller.selectedMethod.value == numKey
+                    ? successColor
+                    : primaryColor,
+              ),
+            ),
+          ),
+          onTap: () {
+            controller.selectMethod(numKey);
+          },
         ),
-      ),
-      onTap: () {
-        _selectMethod(numKey);
-      },
-    ),
-  );
+      ));
 }
 
 class PaymentChoiceDotted extends StatelessWidget {
   const PaymentChoiceDotted({
     super.key,
-    required int selectedMethod,
-  }) : _selectedMethod = selectedMethod;
+    required this.selectedMethod,
+  });
 
-  final int _selectedMethod;
+  final int selectedMethod;
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +144,7 @@ class PaymentChoiceDotted extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(50)),
         border: Border.all(color: primaryColor, width: 2),
-        color: _selectedMethod == 0 ? successColor : primaryColor,
+        color: selectedMethod == 0 ? successColor : primaryColor,
       ),
     );
   }

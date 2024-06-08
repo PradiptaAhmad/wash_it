@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wash_it/presentation/order_antarjemput/controllers/order_antarjemput.controller.dart';
 import '../../infrastructure/navigation/routes.dart';
 import '../../widget/common/detail_widget.dart';
+import 'controllers/order_page.controller.dart';
 import 'order_page_screen1.dart';
 import 'order_page_screen2.dart';
 import 'order_page_screen3.dart';

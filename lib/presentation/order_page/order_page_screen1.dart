@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/presentation/order_antarjemput/controllers/order_antarjemput.controller.dart';
 import 'package:wash_it/widget/common/auth/input_form_widget.dart';
 import 'package:get/get.dart';
 
 import '../../widget/common/content_title_widget.dart';
+import 'controllers/order_page.controller.dart';
 
 class OrderPageScreen1 extends GetView<OrderAntarJemputController> {
   final VoidCallback onNext;

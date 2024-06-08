@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:wash_it/presentation/order_antarjemput/controllers/order_antarjemput.controller.dart';
+
+import '../../../../presentation/order_page/controllers/order_page.controller.dart';
 
 class OrderAntarJemputPageControllerBinding extends Bindings {
   @override

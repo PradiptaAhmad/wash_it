@@ -4,21 +4,22 @@ class Routes {
   }
 
   static const CHAT_PAGE = '/message_screen';
-  static const HISTORY_DETAIL_PAGE = '/history_detail_page';
   static const HISTORY_PAGE = '/history_page';
   static const HOME = '/home';
   static const LOGIN_PAGE = '/login-page.screen';
   static const NAVBAR = '/navigation_menu';
+  static const NOTIFICATION = '/notification';
+  static const NOTIFICATION_PAGE = '/notification-page';
   static const ONBOARDING_PAGE = '/boarding_screen';
   static const ORDERANTARJEMPUT_PAGE = '/order_antarjemput';
+  static const PAYMENT_PAGE = '/payment-page';
+  static const PROFILE_CHANGE_PAGE = '/profile_change_page';
   static const PROFILE_PAGE = '/profile_page';
   static const REGISTER_PAGE = '/register-page';
-  static const REVIEW_PAGE = '/review_page';
+  static const REVIEW_PAGE = '/review-page';
   static const SPLASH_SCREEN = '/splash_screen';
   static const STATUS_PAGE = '/status_page.screen';
-  static const VERIFICATION_PAGE = '/verification_page';
   static const TRANSACTION_PAGE = '/transaction-page';
-  static const METODE_TRANSACTION = '/metode_transaction_screen';
-  static const PAYMENT_RECEIPT = '/payment_receipt_page';
-  static const PROFILE_CHANGE_PAGE = '/profile_change_page';
+  static const VERIFICATION_PAGE = '/verification_page';
+  static const RECEIPT_PAGE = '/receipt-page';
 }

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../infrastructure/theme/themes.dart';
 import '../../widget/common/button_widget.dart';
+import 'controllers/review_page.controller.dart';
 
-class ReviewPage extends StatelessWidget {
-  const ReviewPage({Key? key}) : super(key: key);
-
+class ReviewPageScreen extends GetView<ReviewPageController> {
+  const ReviewPageScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

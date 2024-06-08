@@ -1,15 +1,17 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:wash_it/infrastructure/navigation/routes.dart';
-import 'package:wash_it/infrastructure/theme/themes.dart';
+
 import 'package:get/get.dart';
-import 'package:wash_it/presentation/transaction_page/widget/detail_text_widget.dart';
-import 'package:wash_it/widget/common/button_widget.dart';
+import 'package:iconsax/iconsax.dart';
 
-class PaymentReceiptPage extends StatelessWidget {
-  const PaymentReceiptPage({Key? key}) : super(key: key);
+import '../../infrastructure/navigation/routes.dart';
+import '../../infrastructure/theme/themes.dart';
+import '../../widget/common/button_widget.dart';
+import '../transaction_page/widget/detail_text_widget.dart';
+import 'controllers/receipt_page.controller.dart';
 
+class ReceiptPageScreen extends GetView<ReceiptPageController> {
+  const ReceiptPageScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
