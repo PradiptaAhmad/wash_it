@@ -5,6 +5,7 @@ import 'package:wash_it/infrastructure/navigation/bindings/controllers/profile_p
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/profile_page/profile_change_page.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
+import 'package:wash_it/widget/common/mainpage_appbar_widget.dart';
 import 'controllers/profile_page.controller.dart';
 
 class ProfilePage extends GetView<ProfileController> {
@@ -14,9 +15,9 @@ class ProfilePage extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     final ProfileController controller = Get.put(ProfileController());
     return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text('Profile', style: tsTitleSmallMedium(black))),
-        backgroundColor: primaryColor,
+      appBar: MainpageAppbarWidget(
+        title: 'Profil Pengguna',
+        noLeading: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(

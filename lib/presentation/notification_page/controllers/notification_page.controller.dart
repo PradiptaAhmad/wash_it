@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class MetodeTransactionController extends GetxController {
-  //TODO: Implement TransactionPageController
+class NotificationPageController extends GetxController {
+  //TODO: Implement NotificationPageController
 
   final count = 0.obs;
   @override

@@ -136,7 +136,10 @@ class HomeController extends GetxController {
       'payment_method': product.paymentMethod,
       'tanggal_pemesanan': product.tanggalPemesanan!
           .substring(0, product.tanggalPemesanan!.length - 3),
-      'tanggal_pengambilan': product.tanggalPengambilan,
+      'tanggal_pemesanan_only_date': product.tanggalPemesanan!
+          .substring(5, product.tanggalPemesanan!.length - 9),
+      'tanggal_pengambilan': product.tanggalPengambilan!
+          .substring(5, product.tanggalPengambilan!.length - 9),
       'laundry_id': jenisList[int.parse(product.laundryId.toString()) - 1],
     };
   }
@@ -146,13 +149,6 @@ class HomeController extends GetxController {
     var productDetail = detailtrasaction(index, product);
 
     Get.toNamed(Routes.TRANSACTION_PAGE, arguments: productDetail);
-  }
-
-  void goToDetailRiwayatPage(int index) {
-    var product = ordersList[index];
-    var productDetail = detailtrasaction(index, product);
-
-    Get.toNamed(Routes.HISTORY_DETAIL_PAGE, arguments: productDetail);
   }
 
   @override

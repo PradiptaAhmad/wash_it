@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/presentation/order_antarjemput/controllers/order_antarjemput.controller.dart';
-import 'package:wash_it/presentation/order_antarjemput/widgets/search_dropdown_widget.dart';
+import 'package:wash_it/presentation/order_page/widgets/search_dropdown_widget.dart';
 import 'package:wash_it/widget/common/auth/input_form_widget.dart';
 import 'package:get/get.dart';
 
 import '../../widget/common/content_title_widget.dart';
+import 'controllers/order_page.controller.dart';
 
 class OrderPageScreen2 extends GetView<OrderAntarJemputController> {
   final VoidCallback onNext;

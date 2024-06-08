@@ -5,7 +5,6 @@ import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/profile_page/profile_page.dart';
 import 'package:wash_it/presentation/screens.dart';
 
-
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({Key? key}) : super(key: key);
 
@@ -25,37 +24,46 @@ class NavigationMenu extends StatelessWidget {
               controller.selectedIndex.value = index,
           destinations: const [
             NavigationDestination(
-              icon: Icon(Iconsax.home),
-              selectedIcon: Icon(
-                Iconsax.home1,
+              icon: Icon(
+                Icons.home_filled,
                 color: darkGrey,
               ),
-              // New line: selected icon
+              selectedIcon: Icon(
+                Icons.home_filled,
+                color: black,
+              ),
               label: "Home",
             ),
             NavigationDestination(
-              icon: Icon(Iconsax.status),
-              selectedIcon: Icon(
-                Iconsax.status5,
+              icon: Icon(
+                Icons.reorder_rounded,
                 color: darkGrey,
               ),
-              // New line: selected icon
+              selectedIcon: Icon(
+                Icons.reorder_rounded,
+                color: black,
+              ),
               label: "Status",
             ),
             NavigationDestination(
-              icon: Icon(Iconsax.receipt),
-              selectedIcon: Icon(
-                Iconsax.receipt_11,
+              icon: Icon(
+                Icons.receipt_rounded,
                 color: darkGrey,
               ),
-              // New line: selected icon
+              selectedIcon: Icon(
+                Icons.receipt_rounded,
+                color: black,
+              ),
               label: "History",
             ),
             NavigationDestination(
-              icon: Icon(Iconsax.setting),
-              selectedIcon: Icon(
-                Iconsax.setting1,
+              icon: Icon(
+                Icons.settings,
                 color: darkGrey,
+              ),
+              selectedIcon: Icon(
+                Icons.settings,
+                color: black,
               ),
               label: "Settings",
             ),
