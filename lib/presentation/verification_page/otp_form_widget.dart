@@ -47,4 +47,3 @@ class PinFormInput extends StatelessWidget {
     );
   }
 }
-// final controller = Get.find<VerificationPageController>();

@@ -26,13 +26,16 @@ class LoginPageController extends GetxController {
 
   Future<void> login() async {
     isLoading.value = true;
-    final notificationToken = _firebaseMessaging.getToken();
+    String? notificationtoken;
+    await _firebaseMessaging.getToken().then((value) {
+      notificationtoken = value!;
+    });
     final url = ConfigEnvironments.getEnvironments()["url"];
     print(url);
     var data = {
       'email': email.value,
       'password': password.value,
-      'notification_token': notificationToken.toString(),
+      'notification_token': notificationtoken,
     };
     var headers = {
       'Accept': 'application/json',
@@ -53,7 +56,7 @@ class LoginPageController extends GetxController {
       } else {
         Get.snackbar(
           "Sukses Login",
-          "Selamat datang ${user['name']}",
+          "Selamat datang ${user['username']}",
           snackPosition: SnackPosition.TOP,
           backgroundColor: successColor,
         );

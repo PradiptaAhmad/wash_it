@@ -13,11 +13,15 @@ class InputFormWidget extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.formatter,
+    this.readOnly,
+    this.controller,
   }) : super(key: key);
   final String? title, hintText;
   final validator, keyboardType, formatter;
   final Widget? textField;
   final Function(String)? onChanged;
+  final bool? readOnly;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +39,8 @@ class InputFormWidget extends StatelessWidget {
           ),
           textField ??
               AuthTextField(
+                readOnly: readOnly,
+                controller: controller,
                 formatter: formatter,
                 hintText: hintText ?? "",
                 validator: validator,

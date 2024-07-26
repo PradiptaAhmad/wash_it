@@ -60,7 +60,7 @@ class StatusPageController extends GetxController {
       };
 
       var response = await http.get(
-        Uri.parse('$url/admin/laundry/all'),
+        Uri.parse('$url/laundry/all'),
         headers: headers,
       );
 
@@ -79,32 +79,6 @@ class StatusPageController extends GetxController {
     } finally {
       isLoading.value = false;
     }
-  }
-
-  Map<String, dynamic> detailtrasaction(int index, OrdersModel product) {
-    return {
-      'id': product.id,
-      'index': index,
-      'no_pemesanan': product.noPemesanan,
-      'jenis_pemesanan': product.jenisPemesanan,
-      'nama_pemesan': product.namaPemesan,
-      'nomor_telepon': product.nomorTelepon,
-      'alamat': product.alamat,
-      'berat_laundry': product.beratLaundry,
-      'total_harga': product.totalHarga,
-      'payment_method': product.paymentMethod,
-      'tanggal_pemesanan': product.tanggalPemesanan!
-          .substring(0, product.tanggalPemesanan!.length - 3),
-      'tanggal_pengambilan': product.tanggalPengambilan,
-      'laundry_id': jenisList[int.parse(product.laundryId.toString()) - 1],
-    };
-  }
-
-  void goToDetailTransactionPage(int index) {
-    var product = ordersList[index];
-    var productDetail = detailtrasaction(index, product);
-
-    Get.toNamed(Routes.TRANSACTION_PAGE, arguments: productDetail);
   }
 
   @override

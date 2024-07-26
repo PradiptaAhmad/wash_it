@@ -5,8 +5,8 @@ import '../../../../presentation/order_page/controllers/order_page.controller.da
 class OrderAntarJemputPageControllerBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<OrderAntarJemputController>(
-      () => OrderAntarJemputController(),
+    Get.lazyPut<OrderController>(
+      () => OrderController(),
     );
   }
 }

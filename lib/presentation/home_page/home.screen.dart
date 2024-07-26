@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/presentation/order_page/order_page.screen.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
 import 'package:wash_it/widget/common/detail_widget.dart';
 import 'package:wash_it/widget/common/main_container_widget.dart';
@@ -45,7 +46,9 @@ class HomeScreen extends GetView<HomeController> {
                           Expanded(
                               child: MainChoiceWidget(
                             onPressed: () {
-                              Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
+                              Get.to(() => OrderView(
+                                    tipeOrder: "antar_jemput",
+                                  ));
                             },
                             imageAssets: 'assets/img_home/delivery1.png',
                             mainTitle: 'Antar Jemput',
@@ -56,7 +59,9 @@ class HomeScreen extends GetView<HomeController> {
                           Expanded(
                               child: MainChoiceWidget(
                             onPressed: () {
-                              Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE);
+                              Get.to(() => OrderView(
+                                    tipeOrder: "antar_mandiri",
+                                  ));
                             },
                             imageAssets: 'assets/img_home/delivery2.png',
                             mainTitle: 'Antar Mandiri',
@@ -64,78 +69,27 @@ class HomeScreen extends GetView<HomeController> {
                         ],
                       ),
                       ContentTitleWidget(
-                        title: "Sedang Berlangsung",
+                        title: "Sedang berlangsung",
                         subtitle: "Lihat Selengkapnya",
                       ),
                       Obx(
                         () {
                           if (controller.isLoading.value) {
-                            return Padding(
-                              padding: const EdgeInsets.all(defaultMargin),
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          }
-                          if (controller.ordersList.isEmpty) {
-                            return Padding(
-                              padding: const EdgeInsets.all(defaultMargin),
-                              child: Center(
-                                child: Text(
-                                  'Order Tidak Bisa Ditemukan',
-                                  style: tsBodySmallMedium(black),
+                            return ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: 3,
+                              itemBuilder: (context, index) => Padding(
+                                padding: const EdgeInsets.only(top: 15),
+                                child: Container(
+                                  height: 116,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.04),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
                                 ),
                               ),
-                            );
-                          }
-                          return ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: controller.ordersList.length > 3
-                                ? 3
-                                : controller.ordersList.length,
-                            itemBuilder: (context, index) {
-                              final order = controller.ordersList[index];
-                              final laundryId = int.parse(
-                                order.laundryId.toString(),
-                              );
-
-                              int adjustedIndex = laundryId - 1;
-                              adjustedIndex >= 0 ? adjustedIndex : 0;
-
-                              final jenisPesanan =
-                                  controller.jenisList.isNotEmpty
-                                      ? controller.jenisList[adjustedIndex]
-                                          .toString()
-                                      : 'Loading...';
-                              return DetailWidget(
-                                onPressed: () {
-                                  controller.goToDetailTransactionPage(index);
-                                },
-                                paddingValues: 10,
-                                transcationNum: order.noPemesanan ?? "",
-                                title: '${jenisPesanan} - ${order.namaPemesan}',
-                                subTitle: order.beratLaundry == null
-                                    ? "Berat Belum Di Hitung"
-                                    : "${order.beratLaundry}",
-                                bottomTitle: order.totalHarga == null
-                                    ? "Harga Belum Di Hitung"
-                                    : "Rp. ${order.totalHarga}",
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      ContentTitleWidget(
-                        title: "Riwayat Transaksi",
-                        subtitle: "Lihat Selengkapnya",
-                      ),
-                      Obx(
-                        () {
-                          if (controller.isLoading.value) {
-                            return Padding(
-                              padding: const EdgeInsets.all(defaultMargin),
-                              child: Center(child: CircularProgressIndicator()),
                             );
                           }
                           if (controller.ordersList.isEmpty) {
@@ -152,34 +106,117 @@ class HomeScreen extends GetView<HomeController> {
                           return ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: controller.ordersList.length > 3
-                                ? 3
-                                : controller.ordersList.length,
+                            reverse: true,
+                            itemCount: 3,
                             itemBuilder: (context, index) {
                               final order = controller.ordersList[index];
-                              final laundryId = int.parse(
-                                order.laundryId.toString(),
-                              );
+                              final laundryId = order.laundryId != null
+                                  ? int.tryParse(order.laundryId!)
+                                  : null;
 
-                              int adjustedIndex = laundryId - 1;
-                              adjustedIndex >= 0 ? adjustedIndex : 0;
+                              int adjustedIndex =
+                                  (laundryId != null && laundryId > 0)
+                                      ? laundryId - 1
+                                      : 0;
 
                               final jenisPesanan =
-                                  controller.jenisList.isNotEmpty
+                                  (controller.jenisList.isNotEmpty &&
+                                          adjustedIndex <
+                                              controller.jenisList.length)
                                       ? controller.jenisList[adjustedIndex]
                                           .toString()
                                       : 'Loading...';
                               return DetailWidget(
                                 onPressed: () {
-                                  controller.goToDetailTransactionPage(index);
+                                  Get.toNamed(Routes.TRANSACTION_PAGE,
+                                      arguments: [order.id]);
+                                  print(order.id);
                                 },
-                                paddingValues: 10,
-                                transcationNum:
-                                    "No. Transaksi - ${order.noPemesanan}",
-                                title: "${jenisPesanan} - ${order.namaPemesan}",
+                                transcationNum: order.noPemesanan ?? "",
+                                title: '${jenisPesanan} - ${order.namaPemesan}',
                                 subTitle: order.beratLaundry == null
                                     ? "Berat Belum Di Hitung"
-                                    : "${order.beratLaundry}",
+                                    : "${order.beratLaundry} kg",
+                                bottomTitle: order.totalHarga == null
+                                    ? "Harga Belum Di Hitung"
+                                    : "Rp. ${order.totalHarga}",
+                              );
+                            },
+                          );
+                        },
+                      ),
+                      ContentTitleWidget(
+                        title: "Riwayat transaksi",
+                        subtitle: "Lihat Selengkapnya",
+                      ),
+                      Obx(
+                        () {
+                          if (controller.isLoading.value) {
+                            return ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: 3,
+                              itemBuilder: (context, index) => Padding(
+                                padding: const EdgeInsets.only(top: 15),
+                                child: Container(
+                                  height: 116,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.04),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          if (controller.ordersList.isEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.all(defaultMargin),
+                              child: Center(
+                                child: Text(
+                                  'Tidak ada Riwayat',
+                                  style: tsBodySmallMedium(black),
+                                ),
+                              ),
+                            );
+                          }
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            reverse: true,
+                            itemCount: 3,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              final order = controller.ordersList[index];
+                              final laundryId = order.laundryId != null
+                                  ? int.tryParse(order.laundryId!)
+                                  : null;
+
+                              int adjustedIndex =
+                                  (laundryId != null && laundryId > 0)
+                                      ? laundryId - 1
+                                      : 0;
+
+                              final jenisPesanan =
+                                  (controller.jenisList.isNotEmpty &&
+                                          adjustedIndex <
+                                              controller.jenisList.length)
+                                      ? controller.jenisList[adjustedIndex]
+                                          .toString()
+                                      : 'Loading...';
+
+                              return DetailWidget(
+                                onPressed: () {
+                                  Get.toNamed(Routes.TRANSACTION_PAGE,
+                                      arguments: [order.id]);
+                                  print(order.id);
+                                },
+                                transcationNum:
+                                    "No. Transaksi - ${order.noPemesanan ?? ""}",
+                                title:
+                                    "${jenisPesanan} - ${order.namaPemesan ?? ""}",
+                                subTitle: order.beratLaundry == null
+                                    ? "Berat Belum Di Hitung"
+                                    : "${order.beratLaundry} kg",
                                 bottomTitle: order.totalHarga == null
                                     ? "Harga Belum Di Hitung"
                                     : "Rp. ${order.totalHarga}",
@@ -190,7 +227,12 @@ class HomeScreen extends GetView<HomeController> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Text(
-                                        order.tanggalPemesanan ?? "",
+                                        order.tanggalPemesanan != null
+                                            ? order.tanggalPemesanan!.substring(
+                                                0,
+                                                order.tanggalPemesanan!.length -
+                                                    3)
+                                            : "",
                                         style: tsLabelLargeRegular(black),
                                       ),
                                       Container(
@@ -243,7 +285,7 @@ class MainTitleWidget extends GetView<HomeController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Selamat Datang",
+                "Selamat datang",
                 style: tsBodySmallSemibold(primaryColor),
               ),
               Obx(() => ConstrainedBox(

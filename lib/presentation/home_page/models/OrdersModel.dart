@@ -5,8 +5,8 @@ class OrdersModel {
   String? namaPemesan;
   String? nomorTelepon;
   String? alamat;
-  String? beratLaundry;
-  String? totalHarga;
+  int? beratLaundry;
+  int? totalHarga;
   String? paymentMethod;
   String? tanggalPemesanan;
   String? tanggalPengambilan;
