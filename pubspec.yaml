@@ -9,6 +9,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   dotted_line: ^3.2.2
   dotted_border: ^2.1.0
+  dropdown_button2: ^2.3.9
   google_fonts: ^6.2.0
   flutter_svg: ^2.0.10+1
   flutter_rating_bar: ^4.0.1

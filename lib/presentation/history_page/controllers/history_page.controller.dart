@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -6,19 +7,23 @@ import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
 import '../../../config.dart';
 
-class HistoryPageController extends GetxController {
+class HistoryPageController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   final count = 0.obs;
-  var ordersList = <OrdersModel>[].obs;
   final laundries = [].obs;
   final jenisList = [].obs;
+  var ordersList = <OrdersModel>[].obs;
+  var detailList = {}.obs;
   var isLoading = false.obs;
+  late TabController tabController;
+
   GetStorage box = GetStorage();
 
   Future<void> fetchOrdersData() async {
     try {
       isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()["url"];
-      final token = box.read('token');
+      final token = box.read('token')?.toString();
 
       var headers = {
         'Accept': 'application/json',
@@ -41,7 +46,7 @@ class HistoryPageController extends GetxController {
         print(response.statusCode);
       }
     } catch (e) {
-      Get.snackbar('Error ', e.toString());
+      Get.snackbar('Error Catch', e.toString());
       print(e);
     } finally {
       isLoading.value = false;
@@ -60,7 +65,7 @@ class HistoryPageController extends GetxController {
       };
 
       var response = await http.get(
-        Uri.parse('$url/admin/laundry/all'),
+        Uri.parse('$url/laundry/all'),
         headers: headers,
       );
 
@@ -81,39 +86,12 @@ class HistoryPageController extends GetxController {
     }
   }
 
-  Map<String, dynamic> detailTransaksi(int index, OrdersModel product) {
-    return {
-      'id': product.id,
-      'index': index,
-      'no_pemesanan': product.noPemesanan,
-      'jenis_pemesanan': product.jenisPemesanan,
-      'nama_pemesan': product.namaPemesan,
-      'nomor_telepon': product.nomorTelepon,
-      'alamat': product.alamat,
-      'berat_laundry': product.beratLaundry,
-      'total_harga': product.totalHarga,
-      'payment_method': product.paymentMethod,
-      'tanggal_pemesanan': product.tanggalPemesanan!
-          .substring(0, product.tanggalPemesanan!.length - 3),
-      'tanggal_pemesanan_only_date': product.tanggalPemesanan!
-          .substring(5, product.tanggalPemesanan!.length - 9),
-      'tanggal_pengambilan': product.tanggalPengambilan!
-          .substring(5, product.tanggalPengambilan!.length - 9),
-      'laundry_id': jenisList[int.parse(product.laundryId.toString()) - 1],
-    };
-  }
-
-  void goToDetailRiwayatPage(int index) {
-    var product = ordersList[index];
-    var productDetail = detailTransaksi(index, product);
-    Get.toNamed(Routes.TRANSACTION_PAGE, arguments: productDetail);
-  }
-
   @override
   void onInit() {
     super.onInit();
     fetchOrdersData();
     getLaundries();
+    tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -124,6 +102,7 @@ class HistoryPageController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    tabController.dispose();
   }
 
   void increment() => count.value++;

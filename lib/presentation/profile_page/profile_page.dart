@@ -148,9 +148,7 @@ class MainProfileWidget extends GetView<ProfileController> {
                 bottom: 0,
                 right: 4,
                 child: GestureDetector(
-                    onTap: () {
-                      // Handle profile picture change
-                    },
+                    onTap: () {},
                     child: CircleAvatar(
                         radius: 15,
                         backgroundColor: Colors.white,
@@ -162,11 +160,11 @@ class MainProfileWidget extends GetView<ProfileController> {
           ],
         ),
         Text(
-          controller.userData['username'],
+          controller.userData['username'] ?? "default Username",
           style: tsBodyMediumMedium(black),
         ),
         Text(
-          controller.userData['email'],
+          controller.userData['email'] ?? "default Email",
           style: tsBodySmallMedium(black),
         ),
       ],

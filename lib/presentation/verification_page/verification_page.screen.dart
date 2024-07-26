@@ -102,8 +102,6 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
                       _pinController4.text +
                       _pinController5.text +
                       _pinController6.text;
-
-                  print('Extracted PIN: $pinCode');
                   controller.verifyOtp(pinCode);
                 },
                 elevation: 3,

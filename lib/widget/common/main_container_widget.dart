@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import '../../infrastructure/theme/themes.dart';
 import 'box_shadow.dart';
 
 class MainContainerWidget extends StatelessWidget {
-  const MainContainerWidget({
-    Key? key,
-    this.childs,
-    this.onPressed,
-    this.color,
-    this.height,
-    this.width,
-  }) : super(key: key);
+  const MainContainerWidget(
+      {Key? key,
+      this.childs,
+      this.onPressed,
+      this.color,
+      this.height,
+      this.width,
+      this.border})
+      : super(key: key);
 
   final Color? color;
+  final border;
   final Widget? childs;
   final int? height, width;
   final void Function()? onPressed;
@@ -26,7 +29,8 @@ class MainContainerWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: color ?? Colors.white,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [localMainShadow()],
+            // boxShadow: [localMainShadow()],
+            border: Border.all(color: lightGrey, width: 1),
           ),
           child: childs),
     );

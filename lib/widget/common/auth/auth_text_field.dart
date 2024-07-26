@@ -12,6 +12,8 @@ class AuthTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final List<TextInputFormatter>? formatter;
   final TextInputType? keyboardType;
+  final TextEditingController? controller;
+  final bool? readOnly;
   AuthTextField({
     Key? key,
     this.formKey,
@@ -23,6 +25,8 @@ class AuthTextField extends StatelessWidget {
     this.suffixIcon,
     this.formatter,
     this.keyboardType,
+    this.controller,
+    this.readOnly,
   }) : super(key: key);
 
   @override
@@ -35,7 +39,9 @@ class AuthTextField extends StatelessWidget {
         onTap: onTap,
         onChanged: onChanged,
         validator: validator,
+        controller: controller,
         obscureText: isObsecure ?? false,
+        readOnly: readOnly ?? false,
         inputFormatters: formatter,
         keyboardType: keyboardType ?? TextInputType.text,
         decoration: InputDecoration(
