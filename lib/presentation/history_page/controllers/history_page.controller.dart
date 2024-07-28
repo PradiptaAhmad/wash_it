@@ -18,8 +18,8 @@ class HistoryPageController extends GetxController
   GetStorage box = GetStorage();
 
   Future<void> fetchOrdersData() async {
+    isLoading.value = true;
     try {
-      isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token')?.toString();
 
@@ -52,8 +52,8 @@ class HistoryPageController extends GetxController
   }
 
   Future<void> getLaundries() async {
+    isLoading.value = true;
     try {
-      isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()['url'];
       final token = box.read('token');
 
