@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
-import 'package:wash_it/widget/common/detail_widget.dart';
 import '../../infrastructure/navigation/routes.dart';
 import '../../widget/common/content_title_widget.dart';
 import '../../widget/common/main_container_widget.dart';
@@ -62,10 +62,23 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                         children: [
                           Obx(() {
                             if (controller.isLoading.value) {
-                              return Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(defaultMargin),
-                                  child: CircularProgressIndicator(),
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: controller.ordersList.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) =>
+                                    Shimmer.fromColors(
+                                  baseColor: lightGrey.withOpacity(0.3),
+                                  highlightColor: lightGrey.withOpacity(0.1),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: defaultMargin),
+                                    child: MainContainerWidget(
+                                      color: primaryColor,
+                                      height: 187,
+                                      width: double.infinity,
+                                    ),
+                                  ),
                                 ),
                               );
                             } else if (controller.ordersList.isEmpty) {
@@ -78,25 +91,7 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   final order = controller.ordersList[index];
-                                  final laundryId = order.laundryId != null
-                                      ? int.tryParse(order.laundryId!)
-                                      : null;
-
-                                  int adjustedIndex =
-                                      (laundryId != null && laundryId > 0)
-                                          ? laundryId - 1
-                                          : 0;
-
-                                  final jenisPesanan =
-                                      (controller.jenisList.isNotEmpty &&
-                                              adjustedIndex <
-                                                  controller.jenisList.length)
-                                          ? controller.jenisList[adjustedIndex]
-                                              .toString()
-                                          : 'Loading...';
-
-                                  return MainDetailView(
-                                      order: order, jenisPesanan: jenisPesanan);
+                                  return MainDetailView(order: order);
                                 },
                               );
                             }
@@ -121,11 +116,9 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
 }
 
 class MainDetailView extends StatelessWidget {
-  const MainDetailView(
-      {super.key, required this.order, required this.jenisPesanan});
+  const MainDetailView({super.key, required this.order});
 
   final OrdersModel order;
-  final jenisPesanan;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +139,7 @@ class MainDetailView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Order id",
+                          "id Pesanan",
                           style: tsLabelLargeMedium(grey),
                         ),
                         Text(
@@ -198,7 +191,7 @@ class MainDetailView extends StatelessWidget {
                           style: tsLabelLargeSemibold(darkGrey),
                         ),
                         Text(
-                          "${jenisPesanan}",
+                          "${order.namaLaundry}",
                           style: tsBodySmallSemibold(successColor),
                         ),
                       ],

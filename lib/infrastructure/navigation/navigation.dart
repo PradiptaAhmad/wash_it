@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-
-import 'package:wash_it/infrastructure/navigation/bindings/controllers/chat_controller_binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/order_antarjemput.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
-import 'package:wash_it/presentation/chat_page/detail_message_screen.dart';
 import 'package:wash_it/presentation/profile_page/profile_page.dart';
 import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
 
@@ -86,11 +83,6 @@ class Nav {
       name: Routes.VERIFICATION_PAGE,
       page: () => VerificationPageScreen(),
       binding: VerificationPageControllerBinding(),
-    ),
-    GetPage(
-      name: Routes.CHAT_PAGE,
-      page: () => DetailMessageScreen(),
-      binding: ChatControllerBinding(),
     ),
     GetPage(
       name: Routes.STATUS_PAGE,

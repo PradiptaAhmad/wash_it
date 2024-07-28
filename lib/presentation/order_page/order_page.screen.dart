@@ -86,8 +86,15 @@ class OrderView extends GetView<OrderController> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(defaultMargin),
-                  child: Text("Selanjutnya",
-                      style: tsBodySmallSemibold(primaryColor)),
+                  child: controller.isLoading.value
+                      ? Transform.scale(
+                          scale: 0.5,
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      : Text("Selanjutnya",
+                          style: tsBodySmallSemibold(primaryColor)),
                 ),
               ),
             ),
@@ -123,7 +130,7 @@ class OrderView extends GetView<OrderController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Pesan Untuk Sendiri",
+                      "Pesan untuk sendiri",
                       style: tsBodyMediumMedium(black),
                     ),
                     Switch(
@@ -154,7 +161,7 @@ class OrderView extends GetView<OrderController> {
                 ),
                 Obx(() => InputFormWidget(
                       title: "Nama Pelanggan",
-                      hintText: "Masukkan nama Anda",
+                      hintText: "Masukkan nama anda",
                       controller: controller.nameTextController,
                       readOnly: controller.canContinue.value,
                       keyboardType: TextInputType.name,
@@ -166,7 +173,7 @@ class OrderView extends GetView<OrderController> {
                     title: "Nomor Telepon",
                     controller: controller.phoneTextEditingController,
                     formatter: [FilteringTextInputFormatter.digitsOnly],
-                    hintText: "Masukkan nomor telepon Anda",
+                    hintText: "Masukkan nomor telepon anda",
                     readOnly: controller.canContinue.value,
                     keyboardType: TextInputType.phone,
                     onChanged: (value) {
@@ -174,7 +181,7 @@ class OrderView extends GetView<OrderController> {
                     })),
                 InputFormWidget(
                   title: "Alamat",
-                  hintText: "Masukkan alamat Anda",
+                  hintText: "Masukkan alamat anda",
                   controller: controller.addressTextEditingController,
                   keyboardType: TextInputType.streetAddress,
                   onChanged: (value) {
@@ -318,7 +325,7 @@ class OrderView extends GetView<OrderController> {
                   const SizedBox(height: 10),
                   _buildDataItem(
                     "Jenis Pemesanan",
-                    "${tipeOrder == 'antar_jemput' ? "Antar Jemput" : "Antar Mandiri"}",
+                    "${tipeOrder == 'antar_jemput' ? "Antar jemput" : "Antar mandiri"}",
                   ),
                   _buildDataItem(
                     "Tipe Laundry",
@@ -333,7 +340,7 @@ class OrderView extends GetView<OrderController> {
                 ]),
                 const SizedBox(height: 20),
                 Text(
-                  "*Untuk layanan antar jemput diwajibkan membayar biaya minimal per kg",
+                  "*Untuk layanan antar jemput diwajibkan membayar biaya minimal per kg, minimal 3Kg",
                   style: tsLabelLargeMedium(darkGrey),
                 ),
                 SizedBox(height: 80),
@@ -350,7 +357,13 @@ class OrderView extends GetView<OrderController> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: tsBodySmallMedium(darkGrey)),
-          Text(value, style: tsBodySmallRegular(darkBlue)),
+          Text(
+            value,
+            style: tsBodySmallRegular(darkBlue),
+            maxLines: 1,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );

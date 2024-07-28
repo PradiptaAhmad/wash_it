@@ -35,7 +35,7 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
               SizedBox(height: 10),
               Row(
                 children: [
-                  Text(controller.formatPhoneNumber(),
+                  Text(controller.userData['phone'],
                       style: tsBodySmallMedium(black)),
                   SizedBox(
                     width: 10,

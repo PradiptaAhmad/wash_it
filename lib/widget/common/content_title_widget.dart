@@ -25,7 +25,7 @@ class ContentTitleWidget extends StatelessWidget {
           Expanded(
               child: Text(
             title ?? "",
-            style: lefttextSize ?? tsBodyMediumSemibold(black),
+            style: lefttextSize ?? tsBodyLargeSemibold(black),
           )),
           Text(
             subtitle ?? "",

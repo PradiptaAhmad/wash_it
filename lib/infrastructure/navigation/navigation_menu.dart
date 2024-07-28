@@ -32,7 +32,7 @@ class NavigationMenu extends StatelessWidget {
                 Icons.home_filled,
                 color: black,
               ),
-              label: "Home",
+              label: "Beranda",
             ),
             NavigationDestination(
               icon: Icon(
@@ -54,7 +54,7 @@ class NavigationMenu extends StatelessWidget {
                 Icons.receipt_rounded,
                 color: black,
               ),
-              label: "History",
+              label: "Riwayat",
             ),
             NavigationDestination(
               icon: Icon(
@@ -65,7 +65,7 @@ class NavigationMenu extends StatelessWidget {
                 Icons.settings,
                 color: black,
               ),
-              label: "Settings",
+              label: "Pengaturan",
             ),
           ],
         ),

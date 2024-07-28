@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
 
 import '../../../config.dart';
@@ -13,16 +12,14 @@ class HomeController extends GetxController {
   final count = 0.obs;
   final laundries = [].obs;
   final userData = {}.obs;
-  var email = ''.obs;
-  var password = ''.obs;
   var ordersList = <OrdersModel>[].obs;
   var jenisList = [].obs;
   var isLoading = false.obs;
 
   GetStorage box = GetStorage();
   Future<void> fetchOrdersData() async {
+    isLoading.value = true;
     try {
-      isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token');
 
@@ -55,8 +52,8 @@ class HomeController extends GetxController {
   }
 
   Future<void> getLaundries() async {
+    isLoading.value = true;
     try {
-      isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()['url'];
       final token = box.read('token');
 
@@ -88,8 +85,8 @@ class HomeController extends GetxController {
   }
 
   Future<void> fetchUserData() async {
+    isLoading.value = true;
     try {
-      isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token');
 
