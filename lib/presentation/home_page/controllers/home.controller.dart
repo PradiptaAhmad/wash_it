@@ -12,8 +12,6 @@ class HomeController extends GetxController {
   final count = 0.obs;
   final laundries = [].obs;
   final userData = {}.obs;
-  var email = ''.obs;
-  var password = ''.obs;
   var ordersList = <OrdersModel>[].obs;
   var jenisList = [].obs;
   var isLoading = false.obs;

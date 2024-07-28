@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
 import '../../../config.dart';
 
@@ -13,7 +12,6 @@ class HistoryPageController extends GetxController
   final laundries = [].obs;
   final jenisList = [].obs;
   var ordersList = <OrdersModel>[].obs;
-  var detailList = {}.obs;
   var isLoading = false.obs;
   late TabController tabController;
 

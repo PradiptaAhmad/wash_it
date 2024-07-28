@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/order_page/order_page.screen.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
-import 'package:wash_it/widget/common/detail_widget.dart';
 import 'package:wash_it/widget/common/main_container_widget.dart';
 
 import 'controllers/home.controller.dart';
@@ -110,25 +108,8 @@ class HomeScreen extends GetView<HomeController> {
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               final order = controller.ordersList[index];
-                              final laundryId = order.laundryId != null
-                                  ? int.tryParse(order.laundryId!)
-                                  : null;
-
-                              int adjustedIndex =
-                                  (laundryId != null && laundryId > 0)
-                                      ? laundryId - 1
-                                      : 0;
-
-                              final jenisPesanan =
-                                  (controller.jenisList.isNotEmpty &&
-                                          adjustedIndex <
-                                              controller.jenisList.length)
-                                      ? controller.jenisList[adjustedIndex]
-                                          .toString()
-                                      : 'Loading...';
-
                               return HomeShowDetail.ShowDetailHome(
-                                  order: order, jenisPesanan: jenisPesanan);
+                                  order: order);
                             },
                           );
                         }
@@ -172,25 +153,8 @@ class HomeScreen extends GetView<HomeController> {
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               final order = controller.ordersList[index];
-                              final laundryId = order.laundryId != null
-                                  ? int.tryParse(order.laundryId!)
-                                  : null;
-
-                              int adjustedIndex =
-                                  (laundryId != null && laundryId > 0)
-                                      ? laundryId - 1
-                                      : 0;
-
-                              final jenisPesanan =
-                                  (controller.jenisList.isNotEmpty &&
-                                          adjustedIndex <
-                                              controller.jenisList.length)
-                                      ? controller.jenisList[adjustedIndex]
-                                          .toString()
-                                      : 'Loading...';
-
                               return HomeShowDetail.ShowDetailHome(
-                                  order: order, jenisPesanan: jenisPesanan);
+                                  order: order);
                             },
                           );
                         }
@@ -208,11 +172,9 @@ class HomeScreen extends GetView<HomeController> {
 }
 
 class HomeShowDetail extends StatelessWidget {
-  const HomeShowDetail.ShowDetailHome(
-      {super.key, required this.order, required this.jenisPesanan});
+  const HomeShowDetail.ShowDetailHome({super.key, required this.order});
 
   final OrdersModel order;
-  final jenisPesanan;
 
   @override
   Widget build(BuildContext context) {
@@ -285,7 +247,7 @@ class HomeShowDetail extends StatelessWidget {
                           style: tsLabelLargeSemibold(darkGrey),
                         ),
                         Text(
-                          "${jenisPesanan}",
+                          "${order.namaLaundry}",
                           style: tsBodySmallSemibold(successColor),
                         ),
                       ],

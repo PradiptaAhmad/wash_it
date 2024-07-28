@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wash_it/infrastructure/navigation/bindings/controllers/controllers_bindings.dart';
-import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
-import 'package:wash_it/widget/common/detail_widget.dart';
 import 'package:wash_it/widget/common/main_container_widget.dart';
 import '../../infrastructure/theme/themes.dart';
 import 'controllers/status_page.controller.dart';
-import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
 
 class StatusPageScreen extends GetView<StatusPageController> {
   const StatusPageScreen({Key? key}) : super(key: key);
