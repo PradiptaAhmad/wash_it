@@ -3,27 +3,30 @@ import '../../infrastructure/theme/themes.dart';
 import 'box_shadow.dart';
 
 class MainContainerWidget extends StatelessWidget {
-  const MainContainerWidget(
-      {Key? key,
-      this.childs,
-      this.onPressed,
-      this.color,
-      this.height,
-      this.width,
-      this.border})
-      : super(key: key);
+  const MainContainerWidget({
+    Key? key,
+    this.childs,
+    this.onPressed,
+    this.color,
+    this.height,
+    this.width,
+    this.border,
+    this.padding,
+  }) : super(key: key);
 
   final Color? color;
   final border;
   final Widget? childs;
-  final int? height, width;
+  final double? height, width;
   final void Function()? onPressed;
+  final padding;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
       child: Container(
+          padding: padding,
           height: height?.toDouble(),
           width: width?.toDouble(),
           decoration: BoxDecoration(

@@ -32,7 +32,7 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: screenHeight * 0.04,
+                  height: screenHeight * 0.1,
                 ),
                 Text(
                   "Daftar",

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
 import 'package:wash_it/widget/common/detail_widget.dart';
@@ -62,10 +63,23 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                         children: [
                           Obx(() {
                             if (controller.isLoading.value) {
-                              return Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(defaultMargin),
-                                  child: CircularProgressIndicator(),
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: controller.ordersList.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) =>
+                                    Shimmer.fromColors(
+                                  baseColor: lightGrey.withOpacity(0.3),
+                                  highlightColor: lightGrey.withOpacity(0.1),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: defaultMargin),
+                                    child: MainContainerWidget(
+                                      color: primaryColor,
+                                      height: 187,
+                                      width: double.infinity,
+                                    ),
+                                  ),
                                 ),
                               );
                             } else if (controller.ordersList.isEmpty) {
@@ -146,7 +160,7 @@ class MainDetailView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Order id",
+                          "id Pesanan",
                           style: tsLabelLargeMedium(grey),
                         ),
                         Text(

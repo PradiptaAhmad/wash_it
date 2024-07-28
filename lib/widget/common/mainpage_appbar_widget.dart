@@ -34,6 +34,7 @@ class MainpageAppbarWidget extends StatelessWidget
               icon: Icon(
                 icon ?? Icons.arrow_back_ios_rounded,
                 color: darkGrey,
+                size: 20,
               ),
               onPressed: onPressed ?? Get.back,
             ),
@@ -42,7 +43,7 @@ class MainpageAppbarWidget extends StatelessWidget
       backgroundColor: backgroundColor,
       title: Text(
         title ?? 'default text title',
-        style: textStyle ?? tsBodyLargeMedium(black),
+        style: textStyle ?? tsBodyMediumMedium(black),
       ),
       centerTitle: true,
     );

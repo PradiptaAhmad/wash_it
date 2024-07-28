@@ -73,7 +73,7 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Order id",
+                                              "id Pesanan",
                                               style: tsLabelLargeMedium(grey),
                                             ),
                                             Text(

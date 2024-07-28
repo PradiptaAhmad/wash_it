@@ -28,7 +28,7 @@ class LoginPageScreen extends GetView<LoginPageController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: screenHeight * 0.04,
+                height: screenHeight * 0.1,
               ),
               Text(
                 "Login",
