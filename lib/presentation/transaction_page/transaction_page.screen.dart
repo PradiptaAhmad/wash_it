@@ -4,14 +4,11 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:wash_it/presentation/transaction_page/shimmer/transaction_page_skeleton.dart';
 import 'package:wash_it/presentation/transaction_page/widget/detail_text_widget.dart';
 import 'package:wash_it/widget/common/main_container_widget.dart';
 import 'package:wash_it/widget/common/mainpage_appbar_widget.dart';
 
-import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/themes.dart';
-import '../../widget/common/button_widget.dart';
 import 'controllers/transaction_page.controller.dart';
 
 class TransactionPageScreen extends GetView<TransactionPageController> {

@@ -5,7 +5,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:wash_it/config.dart';
 import 'package:http/http.dart' as http;
 import 'package:wash_it/infrastructure/navigation/routes.dart';
-import 'package:wash_it/presentation/profile_page/models/ProfileModel.dart';
 
 import '../../../infrastructure/theme/themes.dart';
 

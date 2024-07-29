@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/profile_page/profile_page.dart';
 import 'package:wash_it/presentation/screens.dart';

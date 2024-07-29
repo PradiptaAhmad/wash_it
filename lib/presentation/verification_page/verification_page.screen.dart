@@ -30,17 +30,17 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
                 style: tsTitleSmallMedium(black),
               ),
               SizedBox(height: 10),
-              Text("Kode Verifikasi Telah Terkirim Kepada Nomor Tertera",
+              Text("Kode Verifikasi Telah Terkirim Ke Email ",
                   style: tsLabelLargeRegular(black)),
               SizedBox(height: 10),
               Row(
                 children: [
-                  Text(controller.userData['phone'],
+                  Text(controller.userData['email'],
                       style: tsBodySmallMedium(black)),
                   SizedBox(
                     width: 10,
                   ),
-                  Text("Ganti Nomor?",
+                  Text("Ganti Email?",
                       style: tsLabelLargeSemibold(secondaryColor))
                 ],
               ),

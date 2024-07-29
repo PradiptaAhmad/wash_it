@@ -4,7 +4,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
 import '../../../config.dart';
-import '../../../infrastructure/navigation/routes.dart';
 
 class StatusPageController extends GetxController {
   final count = 0.obs;
