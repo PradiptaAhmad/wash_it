@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:wash_it/config.dart';
 import 'package:wash_it/infrastructure/navigation/routes.dart';
@@ -20,8 +20,8 @@ class RegisterPageController extends GetxController {
   var phone = ''.obs;
   var password = ''.obs;
 
-  // Google Signin
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  // // Google Signin
+  // final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // GetStorage
   GetStorage box = GetStorage();
@@ -29,6 +29,7 @@ class RegisterPageController extends GetxController {
   // Register Function
   Future<void> register() async {
     isLoading.value = true;
+    final fcm_token = await FirebaseMessaging.instance.getToken();
     final url = ConfigEnvironments.getEnvironments()['url'];
     print(url);
     var data = {
@@ -36,6 +37,7 @@ class RegisterPageController extends GetxController {
       'email': email.value,
       'phone': phone.value,
       'password': password.value,
+      'notification_token': fcm_token,
     };
     var headers = {
       'Accept': 'application/json',
@@ -50,8 +52,10 @@ class RegisterPageController extends GetxController {
     if (response.statusCode == 201) {
       final user = json.decode(response.body)['token'];
       box.write('token', user);
-      Get.toNamed(Routes.VERIFICATION_PAGE);
+      Get.toNamed(Routes.VERIFICATION_PAGE,
+          arguments: [json.decode(response.body)['user']]);
     } else {
+      print(json.decode(response.body)['errors']);
       Get.snackbar("Gagal Register", json.decode(response.body)['message'],
           snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
     }

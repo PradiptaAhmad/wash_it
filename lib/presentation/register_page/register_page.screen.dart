@@ -17,11 +17,13 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
   final _phoneKey = GlobalKey<FormState>();
   final _passwordKey = GlobalKey<FormState>();
 
+
   RegisterPageScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+
 
     return Scaffold(
       body: SafeArea(
@@ -48,10 +50,12 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                 InputFormWidget(
                   title: "Username",
                   hintText: "Masukkan Username",
+                  formKey: _usernameKey,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Username tidak boleh kosong";
                     } else {
+                      controller.username.value = value;
                       return null;
                     }
                   },
@@ -149,18 +153,20 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                             ),
                       backgroundColor: secondaryColor,
                       onPressed: () {
-                        // if (_usernameKey.currentState!.validate() &&
-                        //     _emailKey.currentState!.validate() &&
-                        //     _phoneKey.currentState!.validate() &&
-                        //     _passwordKey.currentState!.validate()) {
-                        //   controller.register();
-                        // }
-                        if (controller.email.value.isNotEmpty &&
-                            controller.phone.value.isNotEmpty &&
-                            controller.password.value.isNotEmpty &&
-                            controller.username.value.isNotEmpty) {
+                        if (_usernameKey.currentState!.validate() &&
+                            _emailKey.currentState!.validate() &&
+                            _phoneKey.currentState!.validate() &&
+                            _passwordKey.currentState!.validate()) {
                           controller.register();
-                        } else {
+                        }
+                        // if (controller.email.value.isNotEmpty &&
+                        //     controller.phone.value.isNotEmpty &&
+                        //     controller.password.value.isNotEmpty &&
+                        //     controller.username.value.isNotEmpty) {
+                            
+                        //   controller.register();
+                        else {
+                          print(controller.email.value.isNotEmpty);
                           Get.snackbar("Gagal", "Data tidak boleh kosong",
                               snackPosition: SnackPosition.TOP,
                               backgroundColor: warningColor,

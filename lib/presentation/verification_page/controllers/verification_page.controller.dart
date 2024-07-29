@@ -14,6 +14,7 @@ class VerificationPageController extends GetxController {
   final box = GetStorage();
   final url = ConfigEnvironments.getEnvironments()['url'];
   final userData = {}.obs;
+  late final argument;
 
   var otp = "".obs;
 
@@ -58,7 +59,7 @@ class VerificationPageController extends GetxController {
 
     try {
       final response = await http.post(
-        Uri.parse("${url}/users/send-otp"),
+        Uri.parse("${url}/users/otp/send/email"),
         headers: headers,
       );
 
@@ -88,7 +89,7 @@ class VerificationPageController extends GetxController {
 
     try {
       final response = await http.post(
-        Uri.parse("${url}/users/verify-otp"),
+        Uri.parse("${url}/users/otp/verify/email"),
         headers: headers,
         body: data,
       );
@@ -99,7 +100,7 @@ class VerificationPageController extends GetxController {
         Get.offAllNamed(Routes.NAVBAR);
       } else {
         Get.snackbar(
-            "Gagal ${response.statusCode}", "Kode OTP gagal diverifikasi $data",
+            "Gagal ${response.body}", "Kode OTP gagal diverifikasi $data",
             snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
       }
     } catch (e) {
@@ -133,7 +134,9 @@ class VerificationPageController extends GetxController {
 
   @override
   void onInit() {
-    getUserData();
+    argument = Get.arguments;
+    userData.value = argument[0];
+    // getUserData();
     sendOtp();
     startTimer();
     super.onInit();

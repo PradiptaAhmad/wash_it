@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:wash_it/infrastructure/navigation/bindings/controllers/profile_page.binding.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/profile_page/profile_change_page.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';

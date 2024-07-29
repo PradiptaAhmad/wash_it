@@ -6,6 +6,7 @@ import 'auth_text_field.dart';
 class InputFormWidget extends StatelessWidget {
   const InputFormWidget({
     Key? key,
+    this.formKey,
     this.title,
     this.hintText,
     this.validator,
@@ -22,6 +23,7 @@ class InputFormWidget extends StatelessWidget {
   final Function(String)? onChanged;
   final bool? readOnly;
   final TextEditingController? controller;
+  final Key? formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class InputFormWidget extends StatelessWidget {
           ),
           textField ??
               AuthTextField(
+                formKey: formKey,
                 readOnly: readOnly,
                 controller: controller,
                 formatter: formatter,
