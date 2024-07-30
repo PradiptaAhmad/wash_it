@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
@@ -19,76 +20,79 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
 
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          margin: EdgeInsets.all(defaultMargin),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 1),
-              Text(
-                "Kode Verifikasi",
-                style: tsTitleSmallMedium(black),
-              ),
-              SizedBox(height: 10),
-              Text("Kode Verifikasi Telah Terkirim Ke Email ",
-                  style: tsLabelLargeRegular(black)),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  Text(controller.userData['email'],
-                      style: tsBodySmallMedium(black)),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text("Ganti Email?",
-                      style: tsLabelLargeSemibold(secondaryColor))
-                ],
-              ),
-              SizedBox(height: 10),
-              // OtpFormWidget(),
-              Form(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Obx(
+        () => controller.isLoading.value
+            ? Center(child: CupertinoActivityIndicator())
+            : Container(
+                margin: EdgeInsets.all(defaultMargin),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PinFormInput(controller: _pinController1),
-                    PinFormInput(controller: _pinController2),
-                    PinFormInput(controller: _pinController3),
-                    PinFormInput(controller: _pinController4),
-                    PinFormInput(controller: _pinController5),
-                    PinFormInput(controller: _pinController6),
+                    SizedBox(height: 1),
+                    Text(
+                      "Kode Verifikasi",
+                      style: tsTitleSmallMedium(black),
+                    ),
+                    SizedBox(height: 10),
+                    Text("Kode Verifikasi Telah Terkirim Ke Email ",
+                        style: tsLabelLargeRegular(black)),
+                    SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Text("${controller.userData['email']}",
+                            style: tsBodySmallMedium(black)),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text("Ganti Email?",
+                            style: tsLabelLargeSemibold(secondaryColor))
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    // OtpFormWidget(),
+                    Form(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          PinFormInput(controller: _pinController1),
+                          PinFormInput(controller: _pinController2),
+                          PinFormInput(controller: _pinController3),
+                          PinFormInput(controller: _pinController4),
+                          PinFormInput(controller: _pinController5),
+                          PinFormInput(controller: _pinController6),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Obx(
+                          () => controller.timeleft.value == 0
+                              ? InkWell(
+                                  borderRadius: BorderRadius.circular(4),
+                                  onTap: () {},
+                                  child: Text(
+                                    "Kirim Ulang?",
+                                    style: tsLabelLargeSemibold(secondaryColor),
+                                  ),
+                                )
+                              : Text(
+                                  "Kirim Ulang? ",
+                                  style: tsLabelLargeSemibold(darkGrey),
+                                ),
+                        ),
+                        Obx(() => controller.timeleft.value > 0
+                            ? Text(
+                                "Dalam ${controller.timeleft.value} detik",
+                                style: tsLabelLargeRegular(black),
+                              )
+                            : Text("")),
+                      ],
+                    )
                   ],
                 ),
               ),
-              SizedBox(height: 5),
-              Row(
-                children: [
-                  Obx(
-                    () => controller.timeleft.value == 0
-                        ? InkWell(
-                            borderRadius: BorderRadius.circular(4),
-                            onTap: () {},
-                            child: Text(
-                              "Kirim Ulang?",
-                              style: tsLabelLargeSemibold(secondaryColor),
-                            ),
-                          )
-                        : Text(
-                            "Kirim Ulang?",
-                            style: tsLabelLargeSemibold(darkGrey),
-                          ),
-                  ),
-                  Obx(() => controller.timeleft.value > 0
-                      ? Text(
-                          "Kirim Ulang Dalam ${controller.timeleft.value} detik",
-                          style: tsLabelLargeRegular(black),
-                        )
-                      : Text("")),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
+      )),
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
         child: Row(

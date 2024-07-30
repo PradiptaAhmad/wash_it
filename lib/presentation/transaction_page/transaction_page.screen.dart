@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:wash_it/presentation/transaction_page/widget/detail_text_widget.dart';
 import 'package:wash_it/widget/common/main_container_widget.dart';
 import 'package:wash_it/widget/common/mainpage_appbar_widget.dart';
@@ -30,8 +31,10 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
           return RefreshIndicator(
             onRefresh: () async {
               controller.fetchDetailOrder();
+              controller.fetchStatusData();
             },
             child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
               padding: EdgeInsets.all(defaultMargin),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,13 +68,13 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                           DetailDataWidget(
                             leftTitle: "Tanggal pemesanan",
                             rightTitle:
-                                "${controller.ordersList['tanggal_pemesanan']}",
+                                "${DateFormat('d MMMM yyyy').format(DateTime.parse(controller.ordersList['tanggal_pemesanan'] ?? "1443-07-31 00:00:00"))}",
                           ),
                           SizedBox(height: 5),
                           DetailDataWidget(
                             leftTitle: "Tanggal estimasi",
                             rightTitle:
-                                "${controller.ordersList['tanggal_pengambilan']}",
+                                "${DateFormat('d MMMM yyyy').format(DateTime.parse(controller.ordersList['tanggal_pengambilan'] ?? "2007-07-31 00:00:00"))}",
                           ),
                           SizedBox(height: 5),
                           DetailDataWidget(
@@ -283,76 +286,81 @@ class OrderStatusIcons extends StatelessWidget {
             Icon(
               Iconsax.receipt,
               size: 30,
-              color: successColor,
+              color: controller.statusList['status_code'] >= 0
+                  ? successColor
+                  : lightGrey,
             ),
             DottedLine(
               direction: Axis.horizontal,
               lineLength: 40,
               lineThickness: 2,
               dashLength: 5,
-              dashColor: successColor,
+              dashColor: controller.statusList['status_code'] >= 1
+                  ? successColor
+                  : lightGrey,
             ),
             Icon(
               Iconsax.wallet_1,
               size: 30,
-              color: successColor,
+              color: controller.statusList['status_code'] >= 1
+                  ? successColor
+                  : lightGrey,
             ),
             DottedLine(
               direction: Axis.horizontal,
               lineLength: 40,
               lineThickness: 2,
               dashLength: 5,
-              dashColor: successColor,
+              dashColor: controller.statusList['status_code'] >= 2
+                  ? successColor
+                  : lightGrey,
             ),
             Icon(
               Iconsax.bubble,
               size: 30,
-              color: successColor,
+              color: controller.statusList['status_code'] >= 2
+                  ? successColor
+                  : lightGrey,
             ),
             DottedLine(
               direction: Axis.horizontal,
               lineLength: 40,
               lineThickness: 2,
               dashLength: 5,
-              dashColor: successColor,
+              dashColor: controller.statusList['status_code'] >= 3
+                  ? successColor
+                  : lightGrey,
             ),
             Icon(
               Iconsax.location,
               size: 30,
-              color: successColor,
+              color: controller.statusList['status_code'] >= 3
+                  ? successColor
+                  : lightGrey,
             ),
             DottedLine(
               direction: Axis.horizontal,
               lineLength: 40,
               lineThickness: 2,
               dashLength: 5,
-              dashColor: successColor,
+              dashColor: controller.statusList['status_code'] >= 4
+                  ? successColor
+                  : lightGrey,
             ),
             Icon(
               Iconsax.verify,
               size: 30,
-              color: successColor,
+              color: controller.statusList['status_code'] >= 4
+                  ? successColor
+                  : lightGrey,
             ),
           ],
         ),
         SizedBox(height: 10),
         Text(
-          "Laundry telah diterima",
+          "${controller.statusList['status_description']}",
           style: tsBodySmallMedium(black),
         ),
-        // Container(
-        //   margin: EdgeInsets.symmetric(horizontal: 4),
-        //   child: Row(
-        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //     children: [
-        //       Text("${controller.ordersList['tanggal_pemesanan']}",
-        //           style: tsBodySmallRegular(black)),
-        //       Text("Estimasi", style: tsBodySmallRegular(black)),
-        //       Text("${controller.ordersList['tanggal_pengambilan']}",
-        //           style: tsBodySmallRegular(black)),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }
