@@ -86,15 +86,8 @@ class OrderView extends GetView<OrderController> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(defaultMargin),
-                  child: controller.isLoading.value
-                      ? Transform.scale(
-                          scale: 0.5,
-                          child: CircularProgressIndicator(
-                            color: primaryColor,
-                          ),
-                        )
-                      : Text("Selanjutnya",
-                          style: tsBodySmallSemibold(primaryColor)),
+                  child: Text("Selanjutnya",
+                      style: tsBodySmallSemibold(primaryColor)),
                 ),
               ),
             ),

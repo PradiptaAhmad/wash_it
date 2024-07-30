@@ -14,6 +14,7 @@ class VerificationPageController extends GetxController {
   final box = GetStorage();
   final url = ConfigEnvironments.getEnvironments()['url'];
   final userData = {}.obs;
+  var isLoading = false.obs;
   late final argument;
 
   var otp = "".obs;
@@ -23,14 +24,15 @@ class VerificationPageController extends GetxController {
   var timeleft = 120.obs;
 
   Future<void> getUserData() async {
-    final token = box.read('token');
-
-    var headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token'
-    };
-
+    isLoading.value = true;
     try {
+      final token = box.read('token');
+
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token'
+      };
+
       final response = await http.get(
         Uri.parse("${url}/users/me"),
         headers: headers,
@@ -39,6 +41,7 @@ class VerificationPageController extends GetxController {
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body)['user'];
         userData.value = jsonResponse;
+        print(jsonResponse);
       } else {
         Get.snackbar("Gagal", "Gagal mengambil data user",
             snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
@@ -46,18 +49,22 @@ class VerificationPageController extends GetxController {
     } catch (e) {
       Get.snackbar("Gagal", "Gagal mengambil data user",
           snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+    } finally {
+      isLoading.value = false;
     }
   }
 
   Future<void> sendOtp() async {
-    final token = box.read('token');
-
-    var headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    };
-
+    isLoading.value = true;
     try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      final token = box.read('token');
+
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token.toString()}',
+      };
+
       final response = await http.post(
         Uri.parse("${url}/users/otp/send/email"),
         headers: headers,
@@ -73,21 +80,26 @@ class VerificationPageController extends GetxController {
     } catch (e) {
       Get.snackbar("Gagal", "Kode OTP gagal dikirim",
           snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+    } finally {
+      isLoading.value = false;
     }
   }
 
   Future<void> verifyOtp(String pinCode) async {
-    final token = box.read('token');
-
-    var headers = {
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    };
-    var data = {
-      'otp': '$pinCode',
-    };
-
+    isLoading.value = true;
     try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      final token = box.read('token');
+
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token.toString()}',
+      };
+
+      var data = {
+        'otp': '$pinCode',
+      };
+
       final response = await http.post(
         Uri.parse("${url}/users/otp/verify/email"),
         headers: headers,
@@ -100,8 +112,9 @@ class VerificationPageController extends GetxController {
         Get.offAllNamed(Routes.NAVBAR);
       } else {
         Get.snackbar(
-            "Gagal ${response.body}", "Kode OTP gagal diverifikasi $data",
+            "Gagal ${response.statusCode}", "Kode OTP gagal diverifikasi $data",
             snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+        print(data);
       }
     } catch (e) {
       // Get.snackbar("Gagal", "Kode OTP gagal terprogress",
@@ -109,6 +122,8 @@ class VerificationPageController extends GetxController {
       Get.snackbar("Gagal", e.toString(),
           snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
       print(e);
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -135,8 +150,8 @@ class VerificationPageController extends GetxController {
   @override
   void onInit() {
     argument = Get.arguments;
-    userData.value = argument[0];
-    // getUserData();
+    // userData.value = argument[0];
+    getUserData();
     sendOtp();
     startTimer();
     super.onInit();

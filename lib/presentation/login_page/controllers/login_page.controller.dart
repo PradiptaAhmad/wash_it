@@ -51,7 +51,7 @@ class LoginPageController extends GetxController {
       final token = json.decode(response.body)['token'];
       final user = json.decode(response.body)['user'];
       box.write("token", token);
-      if (user['phone_verified_at'] == null) {
+      if (user['email_verified_at'] == null) {
         Get.toNamed(Routes.VERIFICATION_PAGE);
       } else {
         Get.snackbar(

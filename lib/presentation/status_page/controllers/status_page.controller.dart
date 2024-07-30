@@ -10,12 +10,13 @@ class StatusPageController extends GetxController {
   var ordersList = <OrdersModel>[].obs;
   var laundries = [].obs;
   var jenisList = [].obs;
+  var statusList = {}.obs;
   var isLoading = false.obs;
   GetStorage box = GetStorage();
 
   Future<void> fetchOrdersData() async {
+    isLoading.value = true;
     try {
-      isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token');
 
@@ -48,8 +49,8 @@ class StatusPageController extends GetxController {
   }
 
   Future<void> getLaundries() async {
+    isLoading.value = true;
     try {
-      isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()['url'];
       final token = box.read('token');
 
@@ -83,6 +84,7 @@ class StatusPageController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    isLoading = true.obs;
     fetchOrdersData();
     getLaundries();
   }
