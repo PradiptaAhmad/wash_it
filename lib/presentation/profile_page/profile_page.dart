@@ -44,46 +44,49 @@ class ProfilePage extends GetView<ProfileController> {
                   lefttextSize: tsBodyMediumMedium(black),
                 ),
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Username', style: tsBodySmallRegular(darkGrey)),
-                    InkWell(
-                      onTap: () => Get.to(
-                        ProfileChangePage(
-                          title: 'Username',
-                          hintText: controller.userData['username'],
-                          validator: (newValue) {
-                            controller.updateUserName(newValue);
-                            return null;
-                          },
-                          onTap: () => controller.updateUserNameData(),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Text('${controller.userData['username']}',
-                              overflow: TextOverflow.ellipsis,
-                              style: tsBodySmallRegular(black)),
-                          SizedBox(width: 20),
-                          Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            color: darkGrey,
-                            size: 15,
+                Obx(() => Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Username', style: tsBodySmallRegular(darkGrey)),
+                        InkWell(
+                          onTap: () => Get.to(
+                            ProfileChangePage(
+                              title: 'Username',
+                              hintText: controller.userData['username'],
+                              validator: (newValue) {
+                                controller.updateUserName(newValue);
+                                return null;
+                              },
+                              onTap: () => controller.updateUserNameData(),
+                            ),
+                          )!
+                              .then((value) {
+                            controller.fetchUserData();
+                          }),
+                          child: Row(
+                            children: [
+                              Text('${controller.userData['username']}',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: tsBodySmallRegular(black)),
+                              SizedBox(width: 20),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: darkGrey,
+                                size: 15,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                        )
+                      ],
+                    )),
                 SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Email', style: tsBodySmallRegular(darkGrey)),
                     InkWell(
-                      onTap: () => Get.to(
-                        ProfileChangePage(
+                      onTap: () async {
+                        await Get.to(ProfileChangePage(
                           title: 'Email',
                           hintText: controller.userData['email'],
                           validator: (newValue) {
@@ -91,8 +94,11 @@ class ProfilePage extends GetView<ProfileController> {
                             return null;
                           },
                           onTap: () => controller.updateEmailData(),
-                        ),
-                      ),
+                        ))!
+                            .then((value) {
+                          controller.fetchUserData();
+                        });
+                      },
                       child: Row(
                         children: [
                           Text('${controller.userData['email']}',
@@ -124,7 +130,10 @@ class ProfilePage extends GetView<ProfileController> {
                           },
                           onTap: () => controller.updateUserPhoneData(),
                         ),
-                      ),
+                      )!
+                          .then((value) {
+                        controller.fetchUserData();
+                      }),
                       child: Row(
                         children: [
                           Text('${controller.userData['phone']}',

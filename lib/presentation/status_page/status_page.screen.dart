@@ -54,6 +54,7 @@ class StatusPageScreen extends GetView<StatusPageController> {
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: controller.ordersList.length,
                         shrinkWrap: true,
+                        reverse: true,
                         itemBuilder: (context, index) {
                           final order = controller.ordersList[index];
                           String formattedDate = DateFormat('d MMMM yyyy')
@@ -150,7 +151,7 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                           Container(
                                             width: 120,
                                             child: Text(
-                                              "Jl.Pala no 108, Binagritya blok A, Medono, Pekalongan Barat, Pekalongan, Indonesia",
+                                              "${order.alamat}",
                                               style: tsLabelLargeSemibold(grey),
                                               softWrap: true,
                                               overflow: TextOverflow.ellipsis,
@@ -193,7 +194,7 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                                     tsLabelMediumMedium(black),
                                               ),
                                               Text(
-                                                'Dipesan',
+                                                '${order.status}',
                                                 style: tsBodySmallSemibold(
                                                     secondaryColor),
                                               ),

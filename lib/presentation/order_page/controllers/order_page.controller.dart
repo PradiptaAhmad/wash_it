@@ -16,8 +16,11 @@ class OrderController extends GetxController {
   var phonenumber = ''.obs;
   var canContinue = false.obs;
   var isSelected = false.obs;
+  var paymentList = ['Tunai', 'Non Tunai'].obs;
   var ordertype = ''.obs;
   var address = ''.obs;
+  var catatan = ''.obs;
+  var payment = ''.obs;
   var pickupdate = ''.obs;
   var laundryIndex = 0.obs;
   var laundryName = ''.obs;
@@ -54,7 +57,8 @@ class OrderController extends GetxController {
         'alamat': address.value,
         'tanggal_pengambilan': pickupdate.value,
         'laundry_id': laundryId.toString(),
-        'metode_pembayaran': 'tunai',
+        'metode_pembayaran': payment.value == 'Tunai' ? 'tunai' : 'non_tunai',
+        'catatan': catatan.value,
       };
       final response = await http.post(
         Uri.parse("${url}/orders/new"),

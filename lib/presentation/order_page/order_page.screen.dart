@@ -20,6 +20,9 @@ class OrderView extends GetView<OrderController> {
   Widget build(BuildContext context) {
     Get.put(OrderController());
 
+    const List<String> list = <String>['Tunai', 'Non Tunai'];
+    // String dropdownValue = list.first;
+
     return Scaffold(
       appBar: MainpageAppbarWidget(
         title: 'Pesan Laundry',
@@ -232,7 +235,9 @@ class OrderView extends GetView<OrderController> {
                 InputFormWidget(
                   title: "Catatan",
                   hintText: "Tambahkan catatan (opsional)",
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    controller.catatan.value = value;
+                  },
                 ),
                 const SizedBox(height: 10),
                 Padding(
@@ -328,8 +333,57 @@ class OrderView extends GetView<OrderController> {
                     "Tanggal Pengambilan",
                     "${controller.pickupdate.value}",
                   ),
-                  _buildDataItem("Catatan", "catatan"),
+                  _buildDataItem("Catatan", "${controller.catatan.value}"),
                   const SizedBox(height: 10),
+                  // DropdownMenu(
+                  //   inputDecorationTheme: InputDecorationTheme(
+                  //       isDense: true,
+                  //       isCollapsed: true,
+                  //       contentPadding: const EdgeInsets.symmetric(
+                  //           vertical: 5, horizontal: 15),
+                  //       constraints: BoxConstraints(minWidth: Get.width),
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         borderSide: BorderSide(color: lightGrey, width: 1),
+                  //       )),
+                  //   dropdownMenuEntries: controller.paymentList
+                  //       .map<DropdownMenuEntry<String>>((String value) {
+                  //     return DropdownMenuEntry<String>(
+                  //         value: value, label: value);
+                  //   }).toList(),
+                  // )
+                  DropdownButtonFormField(
+                    style: tsBodySmallMedium(black),
+                    // borderRadius: BorderRadius.all(Radius.circular(20)),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: lightGrey, width: 1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: grey, width: 1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      label: Text("Metode Pembayaran"),
+                      labelStyle: tsBodySmallMedium(darkGrey),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 15),
+                    ),
+
+                    items: controller.paymentList
+                        .map((item) => DropdownMenuItem(
+                              child: Text(item),
+                              value: item,
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      controller.payment.value = value!;
+                      print(value);
+                    },
+                  )
                 ]),
                 const SizedBox(height: 20),
                 Text(
@@ -350,12 +404,16 @@ class OrderView extends GetView<OrderController> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: tsBodySmallMedium(darkGrey)),
-          Text(
-            value,
-            style: tsBodySmallRegular(darkBlue),
-            maxLines: 1,
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
+          Container(
+            width: Get.width * 0.4,
+            child: Text(
+              value,
+              style: tsBodySmallRegular(darkBlue),
+              maxLines: 2,
+              softWrap: true,
+              textAlign: TextAlign.end,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),

@@ -41,7 +41,7 @@ class ProfileController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body)['user'];
+        final jsonResponse = json.decode(response.body)['user'];
         userData.value = jsonResponse; // Store raw JSON in userData
         isLoading.value = false;
       } else {
