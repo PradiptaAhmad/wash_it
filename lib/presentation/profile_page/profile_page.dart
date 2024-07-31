@@ -14,109 +14,196 @@ class ProfilePage extends GetView<ProfileController> {
   Widget build(BuildContext context) {
     final ProfileController controller = Get.put(ProfileController());
     return Scaffold(
-      appBar: MainpageAppbarWidget(
-        title: 'Profil Pengguna',
-        noLeading: true,
-      ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(defaultMargin),
-          child: Column(
-            children: [
-              Obx(() {
-                if (controller.isLoading.value) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  return MainProfileWidget();
-                }
-              }),
-              SizedBox(height: 10),
-              Divider(color: lightGrey, thickness: 1),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
-                child: ContentTitleWidget(
-                  title: "Pengaturan Edit Profile",
+        child: RefreshIndicator(
+          onRefresh: () async {
+            controller.fetchUserData();
+            controller.updatePhotoProfile();
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(defaultMargin),
+            child: Column(
+              children: [
+                ContentTitleWidget(
+                  title: "Profil Saya",
+                  lefttextSize: tsTitleSmallMedium(black),
+                ),
+                SizedBox(height: 10),
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    return MainProfileWidget();
+                  }
+                }),
+                SizedBox(height: 5),
+                Divider(color: lightGrey, thickness: 1),
+                ContentTitleWidget(
+                  title: "Info Profil",
                   lefttextSize: tsBodyMediumMedium(black),
                 ),
-              ),
-              ListTileButton(
-                label: 'Username',
-                onTap: () => Get.to(
-                  ProfileChangePage(
-                    title: 'Username',
-                    hintText: controller.userData['username'],
-                    validator: (newValue) {
-                      controller.updateUserName(newValue);
-                      return null;
-                    },
-                    onTap: () => controller.updateUserNameData(),
-                  ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Username', style: tsBodySmallRegular(darkGrey)),
+                    InkWell(
+                      onTap: () => Get.to(
+                        ProfileChangePage(
+                          title: 'Username',
+                          hintText: controller.userData['username'],
+                          validator: (newValue) {
+                            controller.updateUserName(newValue);
+                            return null;
+                          },
+                          onTap: () => controller.updateUserNameData(),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Text('${controller.userData['username']}',
+                              overflow: TextOverflow.ellipsis,
+                              style: tsBodySmallRegular(black)),
+                          SizedBox(width: 20),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: darkGrey,
+                            size: 15,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-              ),
-              ListTileButton(
-                label: 'Email',
-                onTap: () => Get.to(
-                  ProfileChangePage(
-                    title: 'Email',
-                    hintText: controller.userData['email'],
-                    validator: (newValue) {
-                      controller.updateEmail(newValue);
-                      return null;
-                    },
-                    onTap: () => controller.updateEmailData(),
-                  ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Email', style: tsBodySmallRegular(darkGrey)),
+                    InkWell(
+                      onTap: () => Get.to(
+                        ProfileChangePage(
+                          title: 'Email',
+                          hintText: controller.userData['email'],
+                          validator: (newValue) {
+                            controller.updateEmail(newValue);
+                            return null;
+                          },
+                          onTap: () => controller.updateEmailData(),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Text('${controller.userData['email']}',
+                              style: tsBodySmallRegular(black)),
+                          SizedBox(width: 20),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: darkGrey,
+                            size: 15,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-              ),
-              ListTileButton(
-                label: 'Nomor Telepon',
-                onTap: () => Get.to(
-                  ProfileChangePage(
-                    title: 'Nomor Telepon',
-                    hintText: controller.userData['phone'],
-                    validator: (newValue) {
-                      controller.updatePhoneNumber(newValue);
-                      return null;
-                    },
-                    onTap: () => controller.updateUserPhoneData(),
-                  ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Nomor Hp', style: tsBodySmallRegular(darkGrey)),
+                    InkWell(
+                      onTap: () => Get.to(
+                        ProfileChangePage(
+                          title: 'Nomor Telepon',
+                          hintText: controller.userData['phone'],
+                          validator: (newValue) {
+                            controller.updatePhoneNumber(newValue);
+                            return null;
+                          },
+                          onTap: () => controller.updateUserPhoneData(),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Text('${controller.userData['phone']}',
+                              style: tsBodySmallRegular(black)),
+                          SizedBox(width: 20),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: darkGrey,
+                            size: 15,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-              ),
-              ListTileButton(
-                label: 'Ganti Password',
-                onTap: () => Get.to(
-                  ProfileChangePage(
-                    title: 'Password',
-                    // validator: (newValue) {
-                    //   controller.updateEmail(newValue);
-                    //   return null;
-                    // },
-                  ),
-                ),
-              ),
-              Divider(color: lightGrey, thickness: 1),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
-                child: ContentTitleWidget(
-                  title: 'Pengaturan Akun',
+                SizedBox(height: 10),
+                ContentTitleWidget(
+                  title: "Info Profil",
                   lefttextSize: tsBodyMediumMedium(black),
                 ),
-              ),
-              ListTile(
-                  dense: true,
-                  title: Text('Nonaktifkan Akun',
-                      style: tsBodySmallRegular(warningColor)),
-                  onTap: () {}),
-              Padding(
-                padding: const EdgeInsets.all(5),
-                child: Divider(color: Color(0xFFDEDEDE), thickness: 1),
-              ),
-              ListTile(
-                  title:
-                      Text('Logout', style: tsBodyMediumMedium(warningColor)),
-                  onTap: () {
-                    controller.logout();
-                  }),
-            ],
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 20),
+                      InkWell(
+                        onTap: () {},
+                        child: Text(
+                          'Hapus akun',
+                          style: tsBodySmallRegular(warningColor),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      InkWell(
+                        onTap: () =>
+                            controller.showExitConfirmationDialog(context),
+                        child: Text('Keluar akun',
+                            style: tsBodySmallRegular(black)),
+                      ),
+                    ],
+                  ),
+                )
+                // ListTileButton(
+                //   label: 'Ganti Password',
+                //   onTap: () => Get.to(
+                //     ProfileChangePage(
+                //       title: 'Password',
+                //       // validator: (newValue) {
+                //       //   controller.updateEmail(newValue);
+                //       //   return null;
+                //       // },
+                //     ),
+                //   ),
+                // ),
+                // Divider(color: lightGrey, thickness: 1),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+                //   child: ContentTitleWidget(
+                //     title: 'Pengaturan Akun',
+                //     lefttextSize: tsBodyMediumMedium(black),
+                //   ),
+                // ),
+                // ListTile(
+                //     dense: true,
+                //     title: Text('Nonaktifkan Akun',
+                //         style: tsBodySmallRegular(warningColor)),
+                //     onTap: () {}),
+                // Padding(
+                //   padding: const EdgeInsets.all(5),
+                //   child: Divider(color: Color(0xFFDEDEDE), thickness: 1),
+                // ),
+                // ListTile(
+                //     title:
+                //         Text('Logout', style: tsBodyMediumMedium(warningColor)),
+                //     onTap: () {
+                //       controller.logout();
+                //     }),
+              ],
+            ),
           ),
         ),
       ),
@@ -134,15 +221,27 @@ class MainProfileWidget extends GetView<ProfileController> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Stack(
+        CircleAvatar(
+          radius: 40,
+          backgroundColor: grey,
+          backgroundImage: NetworkImage(controller.userData['image_path'] ==
+                  null
+              ? 'https://ui-avatars.com/api/?name=${controller.userData['username']}&background=random&size=128'
+              : 'https://pradiptaahmad.tech/image/${controller.userData['image_path']}'),
+        ),
+        SizedBox(height: 5),
+        InkWell(
+          onTap: () {
+            controller.pickImage();
+          },
+          child: Text(
+            "Ubah foto profil",
+            style: tsBodySmallSemibold(successColor),
+          ),
+        ),
+        /* Stack(
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: grey,
-              backgroundImage: NetworkImage(controller.userData['image_path'] ??
-                  // "https://www.pradiptaahmad.tech/image/${controller.userData['image_path']}" ??
-                  'https://via.placeholder.com/150'),
-            ),
+
             Positioned(
                 bottom: 0,
                 right: 4,
@@ -157,39 +256,16 @@ class MainProfileWidget extends GetView<ProfileController> {
                           color: Colors.black,
                         )))),
           ],
-        ),
-        Text(
-          controller.userData['username'] ?? "default Username",
-          style: tsBodyMediumMedium(black),
-        ),
-        Text(
-          controller.userData['email'] ?? "default Email",
-          style: tsBodySmallMedium(black),
-        ),
+        ),*/
+        // Text(
+        //   controller.userData['username'] ?? "default Username",
+        //   style: tsBodyMediumMedium(black),
+        // ),
+        // Text(
+        //   controller.userData['email'] ?? "default Email",
+        //   style: tsBodySmallMedium(black),
+        // ),
       ],
-    );
-  }
-}
-
-class ListTileButton extends StatelessWidget {
-  ListTileButton({
-    super.key,
-    this.label,
-    required this.onTap,
-  });
-
-  final String? label;
-  final void Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      title: Text('$label', style: tsBodySmallRegular(darkBlue)),
-      trailing: Icon(Iconsax.arrow_right_3, size: 16),
-      onTap: onTap,
     );
   }
 }
