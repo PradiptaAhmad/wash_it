@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:wash_it/config.dart';
 import 'package:http/http.dart' as http;
 import 'package:wash_it/infrastructure/navigation/routes.dart';
@@ -16,6 +19,7 @@ class ProfileController extends GetxController {
   var email = 'email@example.com'.obs;
   var phoneNumber = '081234567890'.obs;
   var isLoading = true.obs;
+  var imageFile = Rx<File?>(null);
   final userData = {}.obs;
 
   GetStorage box = GetStorage();
@@ -212,6 +216,75 @@ class ProfileController extends GetxController {
           snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
       print(e);
     }
+  }
+
+  Future<void> updatePhotoProfile() async {
+    isLoading.value = true;
+    final url = ConfigEnvironments.getEnvironments()['url'];
+    final token = box.read('token');
+
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    final request = http.MultipartRequest(
+        'POST', Uri.parse('$url/users/update/profile-picture'));
+    request.headers.addAll(headers);
+    request.files.add(await http.MultipartFile.fromPath(
+      'image',
+      imageFile.value!.path,
+      filename: 'image.jpg',
+    ));
+    final response = await request.send();
+    if (response.statusCode == 200) {
+      Get.snackbar("Berhasil", "Foto profil telah berhasil diganti",
+          snackPosition: SnackPosition.TOP, backgroundColor: successColor);
+      isLoading.value = false;
+      fetchUserData();
+    } else {
+      Get.snackbar(
+          "Gagal ${response.statusCode}", "Foto profil gagal untuk diganti",
+          snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+    }
+  }
+
+  void pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      imageFile.value = File(pickedFile.path);
+      await updatePhotoProfile();
+    } else {
+      print('No image selected.');
+    }
+  }
+
+  Future<void> showExitConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Konfirmasi'),
+          content: const Text('Apakah Anda yakin untuk keluar dari akun?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Batal'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Ya'),
+              onPressed: () {
+                logout();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void updateUserName(String newUserName) {
