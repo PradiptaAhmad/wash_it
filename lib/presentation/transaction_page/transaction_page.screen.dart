@@ -130,7 +130,9 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                           SizedBox(height: 5),
                           DetailDataWidget(
                             leftTitle: "Catatan",
-                            rightTitle: "Tidak ditulis",
+                            rightTitle: controller.ordersList['catatan'] == null
+                                ? "Tidak ada catatan"
+                                : "${controller.ordersList['catatan']}",
                           ),
                           SizedBox(height: 5),
                         ],
@@ -244,16 +246,20 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                     Expanded(
                       flex: 6,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: controller.ordersList['total_harga'] == null
+                            ? null
+                            : () => controller.createPayment(),
                         borderRadius: BorderRadius.circular(15),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: secondaryColor,
+                            color: controller.ordersList['total_harga'] == null
+                                ? lightGrey
+                                : secondaryColor,
                             borderRadius: BorderRadius.circular(15),
                           ),
                           height: 50,
                           child: Center(
-                            child: Text("Ulas Sekarang",
+                            child: Text("Bayar Sekarang",
                                 style: tsBodySmallSemibold(primaryColor)),
                           ),
                         ),

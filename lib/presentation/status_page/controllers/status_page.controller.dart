@@ -48,6 +48,37 @@ class StatusPageController extends GetxController {
     }
   }
 
+  Future<void> fetchStatusData(orderId) async {
+    isLoading.value = true;
+    try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      final token = box.read('token');
+
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+
+      final response = await http.get(
+        Uri.parse('$url/orders/status/last?order_id=${orderId}'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body)['order_status'];
+        statusList.value = jsonResponse;
+      } else {
+        Get.snackbar('Error', '${response.statusCode}');
+        print(response.statusCode);
+      }
+    } catch (e) {
+      Get.snackbar('Error ', e.toString());
+      print(e);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   Future<void> getLaundries() async {
     isLoading.value = true;
     try {

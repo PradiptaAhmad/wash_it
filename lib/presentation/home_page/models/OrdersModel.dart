@@ -6,6 +6,8 @@ class OrdersModel {
   DateTime? tanggalEstimasi;
   DateTime? tanggalPemesanan;
   String? namaPemesan;
+  String? alamat;
+  String? status;
   double? beratLaundry;
   double? totalHarga;
 
@@ -17,6 +19,8 @@ class OrdersModel {
     required this.tanggalEstimasi,
     required this.tanggalPemesanan,
     required this.namaPemesan,
+    required this.alamat,
+    required this.status,
     this.beratLaundry,
     this.totalHarga,
   });
@@ -30,6 +34,8 @@ class OrdersModel {
       tanggalEstimasi: DateTime.parse(json['tanggal_estimasi']),
       tanggalPemesanan: DateTime.parse(json['tanggal_pemesanan']),
       namaPemesan: json['nama_pemesan'],
+      alamat: json['alamat'],
+      status: json['status'],
       beratLaundry: json['berat_laundry'] != null
           ? json['berat_laundry'].toDouble()
           : null,
