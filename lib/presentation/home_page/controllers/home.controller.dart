@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
 
 import '../../../config.dart';
 
@@ -12,7 +11,8 @@ class HomeController extends GetxController {
   final count = 0.obs;
   final laundries = [].obs;
   final userData = {}.obs;
-  var ordersList = <OrdersModel>[].obs;
+  var ordersList = [].obs;
+  var historiesList = [].obs;
   var jenisList = [].obs;
   var isLoading = false.obs;
 
@@ -34,11 +34,39 @@ class HomeController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        final jsonResponse =
-            jsonDecode(response.body)['order'] as List<dynamic>;
-        List<OrdersModel> orders =
-            jsonResponse.map((data) => OrdersModel.fromJson(data)).toList();
-        ordersList.value = orders;
+        final jsonResponse = jsonDecode(response.body)['order'];
+        ordersList.value = jsonResponse;
+      } else {
+        Get.snackbar('Error', '${response.statusCode}');
+        print(response.statusCode);
+      }
+    } catch (e) {
+      Get.snackbar('Error ', e.toString());
+      print(e);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> fetchHistoriesData() async {
+    isLoading.value = true;
+    try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      final token = box.read('token');
+
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+
+      final response = await http.get(
+        Uri.parse('$url/histories/all'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body)['data'];
+        historiesList.value = jsonResponse;
       } else {
         Get.snackbar('Error', '${response.statusCode}');
         print(response.statusCode);
@@ -118,6 +146,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     fetchOrdersData();
+    fetchHistoriesData();
     getLaundries();
     fetchUserData();
   }

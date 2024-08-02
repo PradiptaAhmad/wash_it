@@ -16,6 +16,7 @@ dependencies:
   iconsax: ^0.0.8
   shimmer: ^2.0.0
   intl: ^0.17.0
+  extended_text_field: ^15.0.0
 
   get: 4.6.6
   get_cli: ^1.8.1

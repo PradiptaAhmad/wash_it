@@ -7,7 +7,7 @@ import '../../../config.dart';
 
 class StatusPageController extends GetxController {
   final count = 0.obs;
-  var ordersList = <OrdersModel>[].obs;
+  var ordersList = [].obs;
   var laundries = [].obs;
   var jenisList = [].obs;
   var statusList = {}.obs;
@@ -31,11 +31,8 @@ class StatusPageController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        final jsonResponse =
-            jsonDecode(response.body)['order'] as List<dynamic>;
-        List<OrdersModel> orders =
-            jsonResponse.map((data) => OrdersModel.fromJson(data)).toList();
-        ordersList.value = orders;
+        final jsonResponse = jsonDecode(response.body)['order'];
+        ordersList.value = jsonResponse;
       } else {
         Get.snackbar('Error', '${response.statusCode}');
         print(response.statusCode);
