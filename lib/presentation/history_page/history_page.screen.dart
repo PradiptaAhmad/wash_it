@@ -1,8 +1,14 @@
+import 'dart:io';
+
+import 'package:extended_text_field/extended_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
+import 'package:wash_it/widget/common/auth/auth_text_field.dart';
 import '../../infrastructure/navigation/routes.dart';
 import '../../widget/common/content_title_widget.dart';
 import '../../widget/common/main_container_widget.dart';
@@ -91,7 +97,8 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                                 physics: NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   final order = controller.ordersList[index];
-                                  return MainDetailView(order: order);
+                                  return MainDetailView(
+                                      order: order, controller: controller);
                                 },
                               );
                             }
@@ -116,17 +123,18 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
 }
 
 class MainDetailView extends StatelessWidget {
-  const MainDetailView({super.key, required this.order});
+  const MainDetailView(
+      {super.key, required this.order, required this.controller});
 
-  final OrdersModel order;
-
+  final Map<String, dynamic> order;
+  final controller;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 15),
       child: InkWell(
-        onTap: () =>
-            Get.toNamed(Routes.TRANSACTION_PAGE, arguments: [order.id]),
+        onTap: () => Get.toNamed(Routes.TRANSACTION_PAGE,
+            arguments: [order['id'], 'histories']),
         child: MainContainerWidget(
           childs: Padding(
             padding: const EdgeInsets.all(15),
@@ -143,7 +151,7 @@ class MainDetailView extends StatelessWidget {
                           style: tsLabelLargeMedium(grey),
                         ),
                         Text(
-                          "${order.noPemesanan}",
+                          "${order['no_pemesanan']}",
                           style: tsLabelLargeMedium(black),
                         )
                       ],
@@ -156,7 +164,7 @@ class MainDetailView extends StatelessWidget {
                             vertical: 2,
                           ),
                           child: Text(
-                            "Estimasi: ",
+                            "Estimasi: ${DateFormat('d MMMM yyyy').format(DateTime.parse(order['tanggal_estimasi'].toString() == 'null' ? "2007-07-31 00:00:00" : order['tanggal_estimasi'].toString()))}",
                             style: tsLabelLargeMedium(darkGrey),
                           ),
                         ),
@@ -175,23 +183,23 @@ class MainDetailView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${order.namaPemesan}",
+                          "${order['nama_pemesan']}",
                           style: tsBodySmallSemibold(black),
                         ),
                         Text(
-                          order.jenisPemesanan == 'antar_jemput'
+                          order['jenis_pemesanan'] == 'antar_jemput'
                               ? "Antar Jemput"
                               : "Antar Mandiri",
                           style: tsLabelLargeSemibold(darkGrey),
                         ),
                         Text(
-                          order.beratLaundry == null
+                          order['berat_laundry'] == null
                               ? "Berat belum tercatat"
-                              : "${order.beratLaundry}",
+                              : "${order['berat_laundry']} Kg",
                           style: tsLabelLargeSemibold(darkGrey),
                         ),
                         Text(
-                          "${order.namaLaundry}",
+                          "${order['nama_laundry']}",
                           style: tsBodySmallSemibold(successColor),
                         ),
                       ],
@@ -199,7 +207,7 @@ class MainDetailView extends StatelessWidget {
                     Container(
                       width: 120,
                       child: Text(
-                        "Jl.Pala no 108, Binagritya blok A, Medono, Pekalongan Barat, Pekalongan, Indonesia",
+                        "${order['alamat']}",
                         style: tsLabelLargeSemibold(grey),
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
@@ -221,28 +229,139 @@ class MainDetailView extends StatelessWidget {
                           style: tsLabelMediumMedium(black),
                         ),
                         Text(
-                          order.totalHarga == null
+                          order['total_harga'] == null
                               ? "Harga belum tercatat"
-                              : '${order.totalHarga}',
+                              : '${order['total_harga']}',
                           style: tsBodySmallSemibold(black),
                         ),
                       ],
                     ),
                     Row(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: secondaryColor.withOpacity(0.2),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 30,
-                              vertical: 8,
+                        InkWell(
+                          onTap: () => showModalBottomSheet(
+                            context: context,
+                            enableDrag: true,
+                            isDismissible: true,
+                            scrollControlDisabledMaxHeightRatio: 0.7,
+                            sheetAnimationStyle: AnimationStyle(
+                              duration: Durations.medium1,
+                              curve: Curves.easeInOut,
                             ),
-                            child: Text(
-                              "Ulas",
-                              style: tsLabelLargeSemibold(secondaryColor),
+                            backgroundColor: primaryColor,
+                            builder: (context) {
+                              return Container(
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(defaultMargin),
+                                  child: Column(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.topLeft,
+                                        child: InkWell(
+                                          onTap: () => Get.back(),
+                                          child: Icon(
+                                            Icons.close_rounded,
+                                            color: darkGrey,
+                                          ),
+                                        ),
+                                      ),
+                                      RatingBar.builder(
+                                        itemPadding:
+                                            EdgeInsets.symmetric(horizontal: 0),
+                                        glow: false,
+                                        itemSize: 60,
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star_rate_rounded,
+                                          color: Colors.amber,
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          controller.rating.value = rating;
+                                        },
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5),
+                                        child: Divider(
+                                            color: lightGrey, thickness: 1),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Tulis ulasan kamu!",
+                                          style: tsBodyMediumMedium(black),
+                                        ),
+                                      ),
+                                      SizedBox(height: 5),
+                                      ExtendedTextField(
+                                        onChanged: (value) {
+                                          controller.review.value = value;
+                                        },
+                                        maxLines: 5,
+                                        decoration: InputDecoration(
+                                          hintText: 'Aku suka disko',
+                                          hintStyle:
+                                              tsBodySmallMedium(darkGrey),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: BorderSide(
+                                                  color: secondaryColor,
+                                                  width: 2)),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: lightGrey, width: 2),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: warningColor, width: 2),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          fillColor: primaryColor,
+                                          filled: true,
+                                        ),
+                                      ),
+                                      SizedBox(height: defaultMargin),
+                                      InkWell(
+                                        onTap: () {},
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: secondaryColor,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          height: 50,
+                                          child: Center(
+                                            child: Text("Kirim",
+                                                style: tsBodySmallSemibold(
+                                                    primaryColor)),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: secondaryColor.withOpacity(0.2),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                                vertical: 8,
+                              ),
+                              child: Text(
+                                "Ulas",
+                                style: tsLabelLargeSemibold(secondaryColor),
+                              ),
                             ),
                           ),
                         ),

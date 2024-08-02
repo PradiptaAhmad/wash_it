@@ -58,12 +58,16 @@ class TransactionPageController extends GetxController {
       };
 
       final response = await http.get(
-        Uri.parse('$url/orders/detail?order_id=${argument[0]}'),
+        Uri.parse(argument[1] == 'histories'
+            ? '$url/histories/detail?history_id=${argument[0]}'
+            : '$url/orders/detail?order_id=${argument[0]}'),
         headers: headers,
       );
 
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body)['order'];
+        final jsonResponse = argument[1] == "histories"
+            ? jsonDecode(response.body)['data']
+            : jsonDecode(response.body)['order'];
         ordersList.value = jsonResponse;
       } else {
         Get.snackbar('Error', '${response.statusCode}');

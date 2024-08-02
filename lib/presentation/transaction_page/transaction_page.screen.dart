@@ -1,6 +1,8 @@
 import 'package:dotted_line/dotted_line.dart';
+import 'package:extended_text_field/extended_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -246,9 +248,129 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                     Expanded(
                       flex: 6,
                       child: InkWell(
-                        onTap: controller.ordersList['total_harga'] == null
-                            ? null
-                            : () => controller.createPayment(),
+                        onTap: controller.argument[1] == 'order'
+                            ? () {
+                                controller.ordersList['total_harga'] == null
+                                    ? null
+                                    : () => controller.createPayment();
+                              }
+                            : () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  enableDrag: true,
+                                  isDismissible: true,
+                                  scrollControlDisabledMaxHeightRatio: 0.7,
+                                  sheetAnimationStyle: AnimationStyle(
+                                    duration: Durations.medium1,
+                                    curve: Curves.easeInOut,
+                                  ),
+                                  backgroundColor: primaryColor,
+                                  builder: (context) {
+                                    return Container(
+                                      width: double.infinity,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.all(defaultMargin),
+                                        child: Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: InkWell(
+                                                onTap: () => Get.back(),
+                                                child: Icon(
+                                                  Icons.close_rounded,
+                                                  color: darkGrey,
+                                                ),
+                                              ),
+                                            ),
+                                            RatingBar.builder(
+                                              itemPadding: EdgeInsets.symmetric(
+                                                  horizontal: 0),
+                                              glow: false,
+                                              itemSize: 60,
+                                              itemBuilder: (context, _) => Icon(
+                                                Icons.star_rate_rounded,
+                                                color: Colors.amber,
+                                              ),
+                                              onRatingUpdate: (rating) {},
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 5),
+                                              child: Divider(
+                                                  color: lightGrey,
+                                                  thickness: 1),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                "Tulis ulasan kamu!",
+                                                style:
+                                                    tsBodyMediumMedium(black),
+                                              ),
+                                            ),
+                                            SizedBox(height: 5),
+                                            ExtendedTextField(
+                                              onChanged: (value) {},
+                                              maxLines: 5,
+                                              decoration: InputDecoration(
+                                                hintText: 'Aku suka disko',
+                                                hintStyle:
+                                                    tsBodySmallMedium(darkGrey),
+                                                focusedBorder: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    borderSide: BorderSide(
+                                                        color: secondaryColor,
+                                                        width: 2)),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: lightGrey,
+                                                      width: 2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                border: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: warningColor,
+                                                      width: 2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                fillColor: primaryColor,
+                                                filled: true,
+                                              ),
+                                            ),
+                                            SizedBox(height: defaultMargin),
+                                            InkWell(
+                                              onTap: () {},
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: secondaryColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                ),
+                                                height: 50,
+                                                child: Center(
+                                                  child: Text("Kirim",
+                                                      style:
+                                                          tsBodySmallSemibold(
+                                                              primaryColor)),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
                         borderRadius: BorderRadius.circular(15),
                         child: Container(
                           decoration: BoxDecoration(
@@ -259,7 +381,10 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                           ),
                           height: 50,
                           child: Center(
-                            child: Text("Bayar Sekarang",
+                            child: Text(
+                                controller.argument[1] == "order"
+                                    ? "Bayar Sekarang"
+                                    : "Beri Ulasan",
                                 style: tsBodySmallSemibold(primaryColor)),
                           ),
                         ),

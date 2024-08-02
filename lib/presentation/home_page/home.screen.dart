@@ -8,7 +8,6 @@ import 'package:wash_it/widget/common/content_title_widget.dart';
 import 'package:wash_it/widget/common/main_container_widget.dart';
 
 import 'controllers/home.controller.dart';
-import 'models/OrdersModel.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,6 +23,7 @@ class HomeScreen extends GetView<HomeController> {
           onRefresh: () async {
             await controller.fetchOrdersData();
             await controller.fetchUserData();
+            await controller.fetchHistoriesData();
           },
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
@@ -76,7 +76,7 @@ class HomeScreen extends GetView<HomeController> {
                         if (controller.isLoading.value) {
                           return ListView.builder(
                             shrinkWrap: true,
-                            itemCount: controller.ordersList.length,
+                            itemCount: 3,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) => Shimmer.fromColors(
                               baseColor: lightGrey.withOpacity(0.3),
@@ -103,13 +103,17 @@ class HomeScreen extends GetView<HomeController> {
                         } else {
                           return ListView.builder(
                             shrinkWrap: true,
-                            reverse: true,
-                            itemCount: controller.ordersList.length,
+                            itemCount: controller.ordersList.length < 3
+                                ? controller.ordersList.length
+                                : 3,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              final order = controller.ordersList[index];
+                              final order = controller.ordersList[
+                                  controller.ordersList.length - 1 - index];
                               return HomeShowDetail.ShowDetailHome(
-                                  order: order);
+                                order: order,
+                                orderType: 'order',
+                              );
                             },
                           );
                         }
@@ -121,7 +125,7 @@ class HomeScreen extends GetView<HomeController> {
                         if (controller.isLoading.value) {
                           return ListView.builder(
                             shrinkWrap: true,
-                            itemCount: controller.ordersList.length,
+                            itemCount: 3,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) => Shimmer.fromColors(
                               baseColor: lightGrey.withOpacity(0.3),
@@ -137,7 +141,7 @@ class HomeScreen extends GetView<HomeController> {
                               ),
                             ),
                           );
-                        } else if (controller.ordersList.isEmpty) {
+                        } else if (controller.historiesList.isEmpty) {
                           return Padding(
                             padding: const EdgeInsets.all(60),
                             child: Center(
@@ -148,13 +152,16 @@ class HomeScreen extends GetView<HomeController> {
                         } else {
                           return ListView.builder(
                             shrinkWrap: true,
-                            reverse: true,
-                            itemCount: controller.ordersList.length,
+                            itemCount: controller.historiesList.length < 3
+                                ? controller.historiesList.length
+                                : 3,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              final order = controller.ordersList[index];
+                              final order = controller.historiesList.last;
                               return HomeShowDetail.ShowDetailHome(
-                                  order: order);
+                                order: order,
+                                orderType: 'histories',
+                              );
                             },
                           );
                         }
@@ -172,17 +179,22 @@ class HomeScreen extends GetView<HomeController> {
 }
 
 class HomeShowDetail extends StatelessWidget {
-  const HomeShowDetail.ShowDetailHome({super.key, required this.order});
+  const HomeShowDetail.ShowDetailHome(
+      {super.key, required this.order, required this.orderType});
 
-  final OrdersModel order;
+  final order;
+  final orderType;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 15),
       child: InkWell(
-        onTap: () =>
-            Get.toNamed(Routes.TRANSACTION_PAGE, arguments: [order.id]),
+        onTap: () {
+          Get.toNamed(Routes.TRANSACTION_PAGE,
+              arguments: [order['id'], orderType]);
+          print('object');
+        },
         child: MainContainerWidget(
           childs: Padding(
             padding: const EdgeInsets.all(15),
@@ -199,7 +211,7 @@ class HomeShowDetail extends StatelessWidget {
                           style: tsLabelLargeMedium(grey),
                         ),
                         Text(
-                          "${order.noPemesanan}",
+                          "${order['no_pemesanan']}",
                           style: tsLabelLargeMedium(black),
                         )
                       ],
@@ -231,23 +243,23 @@ class HomeShowDetail extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${order.namaPemesan}",
+                          "${order['nama_pemesan']}",
                           style: tsBodySmallSemibold(black),
                         ),
                         Text(
-                          order.jenisPemesanan == 'antar_jemput'
+                          order['jenis_pemesanan'] == 'antar_jemput'
                               ? "Antar Jemput"
                               : "Antar Mandiri",
                           style: tsLabelLargeSemibold(darkGrey),
                         ),
                         Text(
-                          order.beratLaundry == null
+                          order['berat_laundry'] == null
                               ? "Berat belum tercatat"
-                              : "${order.beratLaundry}",
+                              : "${order['berat_laundry']}",
                           style: tsLabelLargeSemibold(darkGrey),
                         ),
                         Text(
-                          "${order.namaLaundry}",
+                          "${order['nama_laundry']}",
                           style: tsBodySmallSemibold(successColor),
                         ),
                       ],
@@ -255,7 +267,7 @@ class HomeShowDetail extends StatelessWidget {
                     Container(
                       width: 120,
                       child: Text(
-                        "Jl.Pala no 108, Binagritya blok A, Medono, Pekalongan Barat, Pekalongan, Indonesia",
+                        "${order['alamat']}",
                         style: tsLabelLargeSemibold(grey),
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,

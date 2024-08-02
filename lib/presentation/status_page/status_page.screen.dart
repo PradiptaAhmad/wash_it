@@ -57,14 +57,11 @@ class StatusPageScreen extends GetView<StatusPageController> {
                         reverse: true,
                         itemBuilder: (context, index) {
                           final order = controller.ordersList[index];
-                          String formattedDate = DateFormat('d MMMM yyyy')
-                              .format(DateTime.parse(
-                                  order.tanggalEstimasi.toString()));
                           return Padding(
                             padding: const EdgeInsets.only(top: 15),
                             child: InkWell(
                               onTap: () => Get.toNamed(Routes.TRANSACTION_PAGE,
-                                  arguments: [order.id]),
+                                  arguments: [order['id'], 'order']),
                               child: MainContainerWidget(
                                 childs: Padding(
                                   padding: const EdgeInsets.all(15),
@@ -83,7 +80,7 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                                 style: tsLabelLargeMedium(grey),
                                               ),
                                               Text(
-                                                "${order.noPemesanan}",
+                                                "${order['no_pemesanan']}",
                                                 style:
                                                     tsLabelLargeMedium(black),
                                               )
@@ -98,7 +95,7 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                                   vertical: 2,
                                                 ),
                                                 child: Text(
-                                                  "Estimasi: ${formattedDate}",
+                                                  "Estimasi: ${DateFormat('d MMMM yyyy').format(DateTime.parse(order['tanggal_estimasi'].toString()))}",
                                                   style: tsLabelLargeMedium(
                                                       darkGrey),
                                                 ),
@@ -122,12 +119,12 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "${order.namaPemesan}",
+                                                "${order['nama_pemesan']}",
                                                 style:
                                                     tsBodySmallSemibold(black),
                                               ),
                                               Text(
-                                                order.jenisPemesanan ==
+                                                order['jenis_pemesanan'] ==
                                                         'antar_jemput'
                                                     ? 'Antar Jemput'
                                                     : 'Antar Sendiri',
@@ -135,14 +132,14 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                                     darkGrey),
                                               ),
                                               Text(
-                                                order.beratLaundry == null
+                                                order['berat_laundry'] == null
                                                     ? "Berat belum tercatat"
-                                                    : "${order.beratLaundry} Kg",
+                                                    : "${order['berat_laundry']} Kg",
                                                 style: tsLabelLargeSemibold(
                                                     darkGrey),
                                               ),
                                               Text(
-                                                "${order.namaLaundry}",
+                                                "${order['nama_laundry']}",
                                                 style: tsBodySmallSemibold(
                                                     successColor),
                                               ),
@@ -151,7 +148,7 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                           Container(
                                             width: 120,
                                             child: Text(
-                                              "${order.alamat}",
+                                              "${order['alamat']}",
                                               style: tsLabelLargeSemibold(grey),
                                               softWrap: true,
                                               overflow: TextOverflow.ellipsis,
@@ -176,9 +173,9 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                                     tsLabelMediumMedium(black),
                                               ),
                                               Text(
-                                                order.totalHarga == null
+                                                order['total_harga'] == null
                                                     ? "Harga belum tercatat"
-                                                    : "Rp ${order.totalHarga}",
+                                                    : "Rp ${order['total_harga']}",
                                                 style:
                                                     tsBodySmallSemibold(black),
                                               ),
@@ -194,7 +191,7 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                                     tsLabelMediumMedium(black),
                                               ),
                                               Text(
-                                                '${order.status}',
+                                                '${order['status']}',
                                                 style: tsBodySmallSemibold(
                                                     secondaryColor),
                                               ),
