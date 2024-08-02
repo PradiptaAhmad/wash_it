@@ -175,7 +175,7 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                               Text(
                                                 order['total_harga'] == null
                                                     ? "Harga belum tercatat"
-                                                    : "Rp ${order['total_harga']}",
+                                                    : "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(order['total_harga'])}",
                                                 style:
                                                     tsBodySmallSemibold(black),
                                               ),

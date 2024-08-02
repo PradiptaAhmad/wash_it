@@ -203,7 +203,7 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                             rightTitle: controller.ordersList['total_harga'] ==
                                     null
                                 ? "Harga belum tercatat"
-                                : "Rp ${controller.ordersList['total_harga']}",
+                                : "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(controller.ordersList['total_harga'])}",
                           ),
                           SizedBox(height: 5),
                         ],

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/profile_page/profile_change_page.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
-import 'package:wash_it/widget/common/mainpage_appbar_widget.dart';
 import 'controllers/profile_page.controller.dart';
 
 class ProfilePage extends GetView<ProfileController> {
