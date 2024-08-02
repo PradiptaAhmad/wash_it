@@ -80,7 +80,7 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                                 style: tsLabelLargeMedium(grey),
                                               ),
                                               Text(
-                                                "${order['id']}",
+                                                "${order['no_pemesanan']}",
                                                 style:
                                                     tsLabelLargeMedium(black),
                                               )

@@ -8,7 +8,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/presentation/home_page/models/OrdersModel.dart';
 import 'package:wash_it/widget/common/auth/auth_text_field.dart';
 import '../../infrastructure/navigation/routes.dart';
 import '../../widget/common/content_title_widget.dart';
@@ -300,8 +299,7 @@ class MainDetailView extends StatelessWidget {
                                         },
                                         maxLines: 5,
                                         decoration: InputDecoration(
-                                          hintText:
-                                              'tolol pukimak raja biadab ambatukam rojo lele',
+                                          hintText: 'Aku suka disko',
                                           hintStyle:
                                               tsBodySmallMedium(darkGrey),
                                           focusedBorder: OutlineInputBorder(
