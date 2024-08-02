@@ -103,11 +103,13 @@ class HomeScreen extends GetView<HomeController> {
                         } else {
                           return ListView.builder(
                             shrinkWrap: true,
-                            reverse: true,
-                            itemCount: 3,
+                            itemCount: controller.ordersList.length < 3
+                                ? controller.ordersList.length
+                                : 3,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              final order = controller.ordersList[index];
+                              final order = controller.ordersList[
+                                  controller.ordersList.length - 1 - index];
                               return HomeShowDetail.ShowDetailHome(
                                 order: order,
                                 orderType: 'order',
@@ -150,11 +152,12 @@ class HomeScreen extends GetView<HomeController> {
                         } else {
                           return ListView.builder(
                             shrinkWrap: true,
-                            reverse: true,
-                            itemCount: 1,
+                            itemCount: controller.historiesList.length < 3
+                                ? controller.historiesList.length
+                                : 3,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              final order = controller.historiesList[index];
+                              final order = controller.historiesList.last;
                               return HomeShowDetail.ShowDetailHome(
                                 order: order,
                                 orderType: 'histories',
