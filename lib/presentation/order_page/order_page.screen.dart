@@ -19,10 +19,6 @@ class OrderView extends GetView<OrderController> {
   @override
   Widget build(BuildContext context) {
     Get.put(OrderController());
-
-    const List<String> list = <String>['Tunai', 'Non Tunai'];
-    // String dropdownValue = list.first;
-
     return Scaffold(
       appBar: MainpageAppbarWidget(
         title: 'Pesan Laundry',
