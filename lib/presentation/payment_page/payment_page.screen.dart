@@ -69,7 +69,7 @@ class PaymentPageScreen extends GetView<PaymentPageController> {
                         SizedBox(height: 20),
                         Text(
                           controller.paymentList['status'] == "PAID"
-                              ? "Pembayaran Berhasil"
+                              ? "Pembayaran Selesai"
                               : "Selesaikan Pembayaran",
                           style: tsBodyLargeSemibold(black),
                         ),
@@ -77,7 +77,9 @@ class PaymentPageScreen extends GetView<PaymentPageController> {
                         Container(
                           width: 400,
                           child: Text(
-                            "Segera selesaikan pembayaran untuk melanjutkan proses pesanan",
+                            controller.paymentList['status'] == "PAID"
+                                ? "Pembayaran telah selesai dan pesanan anda sedang diproses"
+                                : "Segera selesaikan pembayaran untuk melanjutkan proses pemesanan",
                             textAlign: TextAlign.center,
                             maxLines: 4,
                             style: tsBodySmallMedium(darkGrey),

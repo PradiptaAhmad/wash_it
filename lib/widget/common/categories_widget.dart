@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wash_it/presentation/status_page/widgets/status_categories_filter_pop_up.dart';
+import 'package:wash_it/widget/common/categories_button_widget.dart';
 
 import '../../infrastructure/theme/themes.dart';
 import '../popup/custom_pop_up.dart';
@@ -13,41 +15,30 @@ class CategoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          SizedBox(width: defaultMargin),
-          InkWell(
-            onTap: () {
-              optionPopUp(context, controller);
-            },
-            borderRadius: BorderRadius.circular(defaultMargin),
-            child: Container(
-              height: 30,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(defaultMargin),
-                border: Border.all(color: lightGrey),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Semua",
-                      style: tsBodySmallMedium(darkGrey),
-                    ),
-                    Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      color: darkGrey,
-                    )
-                  ],
-                ),
-              ),
+    return Container(
+      color: primaryColor,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            SizedBox(width: defaultMargin),
+            CategoriesButtonWidget(
+              controller: controller,
+              title: "Semua status",
+              onTap: () => statusCategoriesFilterPopUp(context, controller),
             ),
-          ),
-        ],
+            SizedBox(width: 5),
+            CategoriesButtonWidget(
+              controller: controller,
+              title: "ambatron",
+            ),
+            SizedBox(width: 5),
+            CategoriesButtonWidget(
+              controller: controller,
+              title: "ambatron",
+            ),
+          ],
+        ),
       ),
     );
   }

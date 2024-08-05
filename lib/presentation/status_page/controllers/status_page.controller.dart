@@ -10,6 +10,8 @@ class StatusPageController extends GetxController {
   var laundries = [].obs;
   var jenisList = [].obs;
   var statusList = {}.obs;
+  var selectedFilter = 0.obs;
+  var statusSelectedFilterName = ''.obs;
   var isLoading = false.obs;
   GetStorage box = GetStorage();
 

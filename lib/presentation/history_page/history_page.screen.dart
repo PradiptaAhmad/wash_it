@@ -15,11 +15,20 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
   Widget build(BuildContext context) {
     final HistoryPageController controller = Get.put(HistoryPageController());
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: secondaryColor,
-        title: Text(
-          'Riwayat Pesanan',
-          style: tsTitleSmallMedium(primaryColor),
+      appBar: PreferredSize(
+        preferredSize:
+            Size.fromHeight(kToolbarHeight + 50), // Add extra height for margin
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppBar(
+              backgroundColor: secondaryColor,
+              title: Text('Riwayat Pesanan',
+                  style: tsTitleSmallMedium(primaryColor)),
+            ),
+            SizedBox(height: 10),
+            CategoriesWidget(controller: controller),
+          ],
         ),
       ),
       body: RefreshIndicator(
@@ -31,8 +40,6 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
-              CategoriesWidget(controller: controller),
               SizedBox(height: 20),
               // Obx(() {
               //   if (controller.isLoading.value) {

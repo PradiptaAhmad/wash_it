@@ -70,6 +70,7 @@ class HomeScreen extends GetView<HomeController> {
                       ContentTitleWidget(
                         title: "Status Pesanan",
                       ),
+                      SizedBox(height: defaultMargin),
                       Obx(() {
                         if (controller.isLoading.value) {
                           return ListView.builder(
@@ -119,6 +120,7 @@ class HomeScreen extends GetView<HomeController> {
                       ContentTitleWidget(
                         title: "Riwayat Pesanan",
                       ),
+                      SizedBox(height: defaultMargin),
                       Obx(() {
                         if (controller.isLoading.value) {
                           return ListView.builder(
@@ -186,7 +188,7 @@ class HomeShowDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(bottom: 10),
       child: InkWell(
         onTap: () {
           Get.toNamed(Routes.TRANSACTION_PAGE,
@@ -195,7 +197,10 @@ class HomeShowDetail extends StatelessWidget {
         },
         child: MainContainerWidget(
           childs: Padding(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.symmetric(
+              horizontal: defaultMargin,
+              vertical: 10,
+            ),
             child: Column(
               children: [
                 Row(

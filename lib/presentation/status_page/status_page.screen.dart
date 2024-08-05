@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:wash_it/presentation/status_page/widgets/status_categories_button_widget.dart';
 import 'package:wash_it/widget/common/categories_widget.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
 import 'package:wash_it/widget/common/main_container_widget.dart';
@@ -15,11 +16,19 @@ class StatusPageScreen extends GetView<StatusPageController> {
   Widget build(BuildContext context) {
     final StatusPageController controller = Get.put(StatusPageController());
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: secondaryColor,
-        title: Text(
-          'Status Pesanan',
-          style: tsTitleSmallMedium(primaryColor),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight + 50),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppBar(
+              backgroundColor: secondaryColor,
+              title: Text('Status Pesanan',
+                  style: tsTitleSmallMedium(primaryColor)),
+            ),
+            SizedBox(height: 10),
+            StatusCategoriesButtonWidget(controller: controller),
+          ],
         ),
       ),
       body: RefreshIndicator(
@@ -31,11 +40,8 @@ class StatusPageScreen extends GetView<StatusPageController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
-              CategoriesWidget(controller: controller),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10, horizontal: defaultMargin),
+                padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
                 child: Obx(
                   () {
                     if (controller.isLoading.value) {
@@ -43,12 +49,15 @@ class StatusPageScreen extends GetView<StatusPageController> {
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: controller.ordersList.length,
-                        itemBuilder: (context, index) => Container(
-                          height: 380,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.04),
-                            borderRadius: BorderRadius.circular(20),
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Container(
+                            height: 200,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.04),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                           ),
                         ),
                       );
@@ -178,7 +187,7 @@ class StatusPageScreen extends GetView<StatusPageController> {
                                               ),
                                               Text(
                                                 order['total_harga'] == null
-                                                    ? "Harga belum tercatat"
+                                                    ? "Belum tercatat"
                                                     : "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(order['total_harga'])}",
                                                 style:
                                                     tsBodySmallSemibold(black),
