@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/widget/popup/review_pop_up.dart';
+import 'package:wash_it/widget/popup/custom_pop_up.dart';
 import '../../infrastructure/navigation/routes.dart';
-import '../../widget/common/content_title_widget.dart';
+import '../../widget/common/categories_widget.dart';
 import '../../widget/common/main_container_widget.dart';
-import '../../widget/decorations/circle_tab_indicator.dart';
 import 'controllers/history_page.controller.dart';
 
 class HistoryPageScreen extends GetView<HistoryPageController> {
@@ -15,107 +13,171 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-
     final HistoryPageController controller = Get.put(HistoryPageController());
     return Scaffold(
-        body: SafeArea(
-      child: RefreshIndicator(
+      appBar: AppBar(
+        backgroundColor: secondaryColor,
+        title: Text(
+          'Riwayat Pesanan',
+          style: tsTitleSmallMedium(primaryColor),
+        ),
+      ),
+      body: RefreshIndicator(
         onRefresh: () async {
           await controller.fetchOrdersData();
         },
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
-          child: Container(
-            margin: EdgeInsets.all(defaultMargin),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ContentTitleWidget(
-                  title: "Riwayat Transaksi",
-                  lefttextSize: tsTitleSmallMedium(black),
-                ),
-                SizedBox(height: 10),
-                TabBar(
-                  labelColor: black,
-                  unselectedLabelColor: darkGrey,
-                  indicatorColor: secondaryColor,
-                  dividerColor: Colors.transparent,
-                  labelStyle: tsBodySmallSemibold(black),
-                  controller: controller.tabController,
-                  splashBorderRadius: BorderRadius.circular(50),
-                  indicator: CircleTabIndicator(
-                    color: black,
-                    radius: 4,
-                  ),
-                  tabs: const [
-                    Tab(text: "Selesai"),
-                    Tab(text: "Dibatalkan"),
-                  ],
-                ),
-                SizedBox(
-                  height: screenHeight * screenWidth,
-                  child: TabBarView(
-                    controller: controller.tabController,
-                    children: [
-                      Column(
-                        children: [
-                          Obx(() {
-                            if (controller.isLoading.value) {
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: controller.ordersList.length,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) =>
-                                    Shimmer.fromColors(
-                                  baseColor: lightGrey.withOpacity(0.3),
-                                  highlightColor: lightGrey.withOpacity(0.1),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: defaultMargin),
-                                    child: MainContainerWidget(
-                                      color: primaryColor,
-                                      height: 187,
-                                      width: double.infinity,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            } else if (controller.ordersList.isEmpty) {
-                              return Center(child: Text("Tidak ada Riwayat"));
-                            } else {
-                              return ListView.builder(
-                                shrinkWrap: true,
-                                reverse: true,
-                                itemCount: controller.ordersList.length,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  final order = controller.ordersList[index];
-                                  return MainDetailView(
-                                      order: order, controller: controller);
-                                },
-                              );
-                            }
-                          }),
-                        ],
-                      ),
-                      Container(
-                        child: Center(
-                          child: Text("Tidak ada Riwayat"),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 10),
+              CategoriesWidget(controller: controller),
+              SizedBox(height: 20),
+              // Obx(() {
+              //   if (controller.isLoading.value) {
+              //     return ListView.builder(
+              //       shrinkWrap: true,
+              //       itemCount: controller.ordersList.length,
+              //       physics: NeverScrollableScrollPhysics(),
+              //       itemBuilder: (context, index) => Shimmer.fromColors(
+              //         baseColor: lightGrey.withOpacity(0.3),
+              //         highlightColor: lightGrey.withOpacity(0.1),
+              //         child: Padding(
+              //           padding: const EdgeInsets.only(top: defaultMargin),
+              //           child: MainContainerWidget(
+              //             color: primaryColor,
+              //             height: 187,
+              //             width: double.infinity,
+              //           ),
+              //         ),
+              //       ),
+              //     );
+              //   } else if (controller.ordersList.isEmpty) {
+              //     return Center(
+              //         child: Text(
+              //       "Tidak ada Riwayat",
+              //       style: tsBodySmallRegular(black),
+              //     ));
+              //   } else {
+              //     return ListView.builder(
+              //       shrinkWrap: true,
+              //       reverse: true,
+              //       itemCount: controller.ordersList.length,
+              //       physics: NeverScrollableScrollPhysics(),
+              //       itemBuilder: (context, index) {
+              //         final order = controller.ordersList[index];
+              //         return MainDetailView(
+              //             order: order, controller: controller);
+              //       },
+              //     );
+              //   }
+              // }),
+            ],
           ),
         ),
       ),
-    ));
+    );
   }
 }
+
+// return Scaffold(
+// body: SafeArea(
+// child: RefreshIndicator(
+// onRefresh: () async {
+// await controller.fetchOrdersData();
+// },
+// child: SingleChildScrollView(
+// physics: AlwaysScrollableScrollPhysics(),
+// child: Container(
+// margin: EdgeInsets.all(defaultMargin),
+// child: Column(
+// crossAxisAlignment: CrossAxisAlignment.start,
+// children: [
+// ContentTitleWidget(
+// title: "Riwayat Transaksi",
+// lefttextSize: tsTitleSmallMedium(black),
+// ),
+// SizedBox(height: 10),
+// TabBar(
+// labelColor: black,
+// unselectedLabelColor: darkGrey,
+// indicatorColor: secondaryColor,
+// dividerColor: Colors.transparent,
+// labelStyle: tsBodySmallSemibold(black),
+// controller: controller.tabController,
+// splashBorderRadius: BorderRadius.circular(50),
+// indicator: CircleTabIndicator(
+// color: black,
+// radius: 4,
+// ),
+// tabs: const [
+// Tab(text: "Selesai"),
+// Tab(text: "Dibatalkan"),
+// ],
+// ),
+// SizedBox(
+// height: 1000,
+// child: TabBarView(
+// controller: controller.tabController,
+// children: [
+// Container(
+// child: Text("Tidak ada Riwayat"),
+// ),
+// Container(
+// child: Text("Tidak ada Riwayat"),
+// ),
+// ],
+// ),
+// ),
+// ],
+// ),
+// ),
+// ),
+// ),
+// ));
+
+// Column(
+//   children: [
+//     Obx(() {
+//       if (controller.isLoading.value) {
+//         return ListView.builder(
+//           shrinkWrap: true,
+//           itemCount: controller.ordersList.length,
+//           physics: NeverScrollableScrollPhysics(),
+//           itemBuilder: (context, index) =>
+//               Shimmer.fromColors(
+//             baseColor: lightGrey.withOpacity(0.3),
+//             highlightColor: lightGrey.withOpacity(0.1),
+//             child: Padding(
+//               padding: const EdgeInsets.only(
+//                   top: defaultMargin),
+//               child: MainContainerWidget(
+//                 color: primaryColor,
+//                 height: 187,
+//                 width: double.infinity,
+//               ),
+//             ),
+//           ),
+//         );
+//       } else if (controller.ordersList.isEmpty) {
+//         return Center(child: Text("Tidak ada Riwayat"));
+//       } else {
+//         return ListView.builder(
+//           shrinkWrap: true,
+//           reverse: true,
+//           itemCount: controller.ordersList.length,
+//           physics: NeverScrollableScrollPhysics(),
+//           itemBuilder: (context, index) {
+//             final order = controller.ordersList[index];
+//             return MainDetailView(
+//                 order: order, controller: controller);
+//           },
+//         );
+//       }
+//     }),
+//   ],
+// ),
 
 class MainDetailView extends StatelessWidget {
   const MainDetailView(
@@ -159,7 +221,7 @@ class MainDetailView extends StatelessWidget {
                             vertical: 2,
                           ),
                           child: Text(
-                            "Estimasi: ${DateFormat('d MMMM yyyy').format(DateTime.parse(order['tanggal_estimasi'].toString() == 'null' ? "2007-07-31 00:00:00" : order['tanggal_estimasi'].toString()))}",
+                            "Estimasi: ${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.parse(order['tanggal_estimasi'].toString() == 'null' ? "2007-07-31 00:00:00" : order['tanggal_estimasi'].toString()))}",
                             style: tsLabelLargeMedium(darkGrey),
                           ),
                         ),

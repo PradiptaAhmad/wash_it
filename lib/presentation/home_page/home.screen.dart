@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/presentation/order_page/order_page.screen.dart';
 import 'package:wash_it/widget/common/content_title_widget.dart';
 import 'package:wash_it/widget/common/main_container_widget.dart';
 
@@ -47,9 +47,8 @@ class HomeScreen extends GetView<HomeController> {
                           Expanded(
                               child: MainChoiceWidget(
                             onPressed: () {
-                              Get.to(() => OrderView(
-                                    tipeOrder: "antar_jemput",
-                                  ));
+                              Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
+                                  arguments: "antar_jemput");
                             },
                             imageAssets: 'assets/img_home/delivery1.png',
                             mainTitle: 'Antar Jemput',
@@ -60,9 +59,8 @@ class HomeScreen extends GetView<HomeController> {
                           Expanded(
                               child: MainChoiceWidget(
                             onPressed: () {
-                              Get.to(() => OrderView(
-                                    tipeOrder: "antar_mandiri",
-                                  ));
+                              Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
+                                  arguments: 'antar_mandiri');
                             },
                             imageAssets: 'assets/img_home/delivery2.png',
                             mainTitle: 'Antar Mandiri',
@@ -224,7 +222,7 @@ class HomeShowDetail extends StatelessWidget {
                             vertical: 2,
                           ),
                           child: Text(
-                            "Estimasi: ",
+                            "Estimasi: ${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.parse(order['tanggal_estimasi'] ?? "2007-07-31 00:00:00"))}",
                             style: tsLabelLargeMedium(darkGrey),
                           ),
                         ),

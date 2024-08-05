@@ -103,6 +103,21 @@ Future reviewPopUp(context, controller) {
     },
   );
 }
+
+Future optionPopUp(context, controller) {
+  return showModalBottomSheet(
+    context: context,
+    isDismissible: true,
+    scrollControlDisabledMaxHeightRatio: 0.1,
+    sheetAnimationStyle: AnimationStyle(
+      duration: Durations.medium1,
+      curve: Curves.easeInOut,
+    ),
+    builder: (context) {
+      return Container();
+    },
+  );
+}
 // Future reviewPopUp(context, controller) {
 //   return showModalBottomSheet(
 //     context: context,

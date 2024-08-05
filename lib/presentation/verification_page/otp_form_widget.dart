@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 
+// ignore: must_be_immutable
 class PinFormInput extends StatelessWidget {
   PinFormInput({
     super.key,

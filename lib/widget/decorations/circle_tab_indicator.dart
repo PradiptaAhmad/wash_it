@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CircleTabIndicator extends Decoration {
   final Color color;
   double radius;

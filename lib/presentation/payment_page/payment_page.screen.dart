@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-
-import '../../infrastructure/navigation/routes.dart';
+import 'package:intl/intl.dart';
 import '../../infrastructure/theme/themes.dart';
+import '../../widget/common/main_container_widget.dart';
+import '../../widget/common/mainpage_appbar_widget.dart';
+import '../transaction_page/widget/detail_text_widget.dart';
 import 'controllers/payment_page.controller.dart';
 
 class PaymentPageScreen extends GetView<PaymentPageController> {
@@ -12,158 +14,180 @@ class PaymentPageScreen extends GetView<PaymentPageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Iconsax.arrow_left_2,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        backgroundColor: primaryColor,
-        title: Text("Pilih Pembayaran", style: tsBodyLargeMedium(black)),
-        centerTitle: true,
+      appBar: MainpageAppbarWidget(
+        icon: Icons.close_rounded,
+        iconSize: 25,
+        title: '',
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: itemsData.length,
-                itemBuilder: (context, index) {
-                  final data = itemsData[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: ListViewWidgetItems(
-                      data['keyNum'],
-                      controller,
-                      data['itemTitle'],
-                      data['itemImage'],
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(defaultMargin),
-        child: Row(
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF76ABAE),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: () => Get.toNamed(Routes.RECEIPT_PAGE),
+      body: Obx(
+        () => controller.isLoading.value
+            ? Center(
+                child: CupertinoActivityIndicator(),
+              )
+            : SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(defaultMargin),
-                  child: Text(
-                    "Selanjutnya",
-                    style: tsBodySmallSemibold(primaryColor),
+                  padding: EdgeInsets.all(defaultMargin),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 40),
+                        Container(
+                          height: 120,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            color: controller.paymentList['status'] == "PAID"
+                                ? successColor.withOpacity(0.2)
+                                : pendingOrange.withOpacity(0.2),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(100)),
+                          ),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              height: 70,
+                              width: 70,
+                              decoration: BoxDecoration(
+                                color:
+                                    controller.paymentList['status'] == "PAID"
+                                        ? successColor
+                                        : pendingOrange,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(100)),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  controller.paymentList['status'] == "PAID"
+                                      ? Icons.check_rounded
+                                      : Icons.priority_high_rounded,
+                                  color: Colors.white,
+                                  size: 40,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          controller.paymentList['status'] == "PAID"
+                              ? "Pembayaran Berhasil"
+                              : "Selesaikan Pembayaran",
+                          style: tsBodyLargeSemibold(black),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          width: 400,
+                          child: Text(
+                            "Segera selesaikan pembayaran untuk melanjutkan proses pesanan",
+                            textAlign: TextAlign.center,
+                            maxLines: 4,
+                            style: tsBodySmallMedium(darkGrey),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        MainContainerWidget(
+                          width: double.infinity,
+                          childs: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                SizedBox(height: 5),
+                                DetailDataWidget(
+                                  leftTitle: "Detail Pembayaran",
+                                  leftTitleStyle: tsBodySmallSemibold(black),
+                                  rightTitle: "",
+                                ),
+                                SizedBox(height: 10),
+                                DetailDataWidget(
+                                  leftTitle: "Tanggal pembayaran",
+                                  rightTitle:
+                                      "${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.parse(controller.paymentList['paid_at'] ?? "2007-07-31 00:00:00"))}",
+                                ),
+                                SizedBox(height: 5),
+                                DetailDataWidget(
+                                  leftTitle: "Tipe pembayaran",
+                                  rightTitle:
+                                      controller.paymentList['payment_type'] ==
+                                              "non_tunai"
+                                          ? "Non Tunai"
+                                          : "Tunai",
+                                ),
+                                SizedBox(height: 5),
+                                DetailDataWidget(
+                                  leftTitle: "Metode pembayaran",
+                                  rightTitle:
+                                      "${controller.paymentList['payment_method']}",
+                                ),
+                                SizedBox(height: 5),
+                                DetailDataWidget(
+                                  leftTitle: "Kanal pembayaran",
+                                  rightTitle:
+                                      "${controller.paymentList['payment_channel']}",
+                                ),
+                                SizedBox(height: 5),
+                                DetailDataWidget(
+                                  leftTitle: "Total",
+                                  rightTitle: controller
+                                              .paymentList['amount'] ==
+                                          null
+                                      ? "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(controller.argument[1])}"
+                                      : "Rp ${NumberFormat("#,##0", "id_ID").format(int.parse(controller.paymentList['amount']))}",
+                                ),
+                                SizedBox(height: 5),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            )
-          ],
-        ),
+      ),
+      floatingActionButton: Obx(
+        () => controller.isLoading.value ||
+                controller.paymentList['status'] == "PAID"
+            ? Container()
+            : Padding(
+                padding: const EdgeInsets.all(defaultMargin),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () => controller.fetchPaymentDetail(),
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: secondaryColor.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        height: 50,
+                        child: Center(
+                          child: Text("Cek status pembayaran",
+                              style: tsBodySmallSemibold(secondaryColor)),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    InkWell(
+                      onTap: () => controller.createPayment(),
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: secondaryColor,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        height: 50,
+                        child: Center(
+                          child: Text("Bayar",
+                              style: tsBodySmallSemibold(primaryColor)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
-
-Widget ListViewWidgetItems(
-    numKey, PaymentPageController controller, itemTitle, itemImage) {
-  return Obx(() => Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-              color: controller.selectedMethod.value == numKey
-                  ? successColor
-                  : lightGrey,
-              width: 2),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: ListTile(
-          leading: Image.asset(
-            itemImage,
-            height: 20,
-            width: 20,
-          ),
-          title: Text(
-            itemTitle,
-            style: tsBodySmallRegular(black),
-          ),
-          trailing: Container(
-            width: 20,
-            height: 20,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(50)),
-              border: Border.all(color: lightGrey, width: 2),
-            ),
-            child: Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(50)),
-                border: Border.all(color: primaryColor, width: 2),
-                color: controller.selectedMethod.value == numKey
-                    ? successColor
-                    : primaryColor,
-              ),
-            ),
-          ),
-          onTap: () {
-            controller.selectMethod(numKey);
-          },
-        ),
-      ));
-}
-
-class PaymentChoiceDotted extends StatelessWidget {
-  const PaymentChoiceDotted({
-    super.key,
-    required this.selectedMethod,
-  });
-
-  final int selectedMethod;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 20,
-      height: 20,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(50)),
-        border: Border.all(color: primaryColor, width: 2),
-        color: selectedMethod == 0 ? successColor : primaryColor,
-      ),
-    );
-  }
-}
-
-final List<Map<String, dynamic>> itemsData = [
-  {
-    'keyNum': 0,
-    'itemTitle': 'Transfer Bank',
-    'itemImage': 'assets/img_transaction/icMastercard.png',
-  },
-  {
-    'keyNum': 1,
-    'itemTitle': 'OVO',
-    'itemImage': 'assets/img_transaction/ovo.png',
-  },
-  {
-    'keyNum': 2,
-    'itemTitle': 'Tunai',
-    'itemImage': 'assets/img_transaction/money.png',
-  },
-];

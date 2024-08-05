@@ -11,6 +11,7 @@ class TransactionPageController extends GetxController {
   var ordersList = {}.obs;
   var statusList = {}.obs;
   var isLoading = false.obs;
+  var displayText = ''.obs;
   GetStorage box = GetStorage();
 
   late final argument;
@@ -112,7 +113,7 @@ class TransactionPageController extends GetxController {
     }
   }
 
-  Future<void> createPayment() async {
+  Future<void> completeOrder() async {
     isLoading.value = true;
     try {
       final url = ConfigEnvironments.getEnvironments()["url"];
@@ -125,28 +126,23 @@ class TransactionPageController extends GetxController {
 
       var data = {
         'order_id': argument[0].toString(),
-        'description': 'Bayar pesanan ${argument[0].toString()}',
       };
 
-      final response = await http.post(
-        Uri.parse("${url}/payments/create"),
+      final response = await http.put(
+        Uri.parse("${url}/orders/complete"),
         headers: headers,
         body: data,
       );
 
-      if (response.statusCode == 201) {
-        Get.snackbar('Success', 'Pembayaran berhasil dibuat',
-            backgroundColor: successColor);
-        print(json.decode(response.body));
-        if (!await launchUrl(
-            Uri.parse(json.decode(response.body)['checkout_link']))) {
-          throw Exception(
-              'Could not launch ${json.decode(response.body)['checkout_link']}');
-        }
+      if (response.statusCode == 200) {
+        Get.snackbar('Berhasil', 'Pesanan telah selesai',
+            backgroundColor: warningColor);
+        Get.back();
+      } else if (response.statusCode == 400) {
+        Get.snackbar('Error', 'Pembayaran sudah selesai',
+            backgroundColor: warningColor);
       } else {
         Get.snackbar('Error', '${response.statusCode}');
-        print(response.body);
-        print(data);
       }
     } catch (e) {
       Get.snackbar('Error Catch', e.toString());
@@ -156,12 +152,23 @@ class TransactionPageController extends GetxController {
     }
   }
 
+  Future<void> buttonTitle() async {
+    if (statusList['status_code'] == 5) {
+      displayText.value = 'Selesai';
+    } else if (argument[1] == 'order') {
+      displayText.value = 'Bayar sekarang';
+    } else {
+      displayText.value = 'Beri ulasan';
+    }
+  }
+
   @override
   void onInit() async {
     super.onInit();
     argument = Get.arguments;
     await fetchDetailOrder();
     await fetchStatusData();
+    await buttonTitle();
   }
 
   @override
