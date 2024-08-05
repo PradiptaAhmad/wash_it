@@ -14,6 +14,7 @@ class MainpageAppbarWidget extends StatelessWidget
     this.textStyle,
     this.elevation,
     this.noLeading = false,
+    this.iconSize,
   }) : super(key: key);
 
   final VoidCallback? onPressed;
@@ -22,7 +23,7 @@ class MainpageAppbarWidget extends StatelessWidget
   final Color? backgroundColor;
   final TextStyle? textStyle;
   final bool noLeading;
-  final double? elevation;
+  final double? elevation, iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class MainpageAppbarWidget extends StatelessWidget
               icon: Icon(
                 icon ?? Icons.arrow_back_ios_rounded,
                 color: darkGrey,
-                size: 20,
+                size: iconSize,
               ),
               onPressed: onPressed ?? Get.back,
             ),

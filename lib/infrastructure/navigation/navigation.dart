@@ -113,10 +113,5 @@ class Nav {
       page: () => PaymentPageScreen(),
       binding: PaymentPageControllerBinding(),
     ),
-    GetPage(
-      name: Routes.RECEIPT_PAGE,
-      page: () => const ReceiptPageScreen(),
-      binding: ReceiptPageControllerBinding(),
-    ),
   ];
 }

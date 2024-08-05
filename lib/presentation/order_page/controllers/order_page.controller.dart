@@ -27,18 +27,14 @@ class OrderController extends GetxController {
   final nameTextController = TextEditingController();
   final phoneTextEditingController = TextEditingController();
   final addressTextEditingController = TextEditingController();
-
   var isLoading = true.obs;
   final userData = {}.obs;
   final laundries = [].obs;
-
   final jenisList = [].obs;
-
   GetStorage box = GetStorage();
+  late final argument;
 
-  get ordersList => null;
-
-  Future<void> createOrder(String orderTipe) async {
+  Future<void> createOrder() async {
     try {
       isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()["url"];
@@ -53,7 +49,7 @@ class OrderController extends GetxController {
       var data = {
         'nama_pemesan': ordername.value,
         'nomor_telepon': phonenumber.value,
-        'jenis_pemesanan': orderTipe,
+        'jenis_pemesanan': argument,
         'alamat': address.value,
         'tanggal_pengambilan': pickupdate.value,
         'laundry_id': laundryId.toString(),
@@ -117,30 +113,6 @@ class OrderController extends GetxController {
     }
   }
 
-  void updateOrderName(String newOrderName) {
-    ordername.value = newOrderName;
-  }
-
-  void updatePhoneNumber(String newPhoneNumber) {
-    phonenumber.value = newPhoneNumber;
-  }
-
-  void updateOrderType(String newOrderType) {
-    ordertype.value = newOrderType;
-  }
-
-  void updateLaundryName(String newLaundryName) {
-    laundryName.value = newLaundryName;
-  }
-
-  void updateAddress(String newAddress) {
-    address.value = newAddress;
-  }
-
-  void updatePickupDate(newPickupDate) {
-    pickupdate.value = newPickupDate.toString();
-  }
-
   Future<void> getLaundries() async {
     final url = ConfigEnvironments.getEnvironments()['url'];
     final token = box.read('token');
@@ -189,15 +161,16 @@ class OrderController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    argument = Get.arguments;
+    await fetchUserData();
+    await getLaundries();
   }
 
   @override
   void onReady() {
     super.onReady();
-    fetchUserData();
-    getLaundries();
   }
 
   @override

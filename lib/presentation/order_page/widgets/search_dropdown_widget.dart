@@ -37,9 +37,10 @@ class SearchDropdownWidget extends StatelessWidget {
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: SearchField(
-        suggestionStyle: tsBodySmallRegular(black),
+        suggestionStyle: tsBodySmallMedium(black),
         onSubmit: onSaved,
         onTap: onTap,
+        searchStyle: tsBodySmallMedium(black),
         onSaved: onSaved,
         validator: validator,
         searchInputDecoration: InputDecoration(
@@ -48,7 +49,7 @@ class SearchDropdownWidget extends StatelessWidget {
           hintStyle: tsBodySmallMedium(darkGrey),
           fillColor: primaryColor,
           filled: true,
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+          contentPadding: EdgeInsets.all(defaultMargin),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: secondaryColor, width: 2),
               borderRadius: BorderRadius.circular(10)),
@@ -68,10 +69,19 @@ class SearchDropdownWidget extends StatelessWidget {
         ),
         suggestionsDecoration: SuggestionDecoration(
           color: primaryColor,
-          padding: padding ?? EdgeInsets.zero,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+          ),
+          padding: padding ??
+              EdgeInsets.symmetric(
+                vertical: 5,
+                horizontal: 5,
+              ),
         ),
-        suggestionItemDecoration:
-            BoxDecoration(border: Border(bottom: BorderSide.none)),
+        suggestionItemDecoration: BoxDecoration(
+          border: Border(bottom: BorderSide.none),
+        ),
         suggestions: suggestions!,
       ),
     );

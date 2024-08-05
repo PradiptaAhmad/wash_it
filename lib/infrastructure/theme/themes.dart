@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/painting/text_style.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -6,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 const Color primaryColor = Color(0xFFFFFFFF);
 const Color secondaryColor = Color(0xFF76ABAE);
 const Color darkGrey = Color(0xFF767676);
+const Color pendingOrange = Color(0xFFFFA500);
 const Color black = Color(0xFF000000);
 const Color grey = Color(0xFFB5B5B5);
 const Color darkBlue = Color(0xFF535C6B);
@@ -22,6 +24,14 @@ const Color categoryCuciRegular = Color(0xFFD9EDBF);
 // margin and padding
 const double defaultMargin = 15.0;
 const double defaultPadding = 24;
+
+screenWidth(context) {
+  return MediaQuery.of(context).size.width;
+}
+
+screenHeight(context) {
+  return MediaQuery.of(context).size.height;
+}
 
 // Text Styles
 figmaFontsize(int fontSize) {

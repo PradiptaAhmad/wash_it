@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:wash_it/presentation/order_page/widgets/search_dropdown_widget.dart';
+import 'package:wash_it/widget/popup/custom_snackbar.dart';
+import 'package:wash_it/widget/popup/custom_dialog.dart';
 import '../../infrastructure/theme/themes.dart';
 import '../../widget/common/auth/input_form_widget.dart';
 import '../../widget/common/content_title_widget.dart';
@@ -12,9 +15,7 @@ import '../../widget/common/mainpage_appbar_widget.dart';
 import 'controllers/order_page.controller.dart';
 
 class OrderView extends GetView<OrderController> {
-  final String? tipeOrder;
-
-  OrderView({Key? key, this.tipeOrder}) : super(key: key);
+  OrderView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class OrderView extends GetView<OrderController> {
     return Scaffold(
       appBar: MainpageAppbarWidget(
         title: 'Pesan Laundry',
-        onPressed: () => showExitConfirmationDialog(context),
+        onPressed: () => exitConfirmationDialog(context, controller),
       ),
       body: Obx(
         () => Stepper(
@@ -55,7 +56,7 @@ class OrderView extends GetView<OrderController> {
                   if (controller.currentStep.value > 0) {
                     controller.pageChangedMin();
                   } else {
-                    showExitConfirmationDialog(context);
+                    exitConfirmationDialog(context, controller);
                   }
                 },
                 child: Padding(
@@ -74,13 +75,41 @@ class OrderView extends GetView<OrderController> {
                   ),
                 ),
                 onPressed: () {
-                  if (controller.currentStep.value <
-                      getSteps(context).length - 1) {
-                    controller.pageChangedPlus();
-                  } else {
-                    // controller.ordertype.value = tipeOrder ?? '';
-
-                    controller.createOrder(tipeOrder.toString());
+                  print(controller.currentStep.value);
+                  switch (controller.currentStep.value) {
+                    case 0:
+                      {
+                        if (controller.nameTextController.text.isEmpty ||
+                            controller
+                                .phoneTextEditingController.text.isEmpty ||
+                            controller
+                                .addressTextEditingController.text.isEmpty) {
+                          isNotEmptySnackBar();
+                        } else {
+                          controller.pageChangedPlus();
+                          FocusScope.of(context).unfocus();
+                        }
+                      }
+                      break;
+                    case 1:
+                      {
+                        if (controller.laundryName.isEmpty ||
+                            controller.pickupdate.value.isEmpty) {
+                          isNotEmptySnackBar();
+                        } else {
+                          controller.pageChangedPlus();
+                          FocusScope.of(context).unfocus();
+                        }
+                      }
+                      break;
+                    case 2:
+                      {
+                        if (controller.payment.value.isEmpty) {
+                          isNotEmptySnackBar();
+                        } else {
+                          controller.createOrder();
+                        }
+                      }
                   }
                 },
                 child: Padding(
@@ -158,7 +187,7 @@ class OrderView extends GetView<OrderController> {
                       readOnly: controller.canContinue.value,
                       keyboardType: TextInputType.name,
                       onChanged: (value) {
-                        controller.updateOrderName(value);
+                        controller.ordername.value = value;
                       },
                     )),
                 Obx(() => InputFormWidget(
@@ -169,7 +198,7 @@ class OrderView extends GetView<OrderController> {
                     readOnly: controller.canContinue.value,
                     keyboardType: TextInputType.phone,
                     onChanged: (value) {
-                      controller.updatePhoneNumber(value);
+                      controller.phonenumber.value = value;
                     })),
                 InputFormWidget(
                   title: "Alamat",
@@ -177,7 +206,7 @@ class OrderView extends GetView<OrderController> {
                   controller: controller.addressTextEditingController,
                   keyboardType: TextInputType.streetAddress,
                   onChanged: (value) {
-                    controller.updateAddress(value);
+                    controller.address.value = value;
                   },
                 ),
                 SizedBox(height: 80),
@@ -217,13 +246,12 @@ class OrderView extends GetView<OrderController> {
                       .map((e) => SearchFieldListItem(e))
                       .toList(),
                   validator: (newValue) {
+                    print(newValue);
                     if (controller.jenisList.contains(newValue)) {
                       SchedulerBinding.instance.addPostFrameCallback((_) {
                         controller.getIdLaundries(newValue!);
-                        controller.updateLaundryName(newValue);
+                        controller.laundryName.value = newValue;
                       });
-                    } else {
-                      return "Pilih tipe laundry";
                     }
                     return null;
                   },
@@ -252,7 +280,10 @@ class OrderView extends GetView<OrderController> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      hintText: '${controller.pickupdate.value}',
+                      hintText: controller.pickupdate.value.isNotEmpty == true
+                          ? DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(
+                              DateTime.parse("${controller.pickupdate.value}"))
+                          : "",
                       hintStyle: tsBodySmallMedium(black),
                       suffixIcon:
                           const Icon(Icons.calendar_today, color: darkGrey),
@@ -269,13 +300,7 @@ class OrderView extends GetView<OrderController> {
                       );
 
                       if (pickedDate != null) {
-                        int year = pickedDate.year;
-                        int month = pickedDate.month;
-                        int day = pickedDate.day;
-
-                        SchedulerBinding.instance.addPostFrameCallback((_) {
-                          controller.updatePickupDate('$year-$month-$day');
-                        });
+                        controller.pickupdate.value = pickedDate.toString();
                       }
                     },
                   ),
@@ -319,7 +344,7 @@ class OrderView extends GetView<OrderController> {
                   const SizedBox(height: 10),
                   _buildDataItem(
                     "Jenis Pemesanan",
-                    "${tipeOrder == 'antar_jemput' ? "Antar jemput" : "Antar mandiri"}",
+                    "${controller.argument == 'antar_jemput' ? "Antar jemput" : "Antar mandiri"}",
                   ),
                   _buildDataItem(
                     "Tipe Laundry",
@@ -331,26 +356,8 @@ class OrderView extends GetView<OrderController> {
                   ),
                   _buildDataItem("Catatan", "${controller.catatan.value}"),
                   const SizedBox(height: 10),
-                  // DropdownMenu(
-                  //   inputDecorationTheme: InputDecorationTheme(
-                  //       isDense: true,
-                  //       isCollapsed: true,
-                  //       contentPadding: const EdgeInsets.symmetric(
-                  //           vertical: 5, horizontal: 15),
-                  //       constraints: BoxConstraints(minWidth: Get.width),
-                  //       border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(10),
-                  //         borderSide: BorderSide(color: lightGrey, width: 1),
-                  //       )),
-                  //   dropdownMenuEntries: controller.paymentList
-                  //       .map<DropdownMenuEntry<String>>((String value) {
-                  //     return DropdownMenuEntry<String>(
-                  //         value: value, label: value);
-                  //   }).toList(),
-                  // )
                   DropdownButtonFormField(
                     style: tsBodySmallMedium(black),
-                    // borderRadius: BorderRadius.all(Radius.circular(20)),
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: lightGrey, width: 1),
@@ -368,7 +375,6 @@ class OrderView extends GetView<OrderController> {
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 15, horizontal: 15),
                     ),
-
                     items: controller.paymentList
                         .map((item) => DropdownMenuItem(
                               child: Text(item),
@@ -386,7 +392,6 @@ class OrderView extends GetView<OrderController> {
                   "*Untuk layanan antar jemput diwajibkan membayar biaya minimal per kg, minimal 3Kg",
                   style: tsLabelLargeMedium(darkGrey),
                 ),
-                SizedBox(height: 80),
               ],
             ),
           ),
@@ -434,36 +439,6 @@ class OrderView extends GetView<OrderController> {
           ),
         ),
       ),
-    );
-  }
-
-  Future<void> showExitConfirmationDialog(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Konfirmasi'),
-          content: const Text(
-              'Apakah Anda yakin ingin kembali ke halaman sebelumnya?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Batal'),
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Ya'),
-              onPressed: () {
-                controller.currentStep.value = 0;
-                Navigator.of(dialogContext).pop();
-                Get.back();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

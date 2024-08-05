@@ -4,7 +4,6 @@ export 'package:wash_it/presentation/login_page/login_page.screen.dart';
 export 'package:wash_it/presentation/notification_page/notification_page.screen.dart';
 export 'package:wash_it/presentation/onboarding_page/boarding_screen.dart';
 export 'package:wash_it/presentation/payment_page/payment_page.screen.dart';
-export 'package:wash_it/presentation/receipt_page/receipt_page.screen.dart';
 export 'package:wash_it/presentation/register_page/register_page.screen.dart';
 export 'package:wash_it/presentation/review_page/review_page.screen.dart';
 export 'package:wash_it/presentation/status_page/status_page.screen.dart';

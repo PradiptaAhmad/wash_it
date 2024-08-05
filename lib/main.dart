@@ -6,12 +6,14 @@ import 'package:wash_it/infrastructure/dal/services/firebase_options.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'infrastructure/navigation/navigation.dart';
 import 'infrastructure/navigation/routes.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await initializeDateFormatting('id_ID', null);
   await FirebaseApi.initNotification();
   var initialRoute = await Routes.initialRoute;
   runApp(Main(initialRoute));
