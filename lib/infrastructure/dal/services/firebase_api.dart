@@ -1,7 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:wash_it/infrastructure/dal/services/firebase_options.dart';
+import 'package:get/get.dart';
 
 class FirebaseApi {
   static final _firebaseMessaging = FirebaseMessaging.instance;
@@ -18,6 +19,17 @@ class FirebaseApi {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: onSelectNotification,
+    );
   }
 
   static Future<void> initNotification() async {
@@ -30,6 +42,7 @@ class FirebaseApi {
     final token = await _firebaseMessaging.getToken();
     FirebaseApi.initLocalNotification();
     FirebaseMessaging.onMessage.listen(FirebaseApi.handleMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(handleForegroundMessage);
     FirebaseMessaging.onBackgroundMessage(FirebaseApi.handleBackgroundMessage);
     print(token);
   }
@@ -49,6 +62,7 @@ class FirebaseApi {
       notification.hashCode,
       notification.title,
       notification.body,
+      payload: json.encode(message.data),
       NotificationDetails(
         android: AndroidNotificationDetails(
           channel.id,
@@ -60,9 +74,21 @@ class FirebaseApi {
   }
 
   static Future<void> handleBackgroundMessage(RemoteMessage message) async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    print('Message data: ${message.data}');
+    final data = message.data;
+    print(data);
+  }
+
+  static Future<void> handleForegroundMessage(RemoteMessage message) async {
+    final data = message.data;
+    if (data['route'] != null) {
+      Get.toNamed(data['route'], arguments: [data['data'], 'order']);
+    }
+  }
+
+  static void onSelectNotification(NotificationResponse details) {
+    final payload = json.decode(details.payload!);
+    if (payload['route'] != null) {
+      Get.toNamed(payload['route'], arguments: [payload['datagit '], 'order']);
+    }
   }
 }
