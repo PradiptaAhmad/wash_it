@@ -39,7 +39,10 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
                     SizedBox(height: 10),
                     Row(
                       children: [
-                        Text("${controller.userData['email']}",
+                        Text(
+                            controller.argument[0] == 'otp-login'
+                                ? controller.argument[1]
+                                : controller.userData['email'],
                             style: tsBodySmallMedium(black)),
                         SizedBox(
                           width: 10,
@@ -100,13 +103,17 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
             Expanded(
               child: FloatingActionButton(
                 onPressed: () {
-                  String pinCode = _pinController1.text +
+                  var pinCode = _pinController1.text +
                       _pinController2.text +
                       _pinController3.text +
                       _pinController4.text +
                       _pinController5.text +
                       _pinController6.text;
-                  controller.verifyOtp(pinCode);
+                  if (controller.argument[0] == 'otp-login') {
+                    controller.VerifyOtpLogin(pinCode);
+                  } else {
+                    controller.verifyOtp(pinCode);
+                  }
                 },
                 elevation: 3,
                 backgroundColor: secondaryColor,

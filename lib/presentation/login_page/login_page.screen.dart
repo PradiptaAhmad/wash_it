@@ -84,7 +84,7 @@ class LoginPageScreen extends GetView<LoginPageController> {
                 padding: EdgeInsets.only(top: 5),
                 alignment: Alignment.topRight,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () => controller.forgotPassword(),
                   child: Text(
                     "Lupa Password?",
                     style: tsLabelLargeSemibold(darkBlue),

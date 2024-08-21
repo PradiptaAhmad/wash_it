@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 
 // Color Styles
 const Color primaryColor = Color(0xFFFFFFFF);
@@ -23,6 +24,10 @@ const Color categoryCuciRegular = Color(0xFFD9EDBF);
 // margin and padding
 const double defaultMargin = 15.0;
 const double defaultPadding = 24;
+
+closeKeyboard() {
+  FocusScope.of(Get.overlayContext!).unfocus();
+}
 
 screenWidth(context) {
   return MediaQuery.of(context).size.width;
