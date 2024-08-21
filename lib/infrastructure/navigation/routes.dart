@@ -15,11 +15,12 @@ class Routes {
   static const PAYMENT_PAGE = '/payment-page';
   static const PROFILE_CHANGE_PAGE = '/profile_change_page';
   static const PROFILE_PAGE = '/profile_page';
+  static const RECEIPT_PAGE = '/receipt-page';
   static const REGISTER_PAGE = '/register-page';
   static const REVIEW_PAGE = '/review-page';
   static const SPLASH_SCREEN = '/splash_screen';
   static const STATUS_PAGE = '/status_page.screen';
   static const TRANSACTION_PAGE = '/transaction-page';
   static const VERIFICATION_PAGE = '/verification_page';
-  static const RECEIPT_PAGE = '/receipt-page';
+  static const ADDRESS_PAGE = '/address-page';
 }

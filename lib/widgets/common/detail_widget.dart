@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wash_it/widget/common/main_container_widget.dart';
 
 import '../../infrastructure/theme/themes.dart';
+import 'main_container_widget.dart';
 
 class DetailWidget extends StatelessWidget {
   const DetailWidget({

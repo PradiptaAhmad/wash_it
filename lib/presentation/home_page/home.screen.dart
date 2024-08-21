@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/widget/common/content_title_widget.dart';
-import 'package:wash_it/widget/common/main_container_widget.dart';
+import 'package:wash_it/presentation/home_page/shimmer/shimmer_preview_newest.dart';
+import 'package:wash_it/widgets/common/main_container_widget.dart';
+import 'package:wash_it/widgets/shimmer/shimmer_widget.dart';
 
+import '../../widgets/common/content_title_widget.dart';
 import 'controllers/home.controller.dart';
 
 class HomeScreen extends GetView<HomeController> {
@@ -17,158 +18,115 @@ class HomeScreen extends GetView<HomeController> {
     final HomeController controller = Get.put(HomeController());
 
     return Scaffold(
-      backgroundColor: secondaryColor,
+      backgroundColor: lightGrey.withOpacity(0.1),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight + 95),
+        child: _buildAppbar(),
+      ),
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: () async {
-            await controller.fetchOrdersData();
-            await controller.fetchUserData();
-            await controller.fetchHistoriesData();
-          },
+          onRefresh: () => controller.onRefresh(),
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MainTitleWidget(),
+                SizedBox(height: 10),
+                Obx(() => !controller.isLoading.value
+                    ? Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: defaultMargin),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildOrderTypeWidget(
+                                  mainTitle: "Antar Jemput",
+                                  desc: "Pesan Laundry dan diantar langsung",
+                                  onPressed: () {
+                                    Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
+                                        arguments: 'antar_jemput');
+                                  },
+                                  color: Colors.orange,
+                                  icon: Icons.delivery_dining_rounded),
+                              SizedBox(width: 10),
+                              _buildOrderTypeWidget(
+                                  mainTitle: "Antar Mandiri",
+                                  desc:
+                                      "Pesan Laundry dan antar laundry sendiri",
+                                  onPressed: () {
+                                    Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
+                                        arguments: 'antar_mandiri');
+                                  },
+                                  color: Colors.green,
+                                  icon: Icons.directions_walk_rounded)
+                            ]))
+                    : _shimmerOrderTypeWidget()),
+                SizedBox(height: 20),
+                Obx(
+                  () => !controller.isLoading.value
+                      ? ContentTitleWidget(
+                          title: "PESANAN TERBARU",
+                          lefttextSize: tsBodySmallSemibold(grey),
+                        )
+                      : _shimmerTitleWidget(),
+                ),
+                SizedBox(height: 10),
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return shimmerPreviewNewest();
+                  }
+                  if (controller.ordersList.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.all(60),
+                      child: Center(
+                        child: Text("Tidak ada pesanan",
+                            style: tsBodyMediumMedium(darkGrey)),
+                      ),
+                    );
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: controller.ordersList.length < 2
+                        ? controller.ordersList.length
+                        : 2,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final order = controller
+                          .ordersList[controller.ordersList.length - 1 - index];
+                      return _buildNewestPreviewWidget(order);
+                    },
+                  );
+                }),
+                SizedBox(height: 10),
+                Obx(
+                  () => !controller.isLoading.value
+                      ? ContentTitleWidget(
+                          title: "TIPE LAUNDRY",
+                          lefttextSize: tsBodySmallSemibold(grey))
+                      : _shimmerTitleWidget(),
+                ),
+                SizedBox(height: 10),
                 Container(
-                  padding: EdgeInsets.all(defaultMargin),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                    color: primaryColor,
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Expanded(
-                              child: MainChoiceWidget(
-                            onPressed: () {
-                              Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
-                                  arguments: "antar_jemput");
-                            },
-                            imageAssets: 'assets/img_home/delivery1.png',
-                            mainTitle: 'Antar Jemput',
-                          )),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                              child: MainChoiceWidget(
-                            onPressed: () {
-                              Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
-                                  arguments: 'antar_mandiri');
-                            },
-                            imageAssets: 'assets/img_home/delivery2.png',
-                            mainTitle: 'Antar Mandiri',
-                          )),
-                        ],
-                      ),
-                      ContentTitleWidget(
-                        title: "Status Pesanan",
-                      ),
-                      SizedBox(height: defaultMargin),
-                      Obx(() {
-                        if (controller.isLoading.value) {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: 3,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) => Shimmer.fromColors(
-                              baseColor: lightGrey.withOpacity(0.3),
-                              highlightColor: lightGrey.withOpacity(0.1),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: defaultMargin),
-                                child: MainContainerWidget(
-                                  color: primaryColor,
-                                  height: 138,
-                                  width: double.infinity,
-                                ),
-                              ),
-                            ),
-                          );
-                        } else if (controller.ordersList.isEmpty) {
-                          return Padding(
-                            padding: const EdgeInsets.all(60),
-                            child: Center(
-                              child: Text("Tidak ada pesanan",
-                                  style: tsBodyMediumMedium(darkGrey)),
-                            ),
-                          );
-                        } else {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: controller.ordersList.length < 3
-                                ? controller.ordersList.length
-                                : 3,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              final order = controller.ordersList[
-                                  controller.ordersList.length - 1 - index];
-                              return HomeShowDetail.ShowDetailHome(
-                                order: order,
-                                orderType: 'order',
-                              );
-                            },
-                          );
-                        }
-                      }),
-                      ContentTitleWidget(
-                        title: "Riwayat Pesanan",
-                      ),
-                      SizedBox(height: defaultMargin),
-                      Obx(() {
-                        if (controller.isLoading.value) {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: 3,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) => Shimmer.fromColors(
-                              baseColor: lightGrey.withOpacity(0.3),
-                              highlightColor: lightGrey.withOpacity(0.1),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: defaultMargin),
-                                child: MainContainerWidget(
-                                  color: primaryColor,
-                                  height: 138,
-                                  width: double.infinity,
-                                ),
-                              ),
-                            ),
-                          );
-                        } else if (controller.historiesList.isEmpty) {
-                          return Padding(
-                            padding: const EdgeInsets.all(60),
-                            child: Center(
-                              child: Text("Tidak ada pesanan",
-                                  style: tsBodyMediumMedium(darkGrey)),
-                            ),
-                          );
-                        } else {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: controller.historiesList.length < 3
-                                ? controller.historiesList.length
-                                : 3,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              final order = controller.historiesList.last;
-                              return HomeShowDetail.ShowDetailHome(
-                                order: order,
-                                orderType: 'histories',
-                              );
-                            },
-                          );
-                        }
-                      }),
-                    ],
+                  height: 200,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    children: List.generate(10, (index) {
+                      return MainContainerWidget(
+                        margin: const EdgeInsets.only(right: 10),
+                        padding: EdgeInsets.all(15),
+                        childs: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Cuci Kering",
+                                style: tsBodyMediumMedium(black)),
+                          ],
+                        ),
+                      );
+                    }),
                   ),
                 ),
+                SizedBox(height: 20),
               ],
             ),
           ),
@@ -178,21 +136,149 @@ class HomeScreen extends GetView<HomeController> {
   }
 }
 
-class HomeShowDetail extends StatelessWidget {
-  const HomeShowDetail.ShowDetailHome(
-      {super.key, required this.order, required this.orderType});
+Widget _shimmerTitleWidget() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+    child: ShimmerWidget(
+      height: 20,
+      radius: 8,
+    ),
+  );
+}
 
-  final order;
-  final orderType;
+Widget _shimmerOrderTypeWidget() {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: defaultMargin),
+    child: Row(
+      children: [
+        Expanded(child: ShimmerWidget(height: 141, radius: 10)),
+        SizedBox(width: 10),
+        Expanded(child: ShimmerWidget(height: 141, radius: 10)),
+      ],
+    ),
+  );
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
+Widget _buildAppbar() {
+  return MainContainerWidget(
+    color: primaryColor,
+    borderRadius: 25,
+    childs: Column(
+      children: [
+        SizedBox(height: 55.00),
+        MainTitleWidget(),
+        Divider(color: lightGrey.withOpacity(0.2), thickness: 2),
+        InkWell(
+          onTap: () => Get.toNamed(Routes.ADDRESS_PAGE),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+            child: Row(
+              children: [
+                Icon(Icons.location_on_rounded, color: Colors.red),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Rumah",
+                        style: tsLabelLargeSemibold(grey),
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: Text(
+                          "Jl.Pala No. 1, Kec. Pala, Kab. Pala, Prov. Pala, 12345, awdawdwdawd",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: tsBodySmallSemibold(black),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(Icons.keyboard_arrow_right_rounded, color: grey),
+              ],
+            ),
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+Widget _buildOrderTypeWidget(
+    {required String mainTitle,
+    required String desc,
+    required Null Function() onPressed,
+    required IconData icon,
+    color}) {
+  return Expanded(
+    child: InkWell(
+      onTap: onPressed,
+      splashColor: Colors.transparent,
+      child: MainContainerWidget(
+        childs: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.25),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Icon(
+                    icon,
+                    color: color,
+                    size: 35,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 130,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          mainTitle,
+                          style: tsBodyMediumSemibold(black),
+                        ),
+                        Text(desc, style: tsLabelLargeMedium(darkGrey)),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_right_rounded,
+                    size: 20,
+                    color: grey,
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _buildNewestPreviewWidget(order) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+    child: Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: InkWell(
         onTap: () {
           Get.toNamed(Routes.TRANSACTION_PAGE,
-              arguments: [order['id'], orderType]);
+              arguments: [order['id'], 'order']);
           print('object');
         },
         child: MainContainerWidget(
@@ -285,8 +371,8 @@ class HomeShowDetail extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 class MainTitleWidget extends GetView<HomeController> {
@@ -297,37 +383,63 @@ class MainTitleWidget extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(defaultMargin),
+      padding:
+          const EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Selamat datang",
-                style: tsBodySmallSemibold(primaryColor),
+          Expanded(
+            flex: 1,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                height: 45,
+                width: 45,
+                child: Image.network(
+                  controller.userData['image_path'] == null
+                      ? 'https://ui-avatars.com/api/?name=${controller.userData['username']}&background=random&size=128'
+                      : 'https://pradiptaahmad.tech/image/${controller.userData['image_path']}',
+                  fit: BoxFit.cover,
+                ),
               ),
-              Obx(() => ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: 300),
-                  child: Text(
-                    controller.userData['username'] ?? "Anon",
-                    style: tsTitleMediumSemibold(primaryColor),
-                    overflow: TextOverflow.ellipsis,
-                  ))),
-            ],
+            ),
           ),
-          InkWell(
-            onTap: () {
-              Get.toNamed(Routes.NOTIFICATION_PAGE);
-            },
-            borderRadius: BorderRadius.circular(50),
-            child: Container(
-              height: 45,
-              width: 45,
-              child: const Icon(
-                Icons.notifications,
-                color: primaryColor,
+          Expanded(
+            flex: 7,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Halo,",
+                    style: tsBodyLargeMedium(darkGrey),
+                  ),
+                  Obx(() => ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 300),
+                      child: Text(
+                        controller.userData['username'] ?? "Anon",
+                        style: tsBodyLargeSemibold(black),
+                        overflow: TextOverflow.ellipsis,
+                      ))),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: InkWell(
+              onTap: () {
+                Get.toNamed(Routes.NOTIFICATION_PAGE);
+              },
+              borderRadius: BorderRadius.circular(50),
+              child: Container(
+                height: 45,
+                width: 45,
+                child: const Icon(
+                  Icons.notifications,
+                  color: darkGrey,
+                  size: 22,
+                ),
               ),
             ),
           ),
@@ -335,35 +447,4 @@ class MainTitleWidget extends GetView<HomeController> {
       ),
     );
   }
-}
-
-Widget MainChoiceWidget({required imageAssets, required mainTitle, onPressed}) {
-  return InkWell(
-    onTap: onPressed,
-    child: MainContainerWidget(
-      height: 110,
-      childs: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(imageAssets),
-                fit: BoxFit.cover,
-              ),
-            ),
-            height: 50,
-            width: 50,
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Text(
-            mainTitle,
-            style: tsBodySmallSemibold(black),
-          )
-        ],
-      ),
-    ),
-  );
 }

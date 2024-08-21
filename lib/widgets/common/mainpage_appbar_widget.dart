@@ -31,10 +31,11 @@ class MainpageAppbarWidget extends StatelessWidget
       leading: noLeading
           ? null
           : IconButton(
+              splashColor: Colors.transparent,
               icon: Icon(
-                icon ?? Icons.arrow_back_ios_rounded,
+                Icons.close_rounded,
                 color: darkGrey,
-                size: iconSize,
+                size: iconSize ?? 25,
               ),
               onPressed: onPressed ?? Get.back,
             ),

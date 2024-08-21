@@ -2,120 +2,70 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/widgets/popup/custom_pop_up.dart';
 import '../../../config.dart';
 
 class StatusPageController extends GetxController {
   final count = 0.obs;
+  var isLoading = false.obs;
+
+  //Status Page Controller//
   var ordersList = [].obs;
-  var laundries = [].obs;
-  var jenisList = [].obs;
-  var statusList = {}.obs;
+  var filteredOrdersList = [].obs;
   var selectedFilter = 0.obs;
   var statusSelectedFilterName = ''.obs;
-  var isLoading = false.obs;
+  var typeSelectedFilterName = ''.obs;
   GetStorage box = GetStorage();
 
   Future<void> fetchOrdersData() async {
-    isLoading.value = true;
     try {
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token');
-
-      var headers = {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-
       final response = await http.get(
         Uri.parse('$url/orders/all'),
-        headers: headers,
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
       );
-
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body)['order'];
-        ordersList.value = jsonResponse;
+        ordersList.value = jsonDecode(response.body)['order'];
       } else {
-        Get.snackbar('Error', '${response.statusCode}');
-        print(response.statusCode);
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
       }
     } catch (e) {
-      Get.snackbar('Error ', e.toString());
-      print(e);
-    } finally {
-      isLoading.value = false;
+      customPopUp("Error, Kode(${e.toString()})", warningColor);
     }
   }
 
-  Future<void> fetchStatusData(orderId) async {
-    isLoading.value = true;
-    try {
-      final url = ConfigEnvironments.getEnvironments()["url"];
-      final token = box.read('token');
+  void applyFilter() {
+    final filters = [
+      null,
+      (order) => order['status'] == "Pesanan Telah Dibuat",
+      (order) => order['status'] == "Menunggu Penjemputan",
+      (order) => order['status'] == "Sedang Diproses",
+      (order) => order['status'] == "Belum Dibayar",
+      (order) => order['status'] == "Selesai",
+      (order) => order['jenis_pemesanan'] == "antar_jemput",
+      (order) => order['jenis_pemesanan'] == "antar_mandiri"
+    ];
 
-      var headers = {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-
-      final response = await http.get(
-        Uri.parse('$url/orders/status/last?order_id=${orderId}'),
-        headers: headers,
-      );
-
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body)['order_status'];
-        statusList.value = jsonResponse;
-      } else {
-        Get.snackbar('Error', '${response.statusCode}');
-        print(response.statusCode);
-      }
-    } catch (e) {
-      Get.snackbar('Error ', e.toString());
-      print(e);
-    } finally {
-      isLoading.value = false;
-    }
+    filteredOrdersList.value = ordersList
+        .where(filters[selectedFilter.value] ?? (order) => true)
+        .toList();
   }
 
-  Future<void> getLaundries() async {
+  void onRefresh() async {
     isLoading.value = true;
-    try {
-      final url = ConfigEnvironments.getEnvironments()['url'];
-      final token = box.read('token');
-
-      var headers = {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-
-      var response = await http.get(
-        Uri.parse('$url/laundry/all'),
-        headers: headers,
-      );
-
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body)['data'];
-        laundries.value = jsonResponse;
-
-        jsonResponse.forEach((element) {
-          jenisList.add(element['nama_laundry']);
-        });
-      } else {
-        Get.snackbar('Error', '${response.statusCode}');
-      }
-    } catch (e) {
-      Get.snackbar('Error', e.toString());
-    } finally {
-      isLoading.value = false;
-    }
+    await fetchOrdersData();
+    isLoading.value = false;
   }
 
   @override
   void onInit() {
     super.onInit();
-    isLoading = true.obs;
-    fetchOrdersData();
-    getLaundries();
+    onRefresh();
   }
 
   @override

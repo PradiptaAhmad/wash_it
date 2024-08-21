@@ -3,9 +3,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:wash_it/widgets/common/button_widget.dart';
 
 import '../../infrastructure/theme/themes.dart';
-import '../../widget/common/button_widget.dart';
 import 'controllers/review_page.controller.dart';
 
 class ReviewPageScreen extends GetView<ReviewPageController> {

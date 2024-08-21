@@ -1,10 +1,9 @@
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/painting/text_style.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // Color Styles
 const Color primaryColor = Color(0xFFFFFFFF);
+// const Color secondaryColor = Color(0xFF2380DA);
 const Color secondaryColor = Color(0xFF76ABAE);
 const Color darkGrey = Color(0xFF767676);
 const Color pendingOrange = Color(0xFFFFA500);

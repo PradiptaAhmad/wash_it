@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/widget/common/main_container_widget.dart';
-import 'package:wash_it/widget/common/mainpage_appbar_widget.dart';
 
+import '../../widgets/common/main_container_widget.dart';
+import '../../widgets/common/mainpage_appbar_widget.dart';
 import 'controllers/notification_page.controller.dart';
 
 class NotificationPageScreen extends GetView<NotificationPageController> {

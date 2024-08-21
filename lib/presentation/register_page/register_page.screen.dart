@@ -3,12 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/widget/common/auth/divider_widget.dart';
-import 'package:wash_it/widget/common/auth/auth_text_field.dart';
-import 'package:wash_it/widget/common/button_widget.dart';
-
-import '../../widget/common/auth/input_form_widget.dart';
+import 'package:wash_it/widgets/common/auth/auth_text_field.dart';
+import 'package:wash_it/widgets/common/auth/divider_widget.dart';
+import 'package:wash_it/widgets/common/auth/input_form_widget.dart';
+import 'package:wash_it/widgets/common/button_widget.dart';
 import 'controllers/register_page.controller.dart';
 
 class RegisterPageScreen extends GetView<RegisterPageController> {
@@ -17,13 +17,11 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
   final _phoneKey = GlobalKey<FormState>();
   final _passwordKey = GlobalKey<FormState>();
 
-
   RegisterPageScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-
 
     return Scaffold(
       body: SafeArea(
@@ -163,7 +161,7 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                         //     controller.phone.value.isNotEmpty &&
                         //     controller.password.value.isNotEmpty &&
                         //     controller.username.value.isNotEmpty) {
-                            
+
                         //   controller.register();
                         else {
                           print(controller.email.value.isNotEmpty);
@@ -214,7 +212,7 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                       SizedBox(width: 5),
                       InkWell(
                         onTap: () {
-                          Get.back();
+                          Get.toNamed(Routes.LOGIN_PAGE);
                         },
                         borderRadius: BorderRadius.circular(5),
                         child: Text(

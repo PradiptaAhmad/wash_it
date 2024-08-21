@@ -70,7 +70,7 @@ class VerificationPageScreen extends GetView<VerificationPageController> {
                           () => controller.timeleft.value == 0
                               ? InkWell(
                                   borderRadius: BorderRadius.circular(4),
-                                  onTap: () {},
+                                  onTap: () => controller.sendOtp(),
                                   child: Text(
                                     "Kirim Ulang?",
                                     style: tsLabelLargeSemibold(secondaryColor),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/widget/popup/custom_pop_up.dart';
+import 'package:wash_it/presentation/history_page/widgets/history_filter_button.dart';
+import 'package:wash_it/presentation/transaction_page/widget/review_pop_up_widget.dart';
+import 'package:wash_it/widgets/shimmer/shimmer_widget.dart';
+import 'package:wash_it/widgets/warning/data_is_empty.dart';
 import '../../infrastructure/navigation/routes.dart';
-import '../../widget/common/categories_widget.dart';
-import '../../widget/common/main_container_widget.dart';
+import '../../widgets/common/main_container_widget.dart';
 import 'controllers/history_page.controller.dart';
 
 class HistoryPageScreen extends GetView<HistoryPageController> {
@@ -16,175 +19,63 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
     final HistoryPageController controller = Get.put(HistoryPageController());
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(kToolbarHeight + 50), // Add extra height for margin
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppBar(
-              backgroundColor: secondaryColor,
-              title: Text('Riwayat Pesanan',
-                  style: tsTitleSmallMedium(primaryColor)),
-            ),
-            SizedBox(height: 10),
-            CategoriesWidget(controller: controller),
-          ],
-        ),
+        preferredSize: Size.fromHeight(kToolbarHeight + 50),
+        child: _buildAppbar(controller),
       ),
       body: RefreshIndicator(
-        onRefresh: () async {
-          await controller.fetchOrdersData();
-        },
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20),
-              // Obx(() {
-              //   if (controller.isLoading.value) {
-              //     return ListView.builder(
-              //       shrinkWrap: true,
-              //       itemCount: controller.ordersList.length,
-              //       physics: NeverScrollableScrollPhysics(),
-              //       itemBuilder: (context, index) => Shimmer.fromColors(
-              //         baseColor: lightGrey.withOpacity(0.3),
-              //         highlightColor: lightGrey.withOpacity(0.1),
-              //         child: Padding(
-              //           padding: const EdgeInsets.only(top: defaultMargin),
-              //           child: MainContainerWidget(
-              //             color: primaryColor,
-              //             height: 187,
-              //             width: double.infinity,
-              //           ),
-              //         ),
-              //       ),
-              //     );
-              //   } else if (controller.ordersList.isEmpty) {
-              //     return Center(
-              //         child: Text(
-              //       "Tidak ada Riwayat",
-              //       style: tsBodySmallRegular(black),
-              //     ));
-              //   } else {
-              //     return ListView.builder(
-              //       shrinkWrap: true,
-              //       reverse: true,
-              //       itemCount: controller.ordersList.length,
-              //       physics: NeverScrollableScrollPhysics(),
-              //       itemBuilder: (context, index) {
-              //         final order = controller.ordersList[index];
-              //         return MainDetailView(
-              //             order: order, controller: controller);
-              //       },
-              //     );
-              //   }
-              // }),
-            ],
-          ),
-        ),
-      ),
+          onRefresh: () async => await controller.getHistoryOrders(),
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return _buildLoading(controller);
+                }
+                if (controller.ordersList.isEmpty) {
+                  return DataIsEmpty("Riwayat pesanan kamu masih kosong");
+                }
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: controller.isSelected.value == 0
+                        ? controller.ordersList.length
+                        : controller.filteredOrdersList.length,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final order = controller.ordersList[index];
+                      return MainDetailView(
+                          order: order, controller: controller);
+                    });
+              }))),
     );
   }
 }
 
-// return Scaffold(
-// body: SafeArea(
-// child: RefreshIndicator(
-// onRefresh: () async {
-// await controller.fetchOrdersData();
-// },
-// child: SingleChildScrollView(
-// physics: AlwaysScrollableScrollPhysics(),
-// child: Container(
-// margin: EdgeInsets.all(defaultMargin),
-// child: Column(
-// crossAxisAlignment: CrossAxisAlignment.start,
-// children: [
-// ContentTitleWidget(
-// title: "Riwayat Transaksi",
-// lefttextSize: tsTitleSmallMedium(black),
-// ),
-// SizedBox(height: 10),
-// TabBar(
-// labelColor: black,
-// unselectedLabelColor: darkGrey,
-// indicatorColor: secondaryColor,
-// dividerColor: Colors.transparent,
-// labelStyle: tsBodySmallSemibold(black),
-// controller: controller.tabController,
-// splashBorderRadius: BorderRadius.circular(50),
-// indicator: CircleTabIndicator(
-// color: black,
-// radius: 4,
-// ),
-// tabs: const [
-// Tab(text: "Selesai"),
-// Tab(text: "Dibatalkan"),
-// ],
-// ),
-// SizedBox(
-// height: 1000,
-// child: TabBarView(
-// controller: controller.tabController,
-// children: [
-// Container(
-// child: Text("Tidak ada Riwayat"),
-// ),
-// Container(
-// child: Text("Tidak ada Riwayat"),
-// ),
-// ],
-// ),
-// ),
-// ],
-// ),
-// ),
-// ),
-// ),
-// ));
+Widget _buildAppbar(controller) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      AppBar(
+        backgroundColor: secondaryColor,
+        title: Text('Riwayat Pesanan', style: tsTitleSmallMedium(primaryColor)),
+      ),
+      SizedBox(height: 10),
+      HistoryFilterButton(),
+    ],
+  );
+}
 
-// Column(
-//   children: [
-//     Obx(() {
-//       if (controller.isLoading.value) {
-//         return ListView.builder(
-//           shrinkWrap: true,
-//           itemCount: controller.ordersList.length,
-//           physics: NeverScrollableScrollPhysics(),
-//           itemBuilder: (context, index) =>
-//               Shimmer.fromColors(
-//             baseColor: lightGrey.withOpacity(0.3),
-//             highlightColor: lightGrey.withOpacity(0.1),
-//             child: Padding(
-//               padding: const EdgeInsets.only(
-//                   top: defaultMargin),
-//               child: MainContainerWidget(
-//                 color: primaryColor,
-//                 height: 187,
-//                 width: double.infinity,
-//               ),
-//             ),
-//           ),
-//         );
-//       } else if (controller.ordersList.isEmpty) {
-//         return Center(child: Text("Tidak ada Riwayat"));
-//       } else {
-//         return ListView.builder(
-//           shrinkWrap: true,
-//           reverse: true,
-//           itemCount: controller.ordersList.length,
-//           physics: NeverScrollableScrollPhysics(),
-//           itemBuilder: (context, index) {
-//             final order = controller.ordersList[index];
-//             return MainDetailView(
-//                 order: order, controller: controller);
-//           },
-//         );
-//       }
-//     }),
-//   ],
-// ),
+Widget _buildLoading(controller) {
+  return ListView.builder(
+    shrinkWrap: true,
+    itemCount: 4,
+    physics: NeverScrollableScrollPhysics(),
+    itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: defaultMargin),
+        child: ShimmerWidget(
+          height: 200,
+          radius: 10,
+        )),
+  );
+}
 
 class MainDetailView extends StatelessWidget {
   const MainDetailView(
@@ -195,7 +86,7 @@ class MainDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.only(bottom: 15),
       child: InkWell(
         onTap: () => Get.toNamed(Routes.TRANSACTION_PAGE,
             arguments: [order['id'], 'histories']),
@@ -295,7 +186,7 @@ class MainDetailView extends StatelessWidget {
                         Text(
                           order['total_harga'] == null
                               ? "Harga belum tercatat"
-                              : '${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(int.parse(order['total_harga']))}',
+                              : '${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(order['total_harga'])}',
                           style: tsBodySmallSemibold(black),
                         ),
                       ],
@@ -303,7 +194,7 @@ class MainDetailView extends StatelessWidget {
                     Row(
                       children: [
                         InkWell(
-                          onTap: () => reviewPopUp(context, controller),
+                          onTap: () => reviewPopUpWidget(context, controller),
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),

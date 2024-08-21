@@ -9,9 +9,11 @@ import '../../../infrastructure/theme/themes.dart';
 class HistoryPageController extends GetxController
     with GetSingleTickerProviderStateMixin {
   final count = 0.obs;
+  final isSelected = 0.obs;
   final laundries = [].obs;
   final jenisList = [].obs;
   var ordersList = [].obs;
+  var filteredOrdersList = [].obs;
   var rating = 0.0.obs;
   var review = ''.obs;
   var orderid = ''.obs;
@@ -20,7 +22,7 @@ class HistoryPageController extends GetxController
 
   GetStorage box = GetStorage();
 
-  Future<void> fetchOrdersData() async {
+  Future<void> getHistoryOrders() async {
     isLoading.value = true;
     try {
       final url = ConfigEnvironments.getEnvironments()["url"];
@@ -122,10 +124,36 @@ class HistoryPageController extends GetxController
     }
   }
 
+  void applyFilter() {
+    // final filters = [
+    //   null,
+    //   (order) => order['status'] == "completed",
+    //   (order) => order['status'] == "canceled",
+    // ];
+    //
+    // filteredOrdersList.value =
+    //     ordersList.where(filters[isSelected.value] ?? (order) => true).toList();
+    switch (isSelected.value) {
+      case 0:
+        filteredOrdersList.value = ordersList;
+        break;
+      case 1:
+        filteredOrdersList.value = ordersList
+            .where((element) => element['status'] == 'completed')
+            .toList();
+        break;
+      case 2:
+        filteredOrdersList.value = ordersList
+            .where((element) => element['status'] == 'canceled')
+            .toList();
+        break;
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
-    fetchOrdersData();
+    getHistoryOrders();
     getLaundries();
     tabController = TabController(length: 2, vsync: this);
   }

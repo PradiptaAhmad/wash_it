@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import '../../../infrastructure/theme/themes.dart';
 
 class DetailDataWidget extends StatelessWidget {
-  final String leftTitle;
-  final String rightTitle;
+  final String? leftTitle;
+  final String? rightTitle;
 
   final leftTitleStyle, rightTitleStyle;
   final leftTitleAlignment, rightTitleAlignment;
   final textTitleOverflow;
 
   const DetailDataWidget({
-    required this.leftTitle,
-    required this.rightTitle,
+    this.leftTitle,
+    this.rightTitle,
     this.leftTitleStyle,
     this.rightTitleStyle,
     this.leftTitleAlignment,
@@ -31,19 +31,17 @@ class DetailDataWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                leftTitle,
+                leftTitle ?? "",
                 style: leftTitleStyle ?? tsBodySmallRegular(darkGrey),
                 textAlign: leftTitleAlignment ?? TextAlign.left,
               ),
               Container(
                 width: 200,
-                child: Text(
-                  rightTitle,
-                  style: rightTitleStyle ?? tsBodySmallRegular(black),
-                  textAlign: rightTitleAlignment ?? TextAlign.right,
-                  overflow: textTitleOverflow ?? TextOverflow.ellipsis,
-                  maxLines: 3,
-                ),
+                child: Text(rightTitle ?? "",
+                    style: rightTitleStyle ?? tsBodySmallMedium(black),
+                    textAlign: rightTitleAlignment ?? TextAlign.right,
+                    overflow: textTitleOverflow ?? TextOverflow.ellipsis,
+                    maxLines: 5),
               ),
             ],
           ),

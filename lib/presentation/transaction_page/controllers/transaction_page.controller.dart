@@ -2,138 +2,85 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
+import 'package:wash_it/widgets/popup/custom_pop_up.dart';
 import '../../../config.dart';
 import '../../../infrastructure/theme/themes.dart';
 
 class TransactionPageController extends GetxController {
   final count = 0.obs;
+  var isLoading = false.obs;
   var ordersList = {}.obs;
   var statusList = {}.obs;
-  var isLoading = false.obs;
   var displayText = ''.obs;
+  var reviewDesc = ''.obs;
+  var reviewStar = 0.0.obs;
   GetStorage box = GetStorage();
-
   late final argument;
 
-  Future<void> fetchOrdersData() async {
-    isLoading.value = true;
+  Future<void> getDetailOrder() async {
     try {
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token');
-
       var headers = {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       };
-
-      final response = await http.get(
-        Uri.parse('$url/orders/all'),
-        headers: headers,
-      );
-
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body)['order'];
-        ordersList.value = jsonResponse;
-      } else {
-        Get.snackbar('Error', '${response.statusCode}');
-        print(response.statusCode);
-      }
-    } catch (e) {
-      Get.snackbar('Error ', e.toString());
-      print(e);
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  Future<void> fetchDetailOrder() async {
-    isLoading.value = true;
-    try {
-      final url = ConfigEnvironments.getEnvironments()["url"];
-      final token = box.read('token');
-
-      var headers = {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-
       final response = await http.get(
         Uri.parse(argument[1] == 'histories'
             ? '$url/histories/detail?history_id=${argument[0]}'
             : '$url/orders/detail?order_id=${argument[0]}'),
         headers: headers,
       );
-
       if (response.statusCode == 200) {
-        final jsonResponse = argument[1] == "histories"
+        ordersList.value = argument[1] == "histories"
             ? jsonDecode(response.body)['data']
             : jsonDecode(response.body)['order'];
-        ordersList.value = jsonResponse;
       } else {
-        Get.snackbar('Error', '${response.statusCode}');
-        print(response.statusCode);
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
       }
     } catch (e) {
-      Get.snackbar('Error ', e.toString());
-      print(e);
-    } finally {
-      isLoading.value = false;
+      customPopUp("Error, Kode(${e.toString()})", warningColor);
     }
   }
 
-  Future<void> fetchStatusData() async {
-    isLoading.value = true;
+  Future<void> getStatusProgress() async {
     try {
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token');
-
       var headers = {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       };
-
       final response = await http.get(
         Uri.parse('$url/orders/status/last?order_id=${argument[0]}'),
         headers: headers,
       );
-
       if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body)['order_status'];
-        statusList.value = jsonResponse;
+        statusList.value = jsonDecode(response.body)['order_status'];
       } else {
-        Get.snackbar('Error', '${response.statusCode}');
-        print(response.statusCode);
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
       }
     } catch (e) {
-      Get.snackbar('Error ', e.toString());
-      print(e);
-    } finally {
-      isLoading.value = false;
+      customPopUp("Error, Kode(${e.toString()})", warningColor);
     }
   }
 
-  Future<void> completeOrder() async {
-    isLoading.value = true;
+  Future<void> putCompleteOrder() async {
     try {
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token');
-
       var headers = {
         'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       };
-
       var data = {
         'order_id': argument[0].toString(),
       };
-
       final response = await http.put(
         Uri.parse("${url}/orders/complete"),
         headers: headers,
         body: data,
       );
-
       if (response.statusCode == 200) {
         Get.snackbar('Berhasil', 'Pesanan telah selesai',
             backgroundColor: warningColor);
@@ -142,11 +89,64 @@ class TransactionPageController extends GetxController {
         Get.snackbar('Error', 'Pembayaran sudah selesai',
             backgroundColor: warningColor);
       } else {
-        Get.snackbar('Error', '${response.statusCode}');
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
       }
     } catch (e) {
-      Get.snackbar('Error Catch', e.toString());
-      print(e);
+      customPopUp("Error, Kode(${e.toString()})", warningColor);
+    }
+  }
+
+  Future<void> putOrderCancel() async {
+    try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      final token = box.read('token');
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token.toString()}',
+      };
+      final response = await http.put(
+        Uri.parse("${url}/orders/cancel?order_id=${argument[0]}"),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        customPopUp("Order telah berhasil di cancel", successColor);
+        Get.back();
+        Get.back();
+      } else {
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
+      }
+    } catch (e) {
+      customPopUp("Error, Kode(${e.toString()})", warningColor);
+    }
+  }
+
+  Future<void> postReview() async {
+    isLoading.value = true;
+    try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      final token = box.read('token');
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token.toString()}',
+      };
+      var data = {
+        'rating': reviewDesc.value,
+        'review': reviewStar.value,
+        'order_id': argument,
+      };
+      final response = await http.post(
+        Uri.parse("${url}/ratings/add"),
+        headers: headers,
+        body: data,
+      );
+      if (response.statusCode == 201) {
+        customPopUp("Berhasil memberikan ulasan", successColor);
+        Get.back();
+      } else {
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
+      }
+    } catch (e) {
+      customPopUp("Error, Kode(${e.toString()})", warningColor);
     } finally {
       isLoading.value = false;
     }
@@ -162,13 +162,19 @@ class TransactionPageController extends GetxController {
     }
   }
 
+  void onRefresh() async {
+    isLoading.value = true;
+    await getDetailOrder();
+    await getStatusProgress();
+    await buttonTitle();
+    isLoading.value = false;
+  }
+
   @override
   void onInit() async {
     super.onInit();
     argument = Get.arguments;
-    await fetchDetailOrder();
-    await fetchStatusData();
-    await buttonTitle();
+    onRefresh();
   }
 
   @override

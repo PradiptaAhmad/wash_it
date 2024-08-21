@@ -6,12 +6,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:wash_it/presentation/order_page/widgets/search_dropdown_widget.dart';
-import 'package:wash_it/widget/popup/custom_snackbar.dart';
-import 'package:wash_it/widget/popup/custom_dialog.dart';
 import '../../infrastructure/theme/themes.dart';
-import '../../widget/common/auth/input_form_widget.dart';
-import '../../widget/common/content_title_widget.dart';
-import '../../widget/common/mainpage_appbar_widget.dart';
+import '../../widgets/common/auth/input_form_widget.dart';
+import '../../widgets/common/content_title_widget.dart';
+import '../../widgets/common/mainpage_appbar_widget.dart';
+import '../../widgets/popup/custom_dialog.dart';
+import '../../widgets/popup/custom_snackbar.dart';
 import 'controllers/order_page.controller.dart';
 
 class OrderView extends GetView<OrderController> {
@@ -29,99 +29,18 @@ class OrderView extends GetView<OrderController> {
         () => Stepper(
           stepIconHeight: 24,
           elevation: 1,
+          // connectorColor: WidgetStatePropertyAll(secondaryColor),
           type: StepperType.horizontal,
           steps: getSteps(context),
           currentStep: controller.currentStep.value,
           onStepContinue: null,
           onStepCancel: null,
           onStepTapped: null,
-          controlsBuilder: (BuildContext context, ControlsDetails details) {
-            return Container();
-          },
+          controlsBuilder: (BuildContext context, ControlsDetails details) =>
+              Container(),
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(defaultMargin),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: lightGrey,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: () {
-                  if (controller.currentStep.value > 0) {
-                    controller.pageChangedMin();
-                  } else {
-                    exitConfirmationDialog(context, controller);
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(defaultMargin),
-                  child: Text("Kembali", style: tsBodySmallSemibold(black)),
-                ),
-              ),
-            ),
-            const SizedBox(width: defaultMargin),
-            Expanded(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF76ABAE),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: () {
-                  print(controller.currentStep.value);
-                  switch (controller.currentStep.value) {
-                    case 0:
-                      {
-                        if (controller.nameTextController.text.isEmpty ||
-                            controller
-                                .phoneTextEditingController.text.isEmpty ||
-                            controller
-                                .addressTextEditingController.text.isEmpty) {
-                          isNotEmptySnackBar();
-                        } else {
-                          controller.pageChangedPlus();
-                          FocusScope.of(context).unfocus();
-                        }
-                      }
-                      break;
-                    case 1:
-                      {
-                        if (controller.laundryName.isEmpty ||
-                            controller.pickupdate.value.isEmpty) {
-                          isNotEmptySnackBar();
-                        } else {
-                          controller.pageChangedPlus();
-                          FocusScope.of(context).unfocus();
-                        }
-                      }
-                      break;
-                    case 2:
-                      {
-                        if (controller.payment.value.isEmpty) {
-                          isNotEmptySnackBar();
-                        } else {
-                          controller.createOrder();
-                        }
-                      }
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(defaultMargin),
-                  child: Text("Selanjutnya",
-                      style: tsBodySmallSemibold(primaryColor)),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      floatingActionButton: _BuildFloatingActionButton(context, controller),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
@@ -397,6 +316,90 @@ class OrderView extends GetView<OrderController> {
           ),
         ),
       ];
+
+  Widget _BuildFloatingActionButton(
+      BuildContext context, OrderController controller) {
+    return Padding(
+      padding: const EdgeInsets.all(defaultMargin),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: lightGrey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+                if (controller.currentStep.value > 0) {
+                  controller.pageChangedMin();
+                } else {
+                  exitConfirmationDialog(context, controller);
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(defaultMargin),
+                child: Text("Kembali", style: tsBodySmallSemibold(black)),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF76ABAE),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+                switch (controller.currentStep.value) {
+                  case 0:
+                    {
+                      if (controller.nameTextController.text.isEmpty ||
+                          controller.phoneTextEditingController.text.isEmpty ||
+                          controller
+                              .addressTextEditingController.text.isEmpty) {
+                        isNotEmptySnackBar();
+                      } else {
+                        controller.pageChangedPlus();
+                        FocusScope.of(context).unfocus();
+                      }
+                    }
+                    break;
+                  case 1:
+                    {
+                      if (controller.laundryName.isEmpty ||
+                          controller.pickupdate.value.isEmpty) {
+                        isNotEmptySnackBar();
+                      } else {
+                        controller.pageChangedPlus();
+                        FocusScope.of(context).unfocus();
+                      }
+                    }
+                    break;
+                  case 2:
+                    {
+                      if (controller.payment.value.isEmpty) {
+                        isNotEmptySnackBar();
+                      } else {
+                        controller.createOrder();
+                      }
+                    }
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(defaultMargin),
+                child: Text("Selanjutnya",
+                    style: tsBodySmallSemibold(primaryColor)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildDataItem(String label, String value) {
     return Padding(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wash_it/presentation/profile_page/profile_page.dart';
 import 'package:wash_it/presentation/screens.dart';
 
@@ -9,78 +9,91 @@ class NavigationMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NavigationController());
+    // Initialize the NavbarController
+    final NavigationController controller = Get.put(NavigationController());
 
     return Scaffold(
-      bottomNavigationBar: Obx(
-        () => NavigationBar(
-          height: 80,
-          elevation: 0,
-          selectedIndex: controller.selectedIndex.value,
-          backgroundColor: primaryColor,
-          indicatorColor: Color(0xFFFFFBFE),
-          onDestinationSelected: (index) =>
-              controller.selectedIndex.value = index,
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(
-                Icons.home_filled,
-                color: darkGrey,
-              ),
-              selectedIcon: Icon(
-                Icons.home_filled,
-                color: black,
-              ),
-              label: "Beranda",
+      body: Obx(() {
+        return controller.currentScreen;
+      }),
+      bottomNavigationBar: Obx(() {
+        return BottomNavigationBar(
+          type: BottomNavigationBarType.fixed, // Ensure labels are fixed
+          currentIndex: controller.selectedIndex.value,
+          onTap: (index) {
+            controller.changeIndex(index);
+          },
+          selectedFontSize: 11,
+          unselectedItemColor: Colors.grey,
+          unselectedLabelStyle: TextStyle(
+            fontSize: 11,
+            color: Colors.grey,
+            fontFamily: GoogleFonts.poppins().fontFamily,
+          ),
+          selectedLabelStyle: TextStyle(
+            color: Colors.black.withOpacity(0.7),
+            fontFamily: GoogleFonts.poppins().fontFamily,
+          ),
+          selectedItemColor: Colors.black.withOpacity(0.7),
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_laundry_service_rounded, size: 22),
+              activeIcon: Icon(Icons.local_laundry_service_rounded, size: 22),
+              label: 'Beranda', // Label will always be visible
             ),
-            NavigationDestination(
+            BottomNavigationBarItem(
               icon: Icon(
-                Icons.reorder_rounded,
-                color: darkGrey,
+                Icons.donut_large_rounded,
+                size: 22,
               ),
-              selectedIcon: Icon(
-                Icons.reorder_rounded,
-                color: black,
-              ),
-              label: "Status",
+              activeIcon: Icon(Icons.donut_large_rounded,
+                  size: 22, color: Colors.black.withOpacity(0.7)),
+              label: 'Status', // Label will always be visible
             ),
-            NavigationDestination(
+            BottomNavigationBarItem(
               icon: Icon(
-                Icons.receipt_rounded,
-                color: darkGrey,
+                Icons.receipt_long_rounded,
+                size: 22,
               ),
-              selectedIcon: Icon(
-                Icons.receipt_rounded,
-                color: black,
-              ),
-              label: "Riwayat",
+              activeIcon: Icon(Icons.receipt_long_rounded,
+                  size: 22, color: Colors.black.withOpacity(0.7)),
+              label: 'Riwayat', // Label will always be visible
             ),
-            NavigationDestination(
+            BottomNavigationBarItem(
               icon: Icon(
-                Icons.settings,
-                color: darkGrey,
+                Icons.more_horiz_rounded,
+                size: 22,
               ),
-              selectedIcon: Icon(
-                Icons.settings,
-                color: black,
-              ),
-              label: "Pengaturan",
+              activeIcon: Icon(Icons.more_horiz_rounded,
+                  size: 22, color: Colors.black.withOpacity(0.7)),
+              label: 'Lainnya', // Label will always be visible
             ),
           ],
-        ),
-      ),
-      body: Obx(() => controller.screens[controller.selectedIndex.value]),
+        );
+      }),
     );
   }
 }
 
 class NavigationController extends GetxController {
-  final Rx<int> selectedIndex = 0.obs;
+  var selectedIndex = 0.obs;
 
-  final screens = [
-    HomeScreen(),
-    StatusPageScreen(),
-    HistoryPageScreen(),
-    ProfilePage(),
-  ];
+  void changeIndex(int index) {
+    selectedIndex.value = index;
+  }
+
+  Widget get currentScreen {
+    switch (selectedIndex.value) {
+      case 0:
+        return HomeScreen();
+      case 1:
+        return StatusPageScreen();
+      case 2:
+        return HistoryPageScreen();
+      case 3:
+        return ProfilePage();
+      default:
+        return HomeScreen();
+    }
+  }
 }

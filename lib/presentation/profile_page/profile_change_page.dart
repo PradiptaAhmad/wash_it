@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:wash_it/widget/common/auth/input_form_widget.dart';
+import 'package:wash_it/widgets/common/auth/input_form_widget.dart';
+import 'package:wash_it/widgets/common/mainpage_appbar_widget.dart';
 
 import '../../infrastructure/theme/themes.dart';
 import 'controllers/profile_page.controller.dart';
@@ -19,18 +20,10 @@ class ProfileChangePage extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Iconsax.arrow_left_2,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        backgroundColor: primaryColor,
-        title: Text("Ubah $title", style: tsBodyLargeMedium(black)),
-        centerTitle: true,
+      appBar: MainpageAppbarWidget(
+        title: "Ubah $title",
+        icon: Iconsax.arrow_left_2,
+        onPressed: () => Get.back(),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

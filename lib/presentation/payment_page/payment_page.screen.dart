@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:wash_it/widgets/common/main_container_widget.dart';
+import 'package:wash_it/widgets/common/mainpage_appbar_widget.dart';
 import '../../infrastructure/theme/themes.dart';
-import '../../widget/common/main_container_widget.dart';
-import '../../widget/common/mainpage_appbar_widget.dart';
 import '../transaction_page/widget/detail_text_widget.dart';
 import 'controllers/payment_page.controller.dart';
 

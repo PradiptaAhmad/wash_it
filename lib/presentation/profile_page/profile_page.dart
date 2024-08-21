@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/profile_page/profile_change_page.dart';
-import 'package:wash_it/widget/common/content_title_widget.dart';
+import 'package:wash_it/widgets/common/content_title_widget.dart';
 import 'controllers/profile_page.controller.dart';
 
 class ProfilePage extends GetView<ProfileController> {
@@ -147,6 +148,27 @@ class ProfilePage extends GetView<ProfileController> {
                     )
                   ],
                 ),
+                SizedBox(height: 20),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Text('Alamat', style: tsBodySmallRegular(darkGrey)),
+                //     InkWell(
+                //       onTap: () => Get.toNamed(Routes.ADDRESS_PAGE),
+                //       child: Row(
+                //         children: [
+                //           Text("", style: tsBodySmallRegular(black)),
+                //           SizedBox(width: 20),
+                //           Icon(
+                //             Icons.arrow_forward_ios_rounded,
+                //             color: darkGrey,
+                //             size: 15,
+                //           ),
+                //         ],
+                //       ),
+                //     )
+                //   ],
+                // ),
                 SizedBox(height: 10),
                 ContentTitleWidget(
                   title: "Info Profil",

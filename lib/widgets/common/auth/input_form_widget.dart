@@ -34,7 +34,7 @@ class InputFormWidget extends StatelessWidget {
         children: [
           Text(
             title ?? "",
-            style: tsBodyMediumMedium(black),
+            style: tsBodySmallMedium(black),
           ),
           SizedBox(
             height: 12,
