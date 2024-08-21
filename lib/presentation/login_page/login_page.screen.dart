@@ -4,11 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/widget/common/auth/auth_text_field.dart';
-import 'package:wash_it/widget/common/button_widget.dart';
-
-import '../../widget/common/auth/divider_widget.dart';
-import '../../widget/common/auth/input_form_widget.dart';
+import 'package:wash_it/widgets/common/auth/auth_text_field.dart';
+import 'package:wash_it/widgets/common/auth/divider_widget.dart';
+import 'package:wash_it/widgets/common/auth/input_form_widget.dart';
+import 'package:wash_it/widgets/common/button_widget.dart';
 import 'controllers/login_page.controller.dart';
 
 class LoginPageScreen extends GetView<LoginPageController> {

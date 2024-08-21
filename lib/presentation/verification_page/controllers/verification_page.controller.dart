@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dynamic_multi_step_form/dynamic_multi_step_form.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:wash_it/config.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/widgets/popup/custom_pop_up.dart';
 
 import '../../../infrastructure/navigation/routes.dart';
 
@@ -55,7 +57,6 @@ class VerificationPageController extends GetxController {
   }
 
   Future<void> sendOtp() async {
-    isLoading.value = true;
     try {
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token');
@@ -71,17 +72,15 @@ class VerificationPageController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar("Berhasil", "Kode OTP telah dikirim",
-            snackPosition: SnackPosition.TOP, backgroundColor: successColor);
+        FocusScope.of(Get.overlayContext!).unfocus();
+        customPopUp("Kode OTP telah dikirim", successColor);
       } else {
-        Get.snackbar("Gagal", "Kode OTP gagal dikirim",
-            snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+        FocusScope.of(Get.overlayContext!).unfocus();
+        customPopUp("Gagal mengirim kode OTP", warningColor);
       }
     } catch (e) {
-      Get.snackbar("Gagal", "Kode OTP gagal dikirim",
-          snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
-    } finally {
-      isLoading.value = false;
+      FocusScope.of(Get.overlayContext!).unfocus();
+      customPopUp("Gagal mengirim kode OTP", warningColor);
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/order_antarjemput.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
@@ -112,6 +113,11 @@ class Nav {
       name: Routes.PAYMENT_PAGE,
       page: () => PaymentPageScreen(),
       binding: PaymentPageControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.ADDRESS_PAGE,
+      page: () => const AddressPageScreen(),
+      binding: AddressPageControllerBinding(),
     ),
   ];
 }

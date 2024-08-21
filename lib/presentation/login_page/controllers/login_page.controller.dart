@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dynamic_multi_step_form/dynamic_multi_step_form.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -7,6 +8,7 @@ import 'package:wash_it/config.dart';
 import 'package:http/http.dart' as http;
 import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/widgets/popup/custom_pop_up.dart';
 
 class LoginPageController extends GetxController {
   // Password Visibility
@@ -54,19 +56,18 @@ class LoginPageController extends GetxController {
       if (user['email_verified_at'] == null) {
         Get.toNamed(Routes.VERIFICATION_PAGE);
       } else {
-        Get.snackbar(
-          "Sukses Login",
-          "Selamat datang ${user['username']}",
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: successColor,
+        FocusScope.of(Get.overlayContext!).unfocus();
+        customPopUp(
+          "Berhasil login",
+          successColor,
         );
         Get.offAllNamed(Routes.NAVBAR);
       }
     } else {
-      Get.snackbar("Gagal Login", json.decode(response.body)['message'],
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: warningColor,
-          colorText: primaryColor);
+      FocusScope.of(Get.overlayContext!).unfocus();
+      customPopUp(
+          "Gagal untuk melanjutkan login. Kode error(${response.statusCode})",
+          warningColor);
       isLoading.value = false;
     }
   }

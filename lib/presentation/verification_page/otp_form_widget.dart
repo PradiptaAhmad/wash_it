@@ -27,17 +27,19 @@ class PinFormInput extends StatelessWidget {
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         decoration: InputDecoration(
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: darkBlue,
-              )),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(
+              width: 2,
+              color: lightGrey,
+            ),
+          ),
           focusColor: darkBlue,
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
                 width: 2,
-                color: secondaryColor,
+                color: grey,
               )),
         ),
         inputFormatters: [

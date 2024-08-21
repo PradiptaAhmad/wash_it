@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:wash_it/presentation/status_page/controllers/status_page.controller.dart';
 
 import '../../../infrastructure/theme/themes.dart';
+import '../controllers/status_page.controller.dart';
 
-Future statusCategoriesFilterPopUp(context, StatusPageController controller) {
+Future typeCategoriesFilterPopUp(
+    BuildContext context, StatusPageController controller) {
   return showModalBottomSheet(
     context: context,
     isDismissible: true,
     builder: (context) {
       return ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.30,
+          maxHeight: MediaQuery.of(context).size.height * 0.16,
         ),
         child: Container(
           width: double.infinity,
@@ -30,17 +31,10 @@ Future statusCategoriesFilterPopUp(context, StatusPageController controller) {
                       style: tsBodyMediumMedium(black)),
                 ],
               ),
-              SizedBox(height: 20),
-              Obx(() => buildFilterOption(controller, "Baru Dibuat", 1)),
+              SizedBox(height: 15),
+              Obx(() => buildFilterOption(controller, "Antar Jemput", 6)),
               SizedBox(height: 10),
-              Obx(() =>
-                  buildFilterOption(controller, "Menunggu Penjemputan", 2)),
-              SizedBox(height: 10),
-              Obx(() => buildFilterOption(controller, "Sedang Diproses", 3)),
-              SizedBox(height: 10),
-              Obx(() => buildFilterOption(controller, "Belum Dibayar", 4)),
-              SizedBox(height: 10),
-              Obx(() => buildFilterOption(controller, "Selesai", 5)),
+              Obx(() => buildFilterOption(controller, "Antar Mandiri", 7)),
             ],
           ),
         ),
@@ -54,7 +48,7 @@ Widget buildFilterOption(
   return InkWell(
     onTap: () {
       controller.selectedFilter.value = index;
-      controller.statusSelectedFilterName.value = text;
+      controller.typeSelectedFilterName.value = text;
       controller.applyFilter();
       Get.back();
     },

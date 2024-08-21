@@ -9,27 +9,30 @@ class ContentTitleWidget extends StatelessWidget {
       this.subtitle,
       this.childs,
       this.lefttextSize,
-      this.righttextSize})
+      this.righttextSize,
+      this.leftTextColor,
+      this.rightTextColor})
       : super(key: key);
 
   final String? title, subtitle;
   final Widget? childs;
 
   final lefttextSize, righttextSize;
+  final Color? leftTextColor, rightTextColor;
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: defaultMargin),
+      padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
       child: Row(
         children: [
           Expanded(
               child: Text(
             title ?? "",
-            style: lefttextSize ?? tsBodyLargeSemibold(black),
+            style: lefttextSize ?? tsBodyLargeSemibold(leftTextColor ?? black),
           )),
           Text(
             subtitle ?? "",
-            style: righttextSize ?? tsLabelLargeMedium(darkGrey),
+            style: righttextSize ?? tsLabelLargeMedium(rightTextColor ?? grey),
           ),
           childs ?? SizedBox(),
         ],
