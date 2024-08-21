@@ -5,13 +5,15 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../config.dart';
+import '../../../infrastructure/theme/themes.dart';
+import '../../../widgets/popup/custom_pop_up.dart';
 
 class HomeController extends GetxController {
   final count = 0.obs;
-  final laundries = [].obs;
+  final laundryList = [].obs;
   final userData = {}.obs;
   var ordersList = [].obs;
-  var historiesList = [].obs;
+  var primaryAddress = {}.obs;
   var jenisList = [].obs;
   var isLoading = false.obs;
 
@@ -36,40 +38,10 @@ class HomeController extends GetxController {
         final jsonResponse = jsonDecode(response.body)['order'];
         ordersList.value = jsonResponse;
       } else {
-        Get.snackbar('Error', '${response.statusCode}');
-        print(response.statusCode);
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
       }
     } catch (e) {
-      Get.snackbar('Error ', e.toString());
-      print(e);
-    }
-  }
-
-  Future<void> fetchHistoriesData() async {
-    try {
-      final url = ConfigEnvironments.getEnvironments()["url"];
-      final token = box.read('token');
-
-      var headers = {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-
-      final response = await http.get(
-        Uri.parse('$url/histories/all'),
-        headers: headers,
-      );
-
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body)['data'];
-        historiesList.value = jsonResponse;
-      } else {
-        Get.snackbar('Error', '${response.statusCode}');
-        print(response.statusCode);
-      }
-    } catch (e) {
-      Get.snackbar('Error ', e.toString());
-      print(e);
+      customPopUp("Error, Kode(${e.toString()})", warningColor);
     }
   }
 
@@ -92,22 +64,71 @@ class HomeController extends GetxController {
         final jsonResponse = jsonDecode(response.body)['user'];
         userData.value = jsonResponse; // Store raw JSON in userData
       } else {
-        Get.snackbar('Error', '${response.statusCode}');
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
       }
     } catch (e) {
-      Get.snackbar('Error catch', e.toString());
+      customPopUp("Error, Kode(${e.toString()})", warningColor);
     }
   }
 
-  // Future<void> getLaundryServices() async {
-  //
-  // }
+  Future<void> getPrimaryAddress() async {
+    try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      final token = box.read('token');
+
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token.toString()}',
+      };
+
+      final response = await http.get(
+        Uri.parse('$url/addresses/primary'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body)['data'];
+        primaryAddress.value = jsonResponse;
+      } else {
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
+      }
+    } catch (e) {
+      customPopUp("Error, Kode(${e.toString()})", warningColor);
+    }
+  }
+
+  Future<void> getLaundryServices() async {
+    try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      final token = box.read('token');
+
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token.toString()}',
+      };
+
+      final response = await http.get(
+        Uri.parse('$url/laundry/all'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body)['data'];
+        laundryList.value = jsonResponse;
+      } else {
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
+      }
+    } catch (e) {
+      customPopUp("Error, Kode(${e.toString()})", warningColor);
+    }
+  }
 
   Future<void> onRefresh() async {
     isLoading.value = true;
     await fetchOrdersData();
-    await fetchHistoriesData();
     await fetchUserData();
+    await getPrimaryAddress();
+    await getLaundryServices();
     isLoading.value = false;
   }
 

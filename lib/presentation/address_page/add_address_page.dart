@@ -56,6 +56,9 @@ class AddAddressPage extends GetView<AddressPageController> {
                     .toList(),
                 onSuggestionSelected: (newValue) {
                   controller.updateProvinceData(newValue!);
+                  if (controller.province.value.isNotEmpty) {
+                    FocusScope.of(Get.overlayContext!).unfocus();
+                  }
                   controller.getAllCities();
                 }),
             Obx(() => _buildSearchField(
@@ -68,6 +71,9 @@ class AddAddressPage extends GetView<AddressPageController> {
                     .toList(),
                 onSuggestionSelected: (newValue) {
                   controller.city.value = newValue!;
+                  if (controller.city.value.isNotEmpty) {
+                    FocusScope.of(Get.overlayContext!).unfocus();
+                  }
                   controller.getAllDistricts();
                 })),
             Obx(() => _buildSearchField(
@@ -80,6 +86,9 @@ class AddAddressPage extends GetView<AddressPageController> {
                     .toList(),
                 onSuggestionSelected: (newValue) {
                   controller.district.value = newValue!;
+                  if (controller.district.value.isNotEmpty) {
+                    FocusScope.of(Get.overlayContext!).unfocus();
+                  }
                   controller.getAllVillages();
                 })),
             Obx(() => _buildSearchField(
@@ -92,6 +101,9 @@ class AddAddressPage extends GetView<AddressPageController> {
                     .toList(),
                 onSuggestionSelected: (newValue) {
                   controller.village.value = newValue!;
+                  if (controller.village.value.isNotEmpty) {
+                    FocusScope.of(Get.overlayContext!).unfocus();
+                  }
                   controller.getAllPostalCode();
                 })),
             Obx(() => _buildSearchField(
@@ -104,6 +116,9 @@ class AddAddressPage extends GetView<AddressPageController> {
                     .toList(),
                 onSuggestionSelected: (newValue) {
                   controller.postalCode.value = int.parse(newValue!);
+                  if (controller.postalCode.value != 0) {
+                    FocusScope.of(Get.overlayContext!).unfocus();
+                  }
                 })),
             // InputFormWidget(
             //     title: "Catatan (Opsional)",

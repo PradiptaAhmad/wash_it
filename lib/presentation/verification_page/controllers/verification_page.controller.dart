@@ -126,6 +126,50 @@ class VerificationPageController extends GetxController {
     }
   }
 
+  Future<void> VerifyOtpLogin(String pinCode) async {
+    isLoading.value = true;
+    try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      final token = box.read('token');
+
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token.toString()}',
+      };
+
+      var data = {
+        'otp': '$pinCode',
+        'email': argument[1],
+      };
+
+      final response = await http.post(
+        Uri.parse("${url}/users/forgot-password/verify"),
+        headers: headers,
+        body: data,
+      );
+
+      if (response.statusCode == 200) {
+        customPopUp('Berhasil verifikasi otp', successColor);
+        final token = json.decode(response.body)['token'];
+        box.write("token", token);
+        Get.offAllNamed(Routes.NAVBAR);
+      } else {
+        Get.snackbar(
+            "Gagal ${response.statusCode}", "Kode OTP gagal diverifikasi $data",
+            snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+        print(data);
+      }
+    } catch (e) {
+      // Get.snackbar("Gagal", "Kode OTP gagal terprogress",
+      //     snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+      Get.snackbar("Gagal", e.toString(),
+          snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+      print(e);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   String formatPhoneNumber() {
     final phone = userData['phone'].toString();
     // final formattedPhone =
@@ -146,12 +190,19 @@ class VerificationPageController extends GetxController {
     });
   }
 
+  void onRefresh() {
+    getUserData();
+    sendOtp();
+  }
+
   @override
   void onInit() {
     argument = Get.arguments;
     // userData.value = argument[0];
-    getUserData();
-    sendOtp();
+    if (argument[0] == 'otp-login') {
+    } else {
+      onRefresh();
+    }
     startTimer();
     super.onInit();
   }

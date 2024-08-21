@@ -172,34 +172,34 @@ class RegisterPageScreen extends GetView<RegisterPageController> {
                         }
                       },
                     )),
-                DividerWidget(screenWidth: screenWidth),
-                ButtonWidget(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: BorderSide(color: lightGrey, width: 2),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(defaultMargin),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/icGoogle.svg",
-                          width: 20,
-                        ),
-                        Spacer(),
-                        Text(
-                          "Login Dengan Google",
-                          style: tsBodySmallSemibold(darkBlue),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                  ),
-                ),
+                // DividerWidget(screenWidth: screenWidth),
+                // ButtonWidget(
+                //   onPressed: () {},
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: primaryColor,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(10),
+                //       side: BorderSide(color: lightGrey, width: 2),
+                //     ),
+                //   ),
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(defaultMargin),
+                //     child: Row(
+                //       children: [
+                //         SvgPicture.asset(
+                //           "assets/icons/icGoogle.svg",
+                //           width: 20,
+                //         ),
+                //         Spacer(),
+                //         Text(
+                //           "Login Dengan Google",
+                //           style: tsBodySmallSemibold(darkBlue),
+                //         ),
+                //         Spacer(),
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(

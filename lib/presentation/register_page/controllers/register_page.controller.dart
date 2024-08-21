@@ -29,37 +29,43 @@ class RegisterPageController extends GetxController {
   // Register Function
   Future<void> register() async {
     isLoading.value = true;
-    final fcm_token = await FirebaseMessaging.instance.getToken();
-    final url = ConfigEnvironments.getEnvironments()['url'];
-    print(url);
-    var data = {
-      'username': username.value,
-      'email': email.value,
-      'phone': phone.value,
-      'password': password.value,
-      'notification_token': fcm_token,
-    };
-    var headers = {
-      'Accept': 'application/json',
-    };
+    try {
+      final fcm_token = await FirebaseMessaging.instance.getToken();
+      final url = ConfigEnvironments.getEnvironments()['url'];
+      print(url);
+      var data = {
+        'username': username.value,
+        'email': email.value,
+        'phone': phone.value,
+        'password': password.value,
+        'notification_token': fcm_token,
+      };
+      var headers = {
+        'Accept': 'application/json',
+      };
 
-    final response = await http.post(
-      Uri.parse("$url/users/register"),
-      headers: headers,
-      body: data,
-    );
+      final response = await http.post(
+        Uri.parse("$url/users/register"),
+        headers: headers,
+        body: data,
+      );
 
-    if (response.statusCode == 201) {
-      final user = json.decode(response.body)['token'];
-      box.write('token', user);
-      Get.toNamed(Routes.VERIFICATION_PAGE,
-          arguments: [json.decode(response.body)['user']]);
-    } else {
-      print(json.decode(response.body)['errors']);
-      Get.snackbar("Gagal Register", json.decode(response.body)['message'],
+      if (response.statusCode == 201) {
+        final user = json.decode(response.body)['token'];
+        box.write('token', user);
+        Get.toNamed(Routes.VERIFICATION_PAGE,
+            arguments: [json.decode(response.body)['user']]);
+      } else {
+        print(json.decode(response.body)['errors']);
+        Get.snackbar("Gagal Register", json.decode(response.body)['message'],
+            snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+      }
+    } catch (e) {
+      Get.snackbar("Gagal Register", "Gagal Register, Silahkan Coba Lagi",
           snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+    } finally {
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 
   // Future<void> googleSignIn() async {
@@ -68,7 +74,7 @@ class RegisterPageController extends GetxController {
   //     if (googleUser == null) {
   //       Get.snackbar('Auth Google Canceled', "You canceled google authentication", backgroundColor: warningColor);
   //     } else {
-        
+
   //     }
 
   //   } catch(e) {

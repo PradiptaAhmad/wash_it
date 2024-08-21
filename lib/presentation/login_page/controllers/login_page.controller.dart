@@ -54,7 +54,7 @@ class LoginPageController extends GetxController {
       final user = json.decode(response.body)['user'];
       box.write("token", token);
       if (user['email_verified_at'] == null) {
-        Get.toNamed(Routes.VERIFICATION_PAGE);
+        Get.toNamed(Routes.VERIFICATION_PAGE, arguments: 'login');
       } else {
         FocusScope.of(Get.overlayContext!).unfocus();
         customPopUp(
@@ -68,6 +68,52 @@ class LoginPageController extends GetxController {
       customPopUp(
           "Gagal untuk melanjutkan login. Kode error(${response.statusCode})",
           warningColor);
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> forgotPassword() async {
+    isLoading.value = true;
+    try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      var data = {
+        'email': email.value,
+      };
+      var headers = {
+        'Accept': 'application/json',
+      };
+
+      var response = await http.post(
+        Uri.parse("$url/users/forgot-password/checkEmail"),
+        headers: headers,
+        body: data,
+      );
+
+      if (response.statusCode == 200) {
+        final status = json.decode(response.body)['status'];
+        switch (status) {
+          case 'success':
+            closeKeyboard();
+            customPopUp("Berhasil mengirim email reset password", successColor);
+            Get.toNamed(Routes.VERIFICATION_PAGE,
+                arguments: ['otp-login', email.value]);
+            break;
+          case 'failed':
+            closeKeyboard();
+            customPopUp("Mohon tunggu 5 menit", warningColor);
+            break;
+          default:
+        }
+      } else if (response.statusCode == 422) {
+        customPopUp("Email belum di input, silahkan input ulang", warningColor);
+      } else {
+        customPopUp(
+            "Gagal untuk reset password. Kode error(${response.statusCode})",
+            warningColor);
+      }
+    } catch (e) {
+      print(e);
+    } finally {
       isLoading.value = false;
     }
   }

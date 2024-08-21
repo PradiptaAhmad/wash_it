@@ -21,7 +21,7 @@ class HomeScreen extends GetView<HomeController> {
       backgroundColor: lightGrey.withOpacity(0.1),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight + 95),
-        child: _buildAppbar(),
+        child: _buildAppbar(controller),
       ),
       body: SafeArea(
         child: RefreshIndicator(
@@ -108,23 +108,45 @@ class HomeScreen extends GetView<HomeController> {
                 SizedBox(height: 10),
                 Container(
                   height: 200,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    children: List.generate(10, (index) {
-                      return MainContainerWidget(
-                        margin: const EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.all(15),
-                        childs: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Cuci Kering",
-                                style: tsBodyMediumMedium(black)),
-                          ],
-                        ),
-                      );
-                    }),
-                  ),
+                  child: GridView.builder(
+                      itemCount: controller.laundryList.length,
+                      shrinkWrap: true,
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: defaultMargin),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1.5,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                      ),
+                      itemBuilder: (context, index) {
+                        var laundries = controller.laundryList[index];
+
+                        return MainContainerWidget(
+                          padding: const EdgeInsets.all(10),
+                          childs: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                laundries['nama_laundry'],
+                                style: tsBodySmallSemibold(black),
+                              ),
+                              Text(
+                                "Rp. ${laundries['harga'].toString()}",
+                                style: tsLabelLargeSemibold(secondaryColor),
+                              ),
+                              Text(
+                                "${laundries['estimasi_waktu'].toString()} Hari",
+                                style: tsLabelLargeSemibold(secondaryColor),
+                              ),
+                              Text(
+                                laundries['deskripsi'],
+                                style: tsLabelLargeSemibold(grey),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
                 ),
                 SizedBox(height: 20),
               ],
@@ -159,7 +181,7 @@ Widget _shimmerOrderTypeWidget() {
   );
 }
 
-Widget _buildAppbar() {
+Widget _buildAppbar(HomeController controller) {
   return MainContainerWidget(
     color: primaryColor,
     borderRadius: 25,
@@ -182,13 +204,14 @@ Widget _buildAppbar() {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Rumah",
+                        controller.primaryAddress['type'] ?? "Alamat Utama",
                         style: tsLabelLargeSemibold(grey),
                       ),
                       SizedBox(
                         width: 300,
                         child: Text(
-                          "Jl.Pala No. 1, Kec. Pala, Kab. Pala, Prov. Pala, 12345, awdawdwdawd",
+                          controller.primaryAddress['street'] ??
+                              "Alamat belum diatur",
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: tsBodySmallSemibold(black),
