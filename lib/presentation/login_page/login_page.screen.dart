@@ -119,7 +119,9 @@ class LoginPageScreen extends GetView<LoginPageController> {
                   )),
               DividerWidget(screenWidth: screenWidth),
               ButtonWidget(
-                onPressed: () {},
+                onPressed: () {
+                  controller.signInWithGoogle();
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
                   shape: RoundedRectangleBorder(
