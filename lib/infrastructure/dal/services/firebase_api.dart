@@ -87,8 +87,9 @@ class FirebaseApi {
 
   static void onSelectNotification(NotificationResponse details) {
     final payload = json.decode(details.payload!);
+    print(payload);
     if (payload['route'] != null) {
-      Get.toNamed(payload['route'], arguments: [payload['datagit '], 'order']);
+      Get.toNamed(payload['route'], arguments: [payload['data'], 'order']);
     }
   }
 }

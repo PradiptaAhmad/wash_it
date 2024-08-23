@@ -4,6 +4,7 @@ import 'package:dynamic_multi_step_form/dynamic_multi_step_form.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:wash_it/config.dart';
 import 'package:http/http.dart' as http;
 import 'package:wash_it/infrastructure/navigation/routes.dart';
@@ -115,6 +116,56 @@ class LoginPageController extends GetxController {
       print(e);
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        final url = ConfigEnvironments.getEnvironments()["url"];
+        final notificationToken = await _firebaseMessaging.getToken();
+        var data = {
+          'token': googleAuth.accessToken,
+          'notification_token': notificationToken,
+        };
+        var headers = {
+          'Accept': 'application/json',
+        };
+
+        var response = await http.post(
+          Uri.parse("$url/users/google/login"),
+          headers: headers,
+          body: data,
+        );
+
+        if (response.statusCode == 200) {
+          final token = json.decode(response.body)['token'];
+          final user = json.decode(response.body)['user'];
+          box.write("token", token);
+          if (user['email_verified_at'] == null) {
+            Get.toNamed(Routes.VERIFICATION_PAGE, arguments: 'login');
+          } else {
+            FocusScope.of(Get.overlayContext!).unfocus();
+            customPopUp(
+              "Berhasil login",
+              successColor,
+            );
+            Get.offAllNamed(Routes.NAVBAR);
+          }
+        } else {
+          FocusScope.of(Get.overlayContext!).unfocus();
+          customPopUp(
+              "Gagal untuk melanjutkan login. Kode error(${response.statusCode})",
+              warningColor);
+        }
+      }
+    } on Exception catch (e) {
+      // TODO
+      print('exception->$e');
     }
   }
 
