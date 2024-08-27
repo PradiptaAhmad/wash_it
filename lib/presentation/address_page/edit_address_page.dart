@@ -8,14 +8,31 @@ import '../../widgets/common/auth/input_form_widget.dart';
 import '../../widgets/common/mainpage_appbar_widget.dart';
 import '../order_page/widgets/search_dropdown_widget.dart';
 
-class AddAddressPage extends GetView<AddressPageController> {
-  const AddAddressPage({Key? key}) : super(key: key);
+class EditAddressPage extends GetView<AddressPageController> {
+  EditAddressPage({
+    Key? key,
+    required this.editType,
+    this.id,
+    this.street,
+    this.label,
+    this.province,
+    this.city,
+    this.village,
+    this.district,
+    this.notes,
+    this.postal,
+    required this.isPrimary,
+  }) : super(key: key);
+  final String editType;
+  final String? label, province, city, district, village, street, notes;
+  final id, postal;
+  final bool isPrimary;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainpageAppbarWidget(
-          title: "Tambah Alamat",
+          title: editType == "add" ? "Tambah Alamat" : "Ubah Alamat",
           onPressed: () {
             controller.clearForm();
             Get.back();
@@ -26,7 +43,8 @@ class AddAddressPage extends GetView<AddressPageController> {
           children: [
             InputFormWidget(
                 title: "Label",
-                hintText: "Label",
+                hintText:
+                    editType == 'edit' && editType.isEmpty ? label : "Rumah",
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Nama alamat tidak boleh kosong";
@@ -37,7 +55,9 @@ class AddAddressPage extends GetView<AddressPageController> {
                 }),
             InputFormWidget(
                 title: "Detail Alamat",
-                hintText: "Alamat Lengkap",
+                hintText: editType == 'edit' && editType.isEmpty
+                    ? street
+                    : "Alamat lengkap",
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Detail alamat tidak boleh kosong";
@@ -49,7 +69,9 @@ class AddAddressPage extends GetView<AddressPageController> {
             _buildSearchField(
                 controller: controller,
                 titleText: "Provinsi",
-                hintText: "Jawa Tengah",
+                hintText: editType == 'edit' && editType.isEmpty
+                    ? province.toString()
+                    : "Jawa Tengah",
                 readOnly: false,
                 suggestions: controller.provinceList
                     .map((e) => SearchFieldListItem(e['province_name']))
@@ -64,7 +86,9 @@ class AddAddressPage extends GetView<AddressPageController> {
             Obx(() => _buildSearchField(
                 controller: controller,
                 titleText: "Kabupaten / Kota",
-                hintText: "Kudus",
+                hintText: editType == 'edit' && editType.isEmpty
+                    ? city.toString()
+                    : "Kudus",
                 readOnly: controller.province.isEmpty ? true : false,
                 suggestions: controller.cityList
                     .map((e) => SearchFieldListItem(e))
@@ -79,7 +103,9 @@ class AddAddressPage extends GetView<AddressPageController> {
             Obx(() => _buildSearchField(
                 controller: controller,
                 titleText: "Kecamatan",
-                hintText: "Gebog",
+                hintText: editType == 'edit' && editType.isEmpty
+                    ? district.toString()
+                    : "Gebog",
                 readOnly: controller.city.isEmpty ? true : false,
                 suggestions: controller.districtList
                     .map((e) => SearchFieldListItem(e))
@@ -94,7 +120,9 @@ class AddAddressPage extends GetView<AddressPageController> {
             Obx(() => _buildSearchField(
                 controller: controller,
                 titleText: "Kelurahan",
-                hintText: "Besito",
+                hintText: editType == 'edit' && editType.isEmpty
+                    ? village.toString()
+                    : "Besito",
                 readOnly: controller.district.isEmpty ? true : false,
                 suggestions: controller.villageList
                     .map((e) => SearchFieldListItem(e))
@@ -109,7 +137,9 @@ class AddAddressPage extends GetView<AddressPageController> {
             Obx(() => _buildSearchField(
                 controller: controller,
                 titleText: "Kode Pos",
-                hintText: "59361",
+                hintText: editType == 'edit' && editType.isEmpty
+                    ? postal.toString()
+                    : "59361",
                 readOnly: controller.village.isEmpty ? true : false,
                 suggestions: controller.postalList
                     .map((e) => SearchFieldListItem(e.toString()))
@@ -120,20 +150,58 @@ class AddAddressPage extends GetView<AddressPageController> {
                     FocusScope.of(Get.overlayContext!).unfocus();
                   }
                 })),
-            // InputFormWidget(
-            //     title: "Catatan (Opsional)",
-            //     hintText: "Sebelah toko baju",
-            //     validator: (value) {
-            //       controller.province.value = value;
-            //       return null;
-            //     }),
+            InputFormWidget(
+                title: "Catatan (Opsional)",
+                hintText: editType == 'edit' && editType.isEmpty
+                    ? notes.toString()
+                    : "Sebelah toko baju",
+                validator: (value) {
+                  controller.notes.value = value;
+                  return null;
+                }),
             SizedBox(height: 20),
             InkWell(
               onTap: () async {
                 controller.isLoading.value = true;
-                await controller.postAddressUser();
+                switch (editType) {
+                  case 'add':
+                    await controller.postAddressUser();
+                    Get.back();
+                    break;
+                  case 'edit':
+                    await controller.updateAddress(
+                      id: id,
+                      type: controller.label.value.isEmpty
+                          ? label.toString()
+                          : controller.label.value,
+                      notes: controller.notes.value.isEmpty
+                          ? notes.toString()
+                          : controller.notes.value,
+                      street: controller.address.value.isEmpty
+                          ? street.toString()
+                          : controller.address.value,
+                      village: controller.village.value.isEmpty
+                          ? village.toString()
+                          : controller.village.value,
+                      district: controller.district.value.isEmpty
+                          ? district.toString()
+                          : controller.district.value,
+                      city: controller.city.value.isEmpty
+                          ? city.toString()
+                          : controller.city.value,
+                      province: controller.province.value.isEmpty
+                          ? province.toString()
+                          : controller.province.value,
+                      postalCode: controller.postalCode.value == 0
+                          ? int.parse(postal)
+                          : controller.postalCode.value,
+                      isPrimary: isPrimary,
+                    );
+                    Get.back();
+                    break;
+                  default:
+                }
                 controller.isLoading.value = false;
-                Get.back();
               },
               splashColor: Colors.transparent,
               child: Obx(() {
@@ -157,7 +225,10 @@ class AddAddressPage extends GetView<AddressPageController> {
                             ),
                           )
                         : Center(
-                            child: Text("Tambahkan Alamat",
+                            child: Text(
+                                editType == "add"
+                                    ? "Tambah Alamat"
+                                    : "Ubah Alamat",
                                 style: tsBodySmallSemibold(primaryColor)),
                           ));
               }),

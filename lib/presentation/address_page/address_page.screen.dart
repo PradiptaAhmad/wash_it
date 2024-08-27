@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
-import 'package:wash_it/presentation/address_page/add_address_page.dart';
+import 'package:wash_it/presentation/address_page/edit_address_page.dart';
 import 'package:wash_it/presentation/address_page/widgets/pop_up/more_button_pop_up.dart';
 
 import '../../widgets/common/main_container_widget.dart';
@@ -22,11 +22,15 @@ class AddressPageScreen extends GetView<AddressPageController> {
           () {
             if (controller.isLoading.value) {
               return Center(child: CupertinoActivityIndicator());
-            } else if (!controller.addressList.isEmpty) {
+            }
+            if (!controller.addressList.isEmpty) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 80),
                 child: ListView.builder(
                     shrinkWrap: true,
+                    physics: controller.isLoading.value
+                        ? NeverScrollableScrollPhysics()
+                        : AlwaysScrollableScrollPhysics(),
                     itemCount: controller.addressList.length,
                     itemBuilder: (context, index) {
                       var address = controller.addressList[index];
@@ -124,11 +128,26 @@ Widget _buildAddressItem(
                 SizedBox(width: 5),
                 Expanded(
                   flex: 8,
-                  child: MainContainerWidget(
-                    height: 38,
-                    childs: Center(
-                      child: Text("Ubah Alamat",
-                          style: tsLabelLargeSemibold(darkGrey)),
+                  child: InkWell(
+                    onTap: () => Get.to(EditAddressPage(
+                      editType: 'edit',
+                      id: address['id'],
+                      label: address['type'],
+                      province: address['province'],
+                      city: address['city'],
+                      district: address['district'],
+                      village: address['village'],
+                      street: address['street'],
+                      postal: address['postal_code'],
+                      isPrimary: address['is_primary'],
+                      // notes: address['notes'],
+                    )),
+                    child: MainContainerWidget(
+                      height: 38,
+                      childs: Center(
+                        child: Text("Ubah Alamat",
+                            style: tsLabelLargeSemibold(darkGrey)),
+                      ),
                     ),
                   ),
                 )
@@ -153,7 +172,10 @@ Widget _buildAddAddressButton() {
       child: Padding(
           padding: const EdgeInsets.all(defaultMargin),
           child: InkWell(
-              onTap: () => Get.to(AddAddressPage()),
+              onTap: () => Get.to(EditAddressPage(
+                    isPrimary: false,
+                    editType: 'add',
+                  )),
               child: Container(
                   decoration: BoxDecoration(
                     color: secondaryColor,

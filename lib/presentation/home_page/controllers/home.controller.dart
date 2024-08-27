@@ -10,12 +10,12 @@ import '../../../widgets/popup/custom_pop_up.dart';
 
 class HomeController extends GetxController {
   final count = 0.obs;
-  final laundryList = [].obs;
-  final userData = {}.obs;
-  var ordersList = [].obs;
-  var primaryAddress = {}.obs;
-  var jenisList = [].obs;
   var isLoading = false.obs;
+  final laundryList = [].obs;
+  var ordersList = [].obs;
+  var jenisList = [].obs;
+  final userData = {}.obs;
+  var addressData = {}.obs;
 
   GetStorage box = GetStorage();
 
@@ -88,7 +88,8 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body)['data'];
-        primaryAddress.value = jsonResponse;
+        addressData.value = jsonResponse;
+      } else if (response.statusCode == 404) {
       } else {
         customPopUp("Error, Kode(${response.statusCode})", warningColor);
       }

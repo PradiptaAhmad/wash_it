@@ -23,7 +23,6 @@ class HistoryPageController extends GetxController
   GetStorage box = GetStorage();
 
   Future<void> getHistoryOrders() async {
-    isLoading.value = true;
     try {
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token')?.toString();
@@ -48,8 +47,36 @@ class HistoryPageController extends GetxController
     } catch (e) {
       Get.snackbar('Error Catch', e.toString());
       print(e);
-    } finally {
-      isLoading.value = false;
+    }
+  }
+
+  Future<void> getLaundries() async {
+    try {
+      final url = ConfigEnvironments.getEnvironments()['url'];
+      final token = box.read('token');
+
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+
+      var response = await http.get(
+        Uri.parse('$url/laundry/all'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body)['data'];
+        laundries.value = jsonResponse;
+
+        jsonResponse.forEach((element) {
+          jenisList.add(element['nama_laundry']);
+        });
+      } else {
+        Get.snackbar('Error', '${response.statusCode}');
+      }
+    } catch (e) {
+      Get.snackbar('Error', e.toString());
     }
   }
 
@@ -91,48 +118,7 @@ class HistoryPageController extends GetxController
     }
   }
 
-  Future<void> getLaundries() async {
-    isLoading.value = true;
-    try {
-      final url = ConfigEnvironments.getEnvironments()['url'];
-      final token = box.read('token');
-
-      var headers = {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      };
-
-      var response = await http.get(
-        Uri.parse('$url/laundry/all'),
-        headers: headers,
-      );
-
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body)['data'];
-        laundries.value = jsonResponse;
-
-        jsonResponse.forEach((element) {
-          jenisList.add(element['nama_laundry']);
-        });
-      } else {
-        Get.snackbar('Error', '${response.statusCode}');
-      }
-    } catch (e) {
-      Get.snackbar('Error', e.toString());
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
   void applyFilter() {
-    // final filters = [
-    //   null,
-    //   (order) => order['status'] == "completed",
-    //   (order) => order['status'] == "canceled",
-    // ];
-    //
-    // filteredOrdersList.value =
-    //     ordersList.where(filters[isSelected.value] ?? (order) => true).toList();
     switch (isSelected.value) {
       case 0:
         filteredOrdersList.value = ordersList;
@@ -150,12 +136,18 @@ class HistoryPageController extends GetxController
     }
   }
 
+  Future<void> onRefresh() async {
+    isLoading.value = true;
+    await getHistoryOrders();
+    await getLaundries();
+    isLoading.value = false;
+  }
+
   @override
   void onInit() {
     super.onInit();
-    getHistoryOrders();
-    getLaundries();
     tabController = TabController(length: 2, vsync: this);
+    onRefresh();
   }
 
   @override

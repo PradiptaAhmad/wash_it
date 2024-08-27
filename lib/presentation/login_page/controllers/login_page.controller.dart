@@ -15,8 +15,6 @@ class LoginPageController extends GetxController {
   // Password Visibility
   var isObsecure = true.obs;
 
-  final _firebaseMessaging = FirebaseMessaging.instance;
-
   // Email and Password
   var email = ''.obs;
   var password = ''.obs;
@@ -25,6 +23,7 @@ class LoginPageController extends GetxController {
   var isLoading = false.obs;
 
   // Other
+  final _firebaseMessaging = FirebaseMessaging.instance;
   GetStorage box = GetStorage();
 
   Future<void> login() async {
@@ -141,6 +140,8 @@ class LoginPageController extends GetxController {
           headers: headers,
           body: data,
         );
+
+        print(response.body);
 
         if (response.statusCode == 200) {
           final token = json.decode(response.body)['token'];
