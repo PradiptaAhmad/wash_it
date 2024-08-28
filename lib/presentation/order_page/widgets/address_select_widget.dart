@@ -77,7 +77,7 @@ Future addressSelectWidget(BuildContext context, OrderController controller) {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "${address['type'] + address['id'].toString()}",
+                                    "${address['type']}",
                                     style: tsBodySmallMedium(black),
                                   ),
                                   const SizedBox(height: 10),

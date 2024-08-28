@@ -21,7 +21,7 @@ class HomeScreen extends GetView<HomeController> {
       backgroundColor: lightGrey.withOpacity(0.1),
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(kToolbarHeight + screenHeight(context) * 0.15),
+            Size.fromHeight(kToolbarHeight + screenHeight(context) * 0.12),
         child: _buildAppbar(controller),
       ),
       body: SafeArea(
