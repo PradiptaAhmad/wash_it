@@ -213,7 +213,7 @@ Widget _buildOrderItem(Map<String, dynamic> order) {
                         order['total_harga'] == null
                             ? "Belum tercatat"
                             : "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(order['total_harga'])}",
-                        style: tsLabelLargeMedium(black),
+                        style: tsBodySmallSemibold(black),
                       ),
                     ],
                   ),
@@ -232,7 +232,7 @@ Widget _buildOrderItem(Map<String, dynamic> order) {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
                           '${order['status']}',
-                          style: tsLabelLargeMedium(statusColor),
+                          style: tsBodySmallSemibold(statusColor),
                         ),
                       ),
                     ],

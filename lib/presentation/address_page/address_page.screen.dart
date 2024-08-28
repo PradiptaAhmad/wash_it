@@ -129,19 +129,22 @@ Widget _buildAddressItem(
                 Expanded(
                   flex: 8,
                   child: InkWell(
-                    onTap: () => Get.to(EditAddressPage(
-                      editType: 'edit',
-                      id: address['id'],
-                      label: address['type'],
-                      province: address['province'],
-                      city: address['city'],
-                      district: address['district'],
-                      village: address['village'],
-                      street: address['street'],
-                      postal: address['postal_code'],
-                      isPrimary: address['is_primary'],
-                      // notes: address['notes'],
-                    )),
+                    onTap: () {
+                      print(address['province']);
+                      Get.to(() => EditAddressPage(
+                            editType: 'edit',
+                            id: address['id'],
+                            label: address['type'],
+                            province: address['province'],
+                            city: address['city'],
+                            district: address['district'],
+                            village: address['village'],
+                            street: address['street'],
+                            postal: address['postal_code'],
+                            isPrimary: address['is_primary'],
+                            // notes: address['notes'],
+                          ));
+                    },
                     child: MainContainerWidget(
                       height: 38,
                       childs: Center(

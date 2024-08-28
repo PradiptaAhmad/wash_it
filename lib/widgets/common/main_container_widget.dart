@@ -36,7 +36,8 @@ class MainContainerWidget extends StatelessWidget {
             color: color ?? Colors.white,
             borderRadius: BorderRadius.circular(borderRadius ?? 10),
             // boxShadow: [localMainShadow()],
-            border: Border.all(color: lightGrey.withOpacity(0.5), width: 1),
+            border: border ??
+                Border.all(color: lightGrey.withOpacity(0.5), width: 1),
           ),
           child: childs),
     );

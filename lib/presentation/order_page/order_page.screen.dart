@@ -1,11 +1,14 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:searchfield/searchfield.dart';
+import 'package:wash_it/presentation/order_page/widgets/address_select_widget.dart';
 import 'package:wash_it/presentation/order_page/widgets/search_dropdown_widget.dart';
+import 'package:wash_it/widgets/common/main_container_widget.dart';
 import '../../infrastructure/theme/themes.dart';
 import '../../widgets/common/auth/input_form_widget.dart';
 import '../../widgets/common/content_title_widget.dart';
@@ -25,22 +28,25 @@ class OrderView extends GetView<OrderController> {
         title: 'Pesan Laundry',
         onPressed: () => exitConfirmationDialog(context, controller),
       ),
-      body: Obx(
-        () => Stepper(
-          stepIconHeight: 24,
-          elevation: 1,
-          // connectorColor: WidgetStatePropertyAll(secondaryColor),
-          type: StepperType.horizontal,
-          steps: getSteps(context),
-          currentStep: controller.currentStep.value,
-          onStepContinue: null,
-          onStepCancel: null,
-          onStepTapped: null,
-          controlsBuilder: (BuildContext context, ControlsDetails details) =>
-              Container(),
-        ),
-      ),
-      floatingActionButton: _BuildFloatingActionButton(context, controller),
+      body: Obx(() => !controller.isLoading.value
+          ? Stepper(
+              stepIconHeight: 24,
+              elevation: 1,
+              // connectorColor: WidgetStatePropertyAll(secondaryColor),
+              type: StepperType.horizontal,
+              steps: getSteps(context),
+              currentStep: controller.currentStep.value,
+              onStepContinue: null,
+              onStepCancel: null,
+              onStepTapped: null,
+              controlsBuilder:
+                  (BuildContext context, ControlsDetails details) =>
+                      Container(),
+            )
+          : Center(child: CupertinoActivityIndicator())),
+      floatingActionButton: Obx(() => !controller.isLoading.value
+          ? _BuildFloatingActionButton(context, controller)
+          : Container()),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
@@ -80,11 +86,17 @@ class OrderView extends GetView<OrderController> {
                           if (value == false) {
                             controller.nameTextController.text = "";
                             controller.phoneTextEditingController.text = "";
+                            controller.ordername.value = "";
+                            controller.phonenumber.value = "";
                           }
                           if (value == true) {
                             controller.nameTextController.text =
                                 controller.userData['username'];
                             controller.phoneTextEditingController.text =
+                                controller.userData['phone'];
+                            controller.ordername.value =
+                                controller.userData['username'];
+                            controller.phonenumber.value =
                                 controller.userData['phone'];
                           }
                           controller.isSelected.value = value;
@@ -119,14 +131,49 @@ class OrderView extends GetView<OrderController> {
                     onChanged: (value) {
                       controller.phonenumber.value = value;
                     })),
-                InputFormWidget(
-                  title: "Alamat",
-                  hintText: "Masukkan alamat anda",
-                  controller: controller.addressTextEditingController,
-                  keyboardType: TextInputType.streetAddress,
-                  onChanged: (value) {
-                    controller.address.value = value;
-                  },
+                SizedBox(height: 15),
+                Text(
+                  "Alamat",
+                  style: tsBodySmallMedium(black),
+                ),
+                SizedBox(height: 10),
+                MainContainerWidget(
+                  border: Border.all(color: lightGrey, width: 2),
+                  padding: const EdgeInsets.all(15),
+                  width: double.infinity,
+                  childs: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Obx(
+                        () => !controller.isLoading.value
+                            ? Text(
+                                controller.address.value,
+                                style: tsLabelLargeSemibold(darkGrey),
+                              )
+                            : Text("Loading...",
+                                style: tsLabelLargeSemibold(darkGrey)),
+                      ),
+                      SizedBox(height: 10),
+                      InkWell(
+                        onTap: () => addressSelectWidget(context, controller),
+                        child: Container(
+                            decoration: BoxDecoration(
+                              color: secondaryColor,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            width: 120,
+                            height: 30,
+                            child: Center(
+                              child: Text(
+                                "Ganti Alamat",
+                                style: tsLabelLargeSemibold(Colors.white),
+                              ),
+                            )),
+                      )
+                    ],
+                  ),
                 ),
                 SizedBox(height: 80),
               ],
@@ -238,6 +285,8 @@ class OrderView extends GetView<OrderController> {
           content: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               key: ValueKey<int>(controller.currentStep.value),
               children: [
                 const ContentTitleWidget(
@@ -358,9 +407,7 @@ class OrderView extends GetView<OrderController> {
                   case 0:
                     {
                       if (controller.nameTextController.text.isEmpty ||
-                          controller.phoneTextEditingController.text.isEmpty ||
-                          controller
-                              .addressTextEditingController.text.isEmpty) {
+                          controller.phoneTextEditingController.text.isEmpty) {
                         isNotEmptySnackBar();
                       } else {
                         controller.pageChangedPlus();
@@ -405,6 +452,7 @@ class OrderView extends GetView<OrderController> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: tsBodySmallMedium(darkGrey)),
@@ -413,7 +461,7 @@ class OrderView extends GetView<OrderController> {
             child: Text(
               value,
               style: tsBodySmallRegular(darkBlue),
-              maxLines: 2,
+              maxLines: 5,
               softWrap: true,
               textAlign: TextAlign.end,
               overflow: TextOverflow.ellipsis,

@@ -43,8 +43,7 @@ class EditAddressPage extends GetView<AddressPageController> {
           children: [
             InputFormWidget(
                 title: "Label",
-                hintText:
-                    editType == 'edit' && editType.isEmpty ? label : "Rumah",
+                hintText: editType == 'edit' ? label : "Rumah",
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Nama alamat tidak boleh kosong";
@@ -55,9 +54,7 @@ class EditAddressPage extends GetView<AddressPageController> {
                 }),
             InputFormWidget(
                 title: "Detail Alamat",
-                hintText: editType == 'edit' && editType.isEmpty
-                    ? street
-                    : "Alamat lengkap",
+                hintText: editType == 'edit' ? street : "Alamat lengkap",
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Detail alamat tidak boleh kosong";
@@ -69,9 +66,8 @@ class EditAddressPage extends GetView<AddressPageController> {
             _buildSearchField(
                 controller: controller,
                 titleText: "Provinsi",
-                hintText: editType == 'edit' && editType.isEmpty
-                    ? province.toString()
-                    : "Jawa Tengah",
+                hintText:
+                    editType == 'edit' ? province.toString() : "Jawa Tengah",
                 readOnly: false,
                 suggestions: controller.provinceList
                     .map((e) => SearchFieldListItem(e['province_name']))
@@ -86,9 +82,7 @@ class EditAddressPage extends GetView<AddressPageController> {
             Obx(() => _buildSearchField(
                 controller: controller,
                 titleText: "Kabupaten / Kota",
-                hintText: editType == 'edit' && editType.isEmpty
-                    ? city.toString()
-                    : "Kudus",
+                hintText: editType == 'edit' ? city.toString() : "Kudus",
                 readOnly: controller.province.isEmpty ? true : false,
                 suggestions: controller.cityList
                     .map((e) => SearchFieldListItem(e))
@@ -103,9 +97,7 @@ class EditAddressPage extends GetView<AddressPageController> {
             Obx(() => _buildSearchField(
                 controller: controller,
                 titleText: "Kecamatan",
-                hintText: editType == 'edit' && editType.isEmpty
-                    ? district.toString()
-                    : "Gebog",
+                hintText: editType == 'edit' ? district.toString() : "Gebog",
                 readOnly: controller.city.isEmpty ? true : false,
                 suggestions: controller.districtList
                     .map((e) => SearchFieldListItem(e))
@@ -120,9 +112,7 @@ class EditAddressPage extends GetView<AddressPageController> {
             Obx(() => _buildSearchField(
                 controller: controller,
                 titleText: "Kelurahan",
-                hintText: editType == 'edit' && editType.isEmpty
-                    ? village.toString()
-                    : "Besito",
+                hintText: editType == 'edit' ? village.toString() : "Besito",
                 readOnly: controller.district.isEmpty ? true : false,
                 suggestions: controller.villageList
                     .map((e) => SearchFieldListItem(e))
@@ -137,9 +127,7 @@ class EditAddressPage extends GetView<AddressPageController> {
             Obx(() => _buildSearchField(
                 controller: controller,
                 titleText: "Kode Pos",
-                hintText: editType == 'edit' && editType.isEmpty
-                    ? postal.toString()
-                    : "59361",
+                hintText: editType == 'edit' ? postal.toString() : "59361",
                 readOnly: controller.village.isEmpty ? true : false,
                 suggestions: controller.postalList
                     .map((e) => SearchFieldListItem(e.toString()))
@@ -154,7 +142,7 @@ class EditAddressPage extends GetView<AddressPageController> {
                 title: "Catatan (Opsional)",
                 hintText: editType == 'edit' && editType.isEmpty
                     ? notes.toString()
-                    : "Sebelah toko baju",
+                    : "(contoh) Rumah warna biru",
                 validator: (value) {
                   controller.notes.value = value;
                   return null;
@@ -233,6 +221,11 @@ class EditAddressPage extends GetView<AddressPageController> {
                           ));
               }),
             ),
+            ElevatedButton(
+                onPressed: () {
+                  print(label);
+                },
+                child: Text("data")),
             SizedBox(height: 20),
           ],
         ),

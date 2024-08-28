@@ -18,6 +18,7 @@ class ProfileController extends GetxController {
   var userName = 'Nama Pengguna'.obs;
   var email = 'email@example.com'.obs;
   var phoneNumber = '081234567890'.obs;
+  var password = ''.obs;
   var isLoading = true.obs;
   var imageFile = Rx<File?>(null);
   final userData = {}.obs;
@@ -162,6 +163,45 @@ class ProfileController extends GetxController {
     }
   }
 
+  Future<void> updatePasswordData() async {
+    isLoading.value = true;
+    final url = ConfigEnvironments.getEnvironments()['url'];
+    final token = box.read('token');
+
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+
+    var data = {
+      'password': password.value,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse("${url}/users/update/password"),
+        headers: headers,
+        body: data,
+      );
+
+      if (response.statusCode == 200) {
+        Get.snackbar("Berhasil", "Password telah berhasil diganti",
+            snackPosition: SnackPosition.TOP, backgroundColor: successColor);
+        isLoading.value = false;
+        fetchUserData();
+        Get.offNamed(Routes.NAVBAR);
+      } else {
+        Get.snackbar("Gagal ${response.statusCode}",
+            "Password gagal untuk diganti $data",
+            snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+      }
+    } catch (e) {
+      Get.snackbar("Gagal", e.toString(),
+          snackPosition: SnackPosition.TOP, backgroundColor: warningColor);
+      print(e);
+    }
+  }
+
   Future<void> updateUserPhoneData() async {
     isLoading.value = true;
     final url = ConfigEnvironments.getEnvironments()['url'];
@@ -287,26 +327,12 @@ class ProfileController extends GetxController {
     );
   }
 
-  void updateUserName(String newUserName) {
-    userName.value = newUserName;
-  }
-
-  void updateEmail(String newEmail) {
-    email.value = newEmail;
-  }
-
-  void updatePhoneNumber(String newPhoneNumber) {
-    phoneNumber.value = newPhoneNumber;
-  }
-
-  void updatePassword(String newPassword) {
-    // Handle password update logic
-  }
-
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    fetchUserData();
+    isLoading.value = true;
+    await fetchUserData();
+    isLoading.value = false;
   }
 
   @override

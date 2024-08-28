@@ -20,7 +20,8 @@ class HomeScreen extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: lightGrey.withOpacity(0.1),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight + 100),
+        preferredSize:
+            Size.fromHeight(kToolbarHeight + screenHeight(context) * 0.11),
         child: _buildAppbar(controller),
       ),
       body: SafeArea(
@@ -111,46 +112,27 @@ class HomeScreen extends GetView<HomeController> {
                   SizedBox(height: 10),
                   Container(
                     height: 200,
-                    child: GridView.builder(
-                        itemCount: controller.laundryList.length,
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: defaultMargin),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 1.5,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          var laundries = controller.laundryList[index];
-
-                          return MainContainerWidget(
-                            padding: const EdgeInsets.all(10),
-                            childs: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  laundries['nama_laundry'],
-                                  style: tsBodySmallSemibold(black),
-                                ),
-                                Text(
-                                  "Rp. ${laundries['harga'].toString()}",
-                                  style: tsLabelLargeSemibold(secondaryColor),
-                                ),
-                                Text(
-                                  "${laundries['estimasi_waktu'].toString()} Hari",
-                                  style: tsLabelLargeSemibold(secondaryColor),
-                                ),
-                                Text(
-                                  laundries['deskripsi'],
-                                  style: tsLabelLargeSemibold(grey),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
+                    child: Obx(
+                      () => !controller.isLoading.value
+                          ? GridView.builder(
+                              itemCount: controller.laundryList.length,
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: defaultMargin),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 1.5,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                              ),
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                var laundries = controller.laundryList[index];
+                                return _buildGridItem(laundries);
+                              })
+                          : _shimmerGridItem(),
+                    ),
                   ),
                   SizedBox(height: 20),
                 ],
@@ -161,6 +143,54 @@ class HomeScreen extends GetView<HomeController> {
       ),
     );
   }
+}
+
+Widget _shimmerGridItem() {
+  return GridView.builder(
+      itemCount: 8,
+      shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 1.5,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+      ),
+      physics: NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return ShimmerWidget(
+          height: 100,
+          width: 100,
+          radius: 10,
+        );
+      });
+}
+
+Widget _buildGridItem(laundries) {
+  return MainContainerWidget(
+    padding: const EdgeInsets.all(10),
+    childs: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          laundries['nama_laundry'],
+          style: tsBodySmallSemibold(black),
+        ),
+        Text(
+          "Rp. ${laundries['harga'].toString()}",
+          style: tsLabelLargeSemibold(secondaryColor),
+        ),
+        Text(
+          "${laundries['estimasi_waktu'].toString()} Hari",
+          style: tsLabelLargeSemibold(secondaryColor),
+        ),
+        Text(
+          laundries['deskripsi'],
+          style: tsLabelLargeSemibold(grey),
+        ),
+      ],
+    ),
+  );
 }
 
 Widget _shimmerTitleWidget() {
@@ -436,7 +466,7 @@ class MainTitleWidget extends GetView<HomeController> {
                         ),
                       ),
                     )
-                  : ShimmerWidget(radius: 10, height: 50))),
+                  : ShimmerWidget(radius: 10, height: 45))),
           Expanded(
             flex: 7,
             child: Padding(
