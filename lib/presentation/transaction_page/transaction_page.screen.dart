@@ -219,22 +219,26 @@ Widget _buildFloatingActionButton(
       padding: const EdgeInsets.all(defaultMargin),
       child: Row(
         children: [
-          Expanded(
-            flex: 1,
-            child: InkWell(
-              onTap: () => moreOptionsBottomsheetsWidget(context, controller),
-              borderRadius: BorderRadius.circular(15),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: secondaryColor,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                height: 50,
-                child: Center(
-                  child: Icon(
-                    Icons.menu_rounded,
-                    color: primaryColor,
-                    size: 25,
+          Visibility(
+            visible: controller.argument[1] == 'histories' &&
+                controller.statusList['status_code'] == 5,
+            child: Expanded(
+              flex: 1,
+              child: InkWell(
+                onTap: () => moreOptionsBottomsheetsWidget(context, controller),
+                borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: secondaryColor,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  height: 50,
+                  child: Center(
+                    child: Icon(
+                      Icons.menu_rounded,
+                      color: primaryColor,
+                      size: 25,
+                    ),
                   ),
                 ),
               ),

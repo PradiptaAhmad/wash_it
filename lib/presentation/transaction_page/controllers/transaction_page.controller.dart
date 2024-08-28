@@ -130,9 +130,9 @@ class TransactionPageController extends GetxController {
         'Authorization': 'Bearer ${token.toString()}',
       };
       var data = {
-        'rating': reviewDesc.value,
-        'review': reviewStar.value,
-        'order_id': argument,
+        'review': reviewDesc.value,
+        'rating': reviewStar.value.toString(),
+        'history_id': argument[0].toString(),
       };
       final response = await http.post(
         Uri.parse("${url}/ratings/add"),
@@ -143,6 +143,7 @@ class TransactionPageController extends GetxController {
         customPopUp("Berhasil memberikan ulasan", successColor);
         Get.back();
       } else {
+        print(response.body);
         customPopUp("Error, Kode(${response.statusCode})", warningColor);
       }
     } catch (e) {
