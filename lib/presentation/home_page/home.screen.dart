@@ -20,142 +20,177 @@ class HomeScreen extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: lightGrey.withOpacity(0.1),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight + 95),
+        preferredSize:
+            Size.fromHeight(kToolbarHeight + screenHeight(context) * 0.11),
         child: _buildAppbar(controller),
       ),
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => controller.onRefresh(),
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 10),
-                Obx(() => !controller.isLoading.value
-                    ? Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: defaultMargin),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildOrderTypeWidget(
-                                  mainTitle: "Antar Jemput",
-                                  desc: "Pesan Laundry dan diantar langsung",
-                                  onPressed: () {
-                                    Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
-                                        arguments: 'antar_jemput');
-                                  },
-                                  color: Colors.orange,
-                                  icon: Icons.delivery_dining_rounded),
-                              SizedBox(width: 10),
-                              _buildOrderTypeWidget(
-                                  mainTitle: "Antar Mandiri",
-                                  desc:
-                                      "Pesan Laundry dan antar laundry sendiri",
-                                  onPressed: () {
-                                    Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
-                                        arguments: 'antar_mandiri');
-                                  },
-                                  color: Colors.green,
-                                  icon: Icons.directions_walk_rounded)
-                            ]))
-                    : _shimmerOrderTypeWidget()),
-                SizedBox(height: 20),
-                Obx(
-                  () => !controller.isLoading.value
-                      ? ContentTitleWidget(
-                          title: "PESANAN TERBARU",
-                          lefttextSize: tsBodySmallSemibold(grey),
-                        )
-                      : _shimmerTitleWidget(),
-                ),
-                SizedBox(height: 10),
-                Obx(() {
-                  if (controller.isLoading.value) {
-                    return shimmerPreviewNewest();
-                  }
-                  if (controller.ordersList.isEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.all(60),
-                      child: Center(
-                        child: Text("Tidak ada pesanan",
-                            style: tsBodyMediumMedium(darkGrey)),
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: controller.ordersList.length < 2
-                        ? controller.ordersList.length
-                        : 2,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final order = controller
-                          .ordersList[controller.ordersList.length - 1 - index];
-                      return _buildNewestPreviewWidget(order);
-                    },
-                  );
-                }),
-                SizedBox(height: 10),
-                Obx(
-                  () => !controller.isLoading.value
-                      ? ContentTitleWidget(
-                          title: "TIPE LAUNDRY",
-                          lefttextSize: tsBodySmallSemibold(grey))
-                      : _shimmerTitleWidget(),
-                ),
-                SizedBox(height: 10),
-                Container(
-                  height: 200,
-                  child: GridView.builder(
-                      itemCount: controller.laundryList.length,
+          child: Obx(
+            () => SingleChildScrollView(
+              physics: controller.isLoading.value
+                  ? NeverScrollableScrollPhysics()
+                  : AlwaysScrollableScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10),
+                  Obx(() => !controller.isLoading.value
+                      ? Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: defaultMargin),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                _buildOrderTypeWidget(
+                                    mainTitle: "Antar Jemput",
+                                    desc: "Pesan Laundry dan diantar langsung",
+                                    onPressed: () {
+                                      Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
+                                          arguments: 'antar_jemput');
+                                    },
+                                    color: Colors.orange,
+                                    icon: Icons.delivery_dining_rounded),
+                                SizedBox(width: 10),
+                                _buildOrderTypeWidget(
+                                    mainTitle: "Antar Mandiri",
+                                    desc:
+                                        "Pesan Laundry dan antar laundry sendiri",
+                                    onPressed: () {
+                                      Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
+                                          arguments: 'antar_mandiri');
+                                    },
+                                    color: Colors.green,
+                                    icon: Icons.directions_walk_rounded)
+                              ]))
+                      : _shimmerOrderTypeWidget()),
+                  SizedBox(height: 20),
+                  Obx(
+                    () => !controller.isLoading.value
+                        ? ContentTitleWidget(
+                            title: "PESANAN TERBARU",
+                            lefttextSize: tsBodySmallSemibold(grey),
+                          )
+                        : _shimmerTitleWidget(),
+                  ),
+                  SizedBox(height: 10),
+                  Obx(() {
+                    if (controller.isLoading.value) {
+                      return shimmerPreviewNewest();
+                    }
+                    if (controller.ordersList.isEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.all(60),
+                        child: Center(
+                          child: Text("Tidak ada pesanan",
+                              style: tsBodyMediumMedium(darkGrey)),
+                        ),
+                      );
+                    }
+                    return ListView.builder(
                       shrinkWrap: true,
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: defaultMargin),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 1.5,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ),
+                      itemCount: controller.ordersList.length < 2
+                          ? controller.ordersList.length
+                          : 2,
+                      physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        var laundries = controller.laundryList[index];
-
-                        return MainContainerWidget(
-                          padding: const EdgeInsets.all(10),
-                          childs: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                laundries['nama_laundry'],
-                                style: tsBodySmallSemibold(black),
+                        final order = controller.ordersList[
+                            controller.ordersList.length - 1 - index];
+                        return _buildNewestPreviewWidget(order);
+                      },
+                    );
+                  }),
+                  SizedBox(height: 10),
+                  Obx(
+                    () => !controller.isLoading.value
+                        ? ContentTitleWidget(
+                            title: "TIPE LAUNDRY",
+                            lefttextSize: tsBodySmallSemibold(grey))
+                        : _shimmerTitleWidget(),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 200,
+                    child: Obx(
+                      () => !controller.isLoading.value
+                          ? GridView.builder(
+                              itemCount: controller.laundryList.length,
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: defaultMargin),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 1.5,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
                               ),
-                              Text(
-                                "Rp. ${laundries['harga'].toString()}",
-                                style: tsLabelLargeSemibold(secondaryColor),
-                              ),
-                              Text(
-                                "${laundries['estimasi_waktu'].toString()} Hari",
-                                style: tsLabelLargeSemibold(secondaryColor),
-                              ),
-                              Text(
-                                laundries['deskripsi'],
-                                style: tsLabelLargeSemibold(grey),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                ),
-                SizedBox(height: 20),
-              ],
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                var laundries = controller.laundryList[index];
+                                return _buildGridItem(laundries);
+                              })
+                          : _shimmerGridItem(),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
+}
+
+Widget _shimmerGridItem() {
+  return GridView.builder(
+      itemCount: 8,
+      shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 1.5,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+      ),
+      physics: NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) {
+        return ShimmerWidget(
+          height: 100,
+          width: 100,
+          radius: 10,
+        );
+      });
+}
+
+Widget _buildGridItem(laundries) {
+  return MainContainerWidget(
+    padding: const EdgeInsets.all(10),
+    childs: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          laundries['nama_laundry'],
+          style: tsBodySmallSemibold(black),
+        ),
+        Text(
+          "Rp. ${laundries['harga'].toString()}",
+          style: tsLabelLargeSemibold(secondaryColor),
+        ),
+        Text(
+          "${laundries['estimasi_waktu'].toString()} Hari",
+          style: tsLabelLargeSemibold(secondaryColor),
+        ),
+        Text(
+          laundries['deskripsi'],
+          style: tsLabelLargeSemibold(grey),
+        ),
+      ],
+    ),
+  );
 }
 
 Widget _shimmerTitleWidget() {
@@ -203,20 +238,25 @@ Widget _buildAppbar(HomeController controller) {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        controller.primaryAddress['type'] ?? "Alamat Utama",
-                        style: tsLabelLargeSemibold(grey),
-                      ),
-                      SizedBox(
-                        width: 300,
-                        child: Text(
-                          controller.primaryAddress['street'] ??
-                              "Alamat belum diatur",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: tsBodySmallSemibold(black),
-                        ),
-                      ),
+                      Obx(() => !controller.isLoading.value
+                          ? Text(
+                              controller.addressData['type'] ?? "Alamat Utama",
+                              style: tsLabelLargeSemibold(grey),
+                            )
+                          : ShimmerWidget(height: 15, radius: 8, width: 120)),
+                      SizedBox(height: 5),
+                      Obx(() => !controller.isLoading.value
+                          ? SizedBox(
+                              width: 300,
+                              child: Text(
+                                controller.addressData['street'] ??
+                                    "Alamat belum diatur",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: tsBodySmallSemibold(black),
+                              ),
+                            )
+                          : ShimmerWidget(height: 20, radius: 8, width: 240)),
                     ],
                   ),
                 ),
@@ -411,21 +451,22 @@ class MainTitleWidget extends GetView<HomeController> {
       child: Row(
         children: [
           Expanded(
-            flex: 1,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                height: 45,
-                width: 45,
-                child: Image.network(
-                  controller.userData['image_path'] == null
-                      ? 'https://ui-avatars.com/api/?name=${controller.userData['username']}&background=random&size=128'
-                      : 'https://pradiptaahmad.tech/image/${controller.userData['image_path']}',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
+              flex: 1,
+              child: Obx(() => !controller.isLoading.value
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        height: 45,
+                        width: 45,
+                        child: Image.network(
+                          controller.userData['image_path'] == null
+                              ? 'https://ui-avatars.com/api/?name=${controller.userData['username']}&background=random&size=128'
+                              : 'https://pradiptaahmad.tech/image/${controller.userData['image_path']}',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                  : ShimmerWidget(radius: 10, height: 45))),
           Expanded(
             flex: 7,
             child: Padding(
@@ -433,17 +474,27 @@ class MainTitleWidget extends GetView<HomeController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Halo,",
-                    style: tsBodyLargeMedium(darkGrey),
+                  Obx(
+                    () => !controller.isLoading.value
+                        ? Text(
+                            "Halo,",
+                            style: tsBodyLargeMedium(darkGrey),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child:
+                                ShimmerWidget(radius: 8, height: 20, width: 80),
+                          ),
                   ),
-                  Obx(() => ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: 300),
-                      child: Text(
-                        controller.userData['username'] ?? "Anon",
-                        style: tsBodyLargeSemibold(black),
-                        overflow: TextOverflow.ellipsis,
-                      ))),
+                  Obx(() => !controller.isLoading.value
+                      ? ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: 300),
+                          child: Text(
+                            controller.userData['username'] ?? "Anon",
+                            style: tsBodyLargeSemibold(black),
+                            overflow: TextOverflow.ellipsis,
+                          ))
+                      : ShimmerWidget(radius: 8, height: 25, width: 200)),
                 ],
               ),
             ),
