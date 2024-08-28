@@ -40,8 +40,7 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Visibility(
-                      visible:
-                          controller.argument[1] == 'histories' ? false : true,
+                      visible: true,
                       child: MainContainerWidget(
                           width: double.infinity,
                           childs: Padding(

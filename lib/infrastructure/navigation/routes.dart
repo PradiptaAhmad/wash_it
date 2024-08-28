@@ -23,4 +23,5 @@ class Routes {
   static const TRANSACTION_PAGE = '/transaction-page';
   static const VERIFICATION_PAGE = '/verification_page';
   static const ADDRESS_PAGE = '/address-page';
+  static const EDIT_ADDRESS_PAGE = '/edit-address-page';
 }
