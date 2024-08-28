@@ -70,6 +70,7 @@ class OrderView extends GetView<OrderController> {
                 const Padding(
                   padding: EdgeInsets.only(bottom: 10),
                   child: ContentTitleWidget(
+                    margin: 0,
                       title: "Silahkan isi data dibawah ini"),
                 ),
                 Row(

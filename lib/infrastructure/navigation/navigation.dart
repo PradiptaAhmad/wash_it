@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/order_antarjemput.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/bindings/controllers/splash.controller.binding.dart';
 import 'package:wash_it/infrastructure/navigation/navigation_menu.dart';
+import 'package:wash_it/presentation/address_page/edit_address_page.dart';
 import 'package:wash_it/presentation/profile_page/profile_page.dart';
 import 'package:wash_it/presentation/splash_screen/splash_screen.dart';
 
@@ -119,5 +120,12 @@ class Nav {
       page: () => const AddressPageScreen(),
       binding: AddressPageControllerBinding(),
     ),
+    GetPage(
+        name: Routes.EDIT_ADDRESS_PAGE,
+        page: () => EditAddressPage(
+              editType: 'add',
+              isPrimary: false,
+            ),
+        binding: AddressPageControllerBinding()),
   ];
 }

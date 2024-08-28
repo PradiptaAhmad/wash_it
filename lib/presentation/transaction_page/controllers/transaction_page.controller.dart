@@ -165,7 +165,24 @@ class TransactionPageController extends GetxController {
   void onRefresh() async {
     isLoading.value = true;
     await getDetailOrder();
-    await getStatusProgress();
+    if (argument[1] == 'histories') {
+      if (ordersList['status'] == 'canceled') {
+        statusList.value = {
+          'status_code': 1,
+          'status': 'success',
+          'status_description': 'Pesanan Dibatalkan'
+        };
+      } else {
+        statusList.value = {
+          'status_code': 5,
+          'status': 'success',
+          'status_description': 'Pesanan Selesai'
+        };
+      }
+      print(statusList);
+    } else {
+      await getStatusProgress();
+    }
     await buttonTitle();
     isLoading.value = false;
   }
