@@ -117,7 +117,8 @@ class LoginPageScreen extends GetView<LoginPageController> {
                       controller.login();
                     },
                   )),
-              DividerWidget(screenWidth: screenWidth),
+              // DividerWidget(screenWidth: screenWidth),
+              SizedBox(height: 15),
               ButtonWidget(
                 onPressed: () {
                   controller.signInWithGoogle();

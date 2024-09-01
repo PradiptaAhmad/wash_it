@@ -95,28 +95,28 @@ Future addressSelectWidget(BuildContext context, OrderController controller) {
                     SizedBox(
                       height: 10,
                     ),
-                    InkWell(
-                      onTap: () async {
-                        Get.toNamed(Routes.EDIT_ADDRESS_PAGE)?.then((value) {
-                          if (value == null) {
-                            controller.getAddressUser();
-                          }
-                        });
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        height: screenHeight(context) * 0.05,
-                        decoration: BoxDecoration(
-                          color: secondaryColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Text(
-                          'Tambah Alamat',
-                          style: tsLabelLargeSemibold(primaryColor),
-                        ),
-                      ),
-                    )
+                    // InkWell(
+                    //   onTap: () async {
+                    //     Get.toNamed(Routes.EDIT_ADDRESS_PAGE)?.then((value) {
+                    //       if (value == null) {
+                    //         controller.getAddressUser();
+                    //       }
+                    //     });
+                    //   },
+                    //   child: Container(
+                    //     alignment: Alignment.center,
+                    //     width: double.infinity,
+                    //     height: screenHeight(context) * 0.05,
+                    //     decoration: BoxDecoration(
+                    //       color: secondaryColor,
+                    //       borderRadius: BorderRadius.circular(5),
+                    //     ),
+                    //     child: Text(
+                    //       'Tambah Alamat',
+                    //       style: tsLabelLargeSemibold(primaryColor),
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
               )
