@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
@@ -28,6 +29,13 @@ class AddressPageController extends GetxController {
   var province = ''.obs;
   var postalCode = 0.obs;
   GetStorage box = GetStorage();
+
+  var provinceTextController = TextEditingController();
+  var cityTextController = TextEditingController();
+  var districtTextController = TextEditingController();
+  var villageTextController = TextEditingController();
+  var postalCodeTextController = TextEditingController();
+  
 
   Future<void> getAddressUser() async {
     isLoading.value = true;

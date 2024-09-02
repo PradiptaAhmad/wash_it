@@ -15,6 +15,7 @@ class SearchDropdownWidget extends StatelessWidget {
   final List<SearchFieldListItem<dynamic>>? suggestions;
   final EdgeInsetsGeometry? padding;
   final bool? readOnly;
+  final TextEditingController? controller;
 
   SearchDropdownWidget({
     this.key,
@@ -28,6 +29,7 @@ class SearchDropdownWidget extends StatelessWidget {
     this.suggestions,
     this.padding,
     this.readOnly,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -36,6 +38,7 @@ class SearchDropdownWidget extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: SearchField(
         readOnly: readOnly ?? false,
+        controller: controller,
         suggestionStyle: tsBodySmallMedium(black),
         onTap: onTap,
         searchStyle: tsBodySmallMedium(black),

@@ -19,10 +19,9 @@ class HomeScreen extends GetView<HomeController> {
 
     return Scaffold(
       backgroundColor: lightGrey.withOpacity(0.1),
-      appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(kToolbarHeight + screenHeight(context) * 0.12),
-        child: _buildAppbar(controller),
+      appBar: AppBar(
+        toolbarHeight: kToolbarHeight + screenHeight(context) * 0.13,
+        flexibleSpace: _buildAppbar(controller),
       ),
       body: SafeArea(
         child: RefreshIndicator(

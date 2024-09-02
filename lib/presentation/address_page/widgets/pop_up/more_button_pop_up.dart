@@ -60,7 +60,6 @@ Future moreButtonPopUp(
               SizedBox(height: 10),
               InkWell(
                 onTap: () {
-                  print("object");
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
@@ -85,7 +84,7 @@ Future moreButtonPopUp(
                 child: Container(
                   alignment: Alignment.centerLeft,
                   width: double.infinity,
-                  height: 28,
+                  padding: const EdgeInsets.only(top: 5),
                   child: Text("Hapus alamat",
                       style: tsBodySmallMedium(warningColor)),
                 ),
