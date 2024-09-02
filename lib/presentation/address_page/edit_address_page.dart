@@ -65,6 +65,7 @@ class EditAddressPage extends GetView<AddressPageController> {
                 }),
             _buildSearchField(
                 controller: controller,
+                textController: controller.provinceTextController,
                 titleText: "Provinsi",
                 hintText:
                     editType == 'edit' ? province.toString() : "Jawa Tengah",
@@ -75,12 +76,17 @@ class EditAddressPage extends GetView<AddressPageController> {
                 onSuggestionSelected: (newValue) {
                   controller.updateProvinceData(newValue!);
                   if (controller.province.value.isNotEmpty) {
+                    controller.cityTextController.clear();
+                    controller.districtTextController.clear();
+                    controller.villageTextController.clear();
+                    controller.postalCodeTextController.clear();
                     FocusScope.of(Get.overlayContext!).unfocus();
                   }
                   controller.getAllCities();
                 }),
             Obx(() => _buildSearchField(
                 controller: controller,
+                textController: controller.cityTextController,
                 titleText: "Kabupaten / Kota",
                 hintText: editType == 'edit' ? city.toString() : "Kudus",
                 readOnly: controller.province.isEmpty ? true : false,
@@ -90,12 +96,16 @@ class EditAddressPage extends GetView<AddressPageController> {
                 onSuggestionSelected: (newValue) {
                   controller.city.value = newValue!;
                   if (controller.city.value.isNotEmpty) {
+                    controller.districtTextController.clear();
+                    controller.villageTextController.clear();
+                    controller.postalCodeTextController.clear();
                     FocusScope.of(Get.overlayContext!).unfocus();
                   }
                   controller.getAllDistricts();
                 })),
             Obx(() => _buildSearchField(
                 controller: controller,
+                textController: controller.districtTextController,
                 titleText: "Kecamatan",
                 hintText: editType == 'edit' ? district.toString() : "Gebog",
                 readOnly: controller.city.isEmpty ? true : false,
@@ -105,12 +115,15 @@ class EditAddressPage extends GetView<AddressPageController> {
                 onSuggestionSelected: (newValue) {
                   controller.district.value = newValue!;
                   if (controller.district.value.isNotEmpty) {
+                    controller.villageTextController.clear();
+                    controller.postalCodeTextController.clear();
                     FocusScope.of(Get.overlayContext!).unfocus();
                   }
                   controller.getAllVillages();
                 })),
             Obx(() => _buildSearchField(
                 controller: controller,
+                textController: controller.villageTextController,
                 titleText: "Kelurahan",
                 hintText: editType == 'edit' ? village.toString() : "Besito",
                 readOnly: controller.district.isEmpty ? true : false,
@@ -120,12 +133,14 @@ class EditAddressPage extends GetView<AddressPageController> {
                 onSuggestionSelected: (newValue) {
                   controller.village.value = newValue!;
                   if (controller.village.value.isNotEmpty) {
+                    controller.postalCodeTextController.clear();
                     FocusScope.of(Get.overlayContext!).unfocus();
                   }
                   controller.getAllPostalCode();
                 })),
             Obx(() => _buildSearchField(
                 controller: controller,
+                textController: controller.postalCodeTextController,
                 titleText: "Kode Pos",
                 hintText: editType == 'edit' ? postal.toString() : "59361",
                 readOnly: controller.village.isEmpty ? true : false,
@@ -221,11 +236,6 @@ class EditAddressPage extends GetView<AddressPageController> {
                           ));
               }),
             ),
-            ElevatedButton(
-                onPressed: () {
-                  print(label);
-                },
-                child: Text("data")),
             SizedBox(height: 20),
           ],
         ),
@@ -241,6 +251,8 @@ Widget _buildSearchField({
   required suggestions,
   required void Function(String?) onSuggestionSelected,
   required bool readOnly,
+  String? Function(String?)? validator,
+  TextEditingController? textController,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,6 +266,8 @@ Widget _buildSearchField({
       SearchDropdownWidget(
         readOnly: readOnly,
         hintText: hintText,
+        validator: validator,
+        controller: textController,
         suggestions: suggestions,
         onSuggestionSelected: onSuggestionSelected,
       ),
