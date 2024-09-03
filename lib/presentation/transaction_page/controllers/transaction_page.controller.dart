@@ -153,11 +153,47 @@ class TransactionPageController extends GetxController {
     }
   }
 
+  Future<void> fetchTransaction() async {
+    try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      final token = box.read('token');
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token.toString()}',
+      };
+      var data = {
+        'review': reviewDesc.value,
+        'rating': reviewStar.value.toString(),
+        'history_id': argument[0].toString(),
+      };
+      final response = await http.post(
+        Uri.parse("${url}/transaction/get?id=${argument[0]}"),
+        headers: headers,
+        body: data,
+      );
+      if (response.statusCode == 201) {
+        customPopUp("Berhasil memberikan ulasan", successColor);
+        Get.back();
+      } else {
+        print(response.body);
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
+      }
+    } catch (e) {
+
+    }
+  }
+
   Future<void> buttonTitle() async {
+
     if (statusList['status_code'] == 5) {
       displayText.value = 'Selesai';
     } else if (argument[1] == 'order') {
-      displayText.value = 'Bayar sekarang';
+      if (ordersList['metode_pembayaran'] == "non_tunai") {
+        displayText.value = 'Bayar sekarang';
+      } else {
+        displayText.value = "Batalkan Pesanan";
+      }
+      
     } else {
       displayText.value = 'Beri ulasan';
     }
@@ -187,6 +223,7 @@ class TransactionPageController extends GetxController {
     await buttonTitle();
     isLoading.value = false;
   }
+
 
   @override
   void onInit() async {

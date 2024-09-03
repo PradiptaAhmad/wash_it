@@ -220,8 +220,9 @@ Widget _buildFloatingActionButton(
       child: Row(
         children: [
           Visibility(
-            visible: controller.argument[1] == 'histories' &&
-                controller.statusList['status_code'] == 5,
+            visible: controller.argument[1] == 'order' &&
+                controller.statusList['status_code'] == 1 &&
+                controller.ordersList['metode_pembayaran'] == 'non_tunai',
             child: Expanded(
               flex: 1,
               child: InkWell(
@@ -249,7 +250,33 @@ Widget _buildFloatingActionButton(
             flex: 6,
             child: InkWell(
               onTap: () {
-                if (controller.statusList['status_code'] == 5) {
+                if (controller.displayText.value == "Batalkan Pesanan") {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Konfirmasi'),
+                        content: const Text(
+                            'Apakah Anda yakin ingin membatalkan pesanan ini?'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Batal'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('Ya'),
+                            onPressed: () {
+                              controller.putOrderCancel();
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (controller.statusList['status_code'] == 5) {
                   controller.putCompleteOrder();
                 } else if (controller.argument[1] == 'order') {
                   controller.ordersList['total_harga'] == null

@@ -20,8 +20,8 @@ class HomeScreen extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: lightGrey.withOpacity(0.1),
       appBar: AppBar(
-        toolbarHeight: kToolbarHeight + screenHeight(context) * 0.13,
-        flexibleSpace: _buildAppbar(controller),
+        toolbarHeight: screenHeight(context) * 0.21,
+        flexibleSpace: _buildAppbar(controller, context),
       ),
       body: SafeArea(
         child: RefreshIndicator(
@@ -43,6 +43,7 @@ class HomeScreen extends GetView<HomeController> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 _buildOrderTypeWidget(
+                                    context: context,
                                     mainTitle: "Antar Jemput",
                                     desc: "Pesan Laundry dan diantar langsung",
                                     onPressed: () {
@@ -53,6 +54,7 @@ class HomeScreen extends GetView<HomeController> {
                                     icon: Icons.delivery_dining_rounded),
                                 SizedBox(width: 10),
                                 _buildOrderTypeWidget(
+                                    context: context,
                                     mainTitle: "Antar Mandiri",
                                     desc:
                                         "Pesan Laundry dan antar laundry sendiri",
@@ -215,7 +217,7 @@ Widget _shimmerOrderTypeWidget() {
   );
 }
 
-Widget _buildAppbar(HomeController controller) {
+Widget _buildAppbar(HomeController controller, BuildContext context) {
   return MainContainerWidget(
     color: primaryColor,
     borderRadius: 25,
@@ -255,7 +257,10 @@ Widget _buildAppbar(HomeController controller) {
                                 style: tsBodySmallSemibold(black),
                               ),
                             )
-                          : ShimmerWidget(height: 20, radius: 8, width: 240)),
+                          : ShimmerWidget(
+                              height: screenHeight(context) * 0.01,
+                              radius: 8,
+                              width: screenWidth(context) * 0.8)),
                     ],
                   ),
                 ),
@@ -274,6 +279,7 @@ Widget _buildOrderTypeWidget(
     required String desc,
     required Null Function() onPressed,
     required IconData icon,
+    required BuildContext context,
     color}) {
   return Expanded(
     child: InkWell(
@@ -305,7 +311,6 @@ Widget _buildOrderTypeWidget(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    width: 130,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -313,7 +318,13 @@ Widget _buildOrderTypeWidget(
                           mainTitle,
                           style: tsBodyMediumSemibold(black),
                         ),
-                        Text(desc, style: tsLabelLargeMedium(darkGrey)),
+                        Container(
+                          width: screenWidth(context) * 0.3,
+                          child: Text(
+                            desc,
+                            style: tsLabelLargeMedium(darkGrey),
+                          ),
+                        ),
                       ],
                     ),
                   ),
