@@ -8,7 +8,6 @@ Future moreOptionsBottomsheetsWidget(
   return showModalBottomSheet(
     context: context,
     isDismissible: true,
-    scrollControlDisabledMaxHeightRatio: 0.11,
     sheetAnimationStyle: AnimationStyle(
       duration: Durations.medium1,
       curve: Curves.easeInOut,
@@ -19,6 +18,7 @@ Future moreOptionsBottomsheetsWidget(
         padding: const EdgeInsets.all(defaultMargin),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [
@@ -61,7 +61,6 @@ Future moreOptionsBottomsheetsWidget(
               child: Container(
                 alignment: Alignment.centerLeft,
                 width: double.infinity,
-                height: 28,
                 child: Text("Batalkan pesanan",
                     style: tsBodySmallMedium(warningColor)),
               ),

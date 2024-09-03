@@ -9,40 +9,34 @@ Future statusCategoriesFilterPopUp(context, StatusPageController controller) {
     context: context,
     isDismissible: true,
     builder: (context) {
-      return ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.30,
-        ),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(defaultMargin),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () => Get.back(),
-                    child: Icon(Icons.close_rounded, color: black),
-                  ),
-                  SizedBox(width: 10),
-                  Text("Filter konten status",
-                      style: tsBodyMediumMedium(black)),
-                ],
-              ),
-              SizedBox(height: 20),
-              Obx(() => buildFilterOption(controller, "Baru Dibuat", 1)),
-              SizedBox(height: 10),
-              Obx(() =>
-                  buildFilterOption(controller, "Menunggu Penjemputan", 2)),
-              SizedBox(height: 10),
-              Obx(() => buildFilterOption(controller, "Sedang Diproses", 3)),
-              SizedBox(height: 10),
-              Obx(() => buildFilterOption(controller, "Belum Dibayar", 4)),
-              SizedBox(height: 10),
-              Obx(() => buildFilterOption(controller, "Selesai", 5)),
-            ],
-          ),
+      return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(defaultMargin),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                InkWell(
+                  onTap: () => Get.back(),
+                  child: Icon(Icons.close_rounded, color: black),
+                ),
+                SizedBox(width: 10),
+                Text("Filter konten status", style: tsBodyMediumMedium(black)),
+              ],
+            ),
+            SizedBox(height: 20),
+            Obx(() => buildFilterOption(controller, "Baru Dibuat", 1)),
+            SizedBox(height: 10),
+            Obx(() => buildFilterOption(controller, "Menunggu Penjemputan", 2)),
+            SizedBox(height: 10),
+            Obx(() => buildFilterOption(controller, "Sedang Diproses", 3)),
+            SizedBox(height: 10),
+            Obx(() => buildFilterOption(controller, "Belum Dibayar", 4)),
+            SizedBox(height: 10),
+            Obx(() => buildFilterOption(controller, "Selesai", 5)),
+          ],
         ),
       );
     },

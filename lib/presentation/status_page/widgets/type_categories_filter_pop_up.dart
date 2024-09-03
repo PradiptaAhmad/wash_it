@@ -10,33 +10,28 @@ Future typeCategoriesFilterPopUp(
     context: context,
     isDismissible: true,
     builder: (context) {
-      return ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.16,
-        ),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(defaultMargin),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () => Get.back(),
-                    child: Icon(Icons.close_rounded, color: black),
-                  ),
-                  SizedBox(width: 10),
-                  Text("Filter konten status",
-                      style: tsBodyMediumMedium(black)),
-                ],
-              ),
-              SizedBox(height: 15),
-              Obx(() => buildFilterOption(controller, "Antar Jemput", 6)),
-              SizedBox(height: 10),
-              Obx(() => buildFilterOption(controller, "Antar Mandiri", 7)),
-            ],
-          ),
+      return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(defaultMargin),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                InkWell(
+                  onTap: () => Get.back(),
+                  child: Icon(Icons.close_rounded, color: black),
+                ),
+                SizedBox(width: 10),
+                Text("Filter konten status", style: tsBodyMediumMedium(black)),
+              ],
+            ),
+            SizedBox(height: 15),
+            Obx(() => buildFilterOption(controller, "Antar Jemput", 6)),
+            SizedBox(height: 10),
+            Obx(() => buildFilterOption(controller, "Antar Mandiri", 7)),
+          ],
         ),
       );
     },
