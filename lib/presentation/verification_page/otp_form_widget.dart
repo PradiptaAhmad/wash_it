@@ -15,7 +15,7 @@ class PinFormInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 68,
-      width: 60,
+      width: screenWidth(context) * 0.15,
       child: TextFormField(
         controller: controller,
         onChanged: (value) {
