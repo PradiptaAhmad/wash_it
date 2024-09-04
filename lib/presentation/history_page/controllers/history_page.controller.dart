@@ -46,7 +46,8 @@ class HistoryPageController extends GetxController
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body)['data'];
-        ordersList.value = jsonResponse;
+        ordersList.addAll(jsonResponse);
+        print(ordersList.isEmpty);
       } else {
         Get.snackbar('Error', '${response.statusCode}');
         print(response.statusCode);
