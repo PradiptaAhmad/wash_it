@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/presentation/history_page/widgets/history_filter_button.dart';
+import 'package:wash_it/presentation/history_page/widgets/history_review_popup.dart';
+import 'package:wash_it/presentation/transaction_page/controllers/transaction_page.controller.dart';
 import 'package:wash_it/presentation/transaction_page/widget/review_pop_up_widget.dart';
 import 'package:wash_it/widgets/shimmer/shimmer_widget.dart';
 import 'package:wash_it/widgets/warning/data_is_empty.dart';
@@ -71,7 +73,7 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                     itemBuilder: (context, index) {
                       final order = controller.ordersList[index];
                       return MainDetailView(
-                          order: order, controller: controller);
+                          order: order);
                     });
               }))),
     );
@@ -107,11 +109,10 @@ Widget _buildLoading(controller) {
 }
 
 class MainDetailView extends StatelessWidget {
-  const MainDetailView(
-      {super.key, required this.order, required this.controller});
+  MainDetailView({super.key, required this.order});
 
   final Map<String, dynamic> order;
-  final controller;
+  final controller = Get.put(TransactionPageController());
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -220,7 +221,23 @@ class MainDetailView extends StatelessWidget {
                     Row(
                       children: [
                         InkWell(
-                          onTap: () => reviewPopUpWidget(context, controller),
+                          onTap: () async {
+                            showModalBottomSheet(
+                              context: context,
+                              enableDrag: true,
+                              isDismissible: true,
+                              scrollControlDisabledMaxHeightRatio: 0.45,
+                              sheetAnimationStyle: AnimationStyle(
+                                duration: Durations.medium1,
+                                curve: Curves.easeInOut,
+                              ),
+                              backgroundColor: primaryColor,
+                              isScrollControlled: true,
+                              builder: (context) {
+                                return HistoryReviewPopup(id: order['id']);
+                              },
+                            );
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),

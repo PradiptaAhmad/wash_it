@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:wash_it/widgets/popup/custom_pop_up.dart';
 import '../../../config.dart';
 import '../../../infrastructure/theme/themes.dart';
 
@@ -18,6 +19,8 @@ class HistoryPageController extends GetxController
   var review = ''.obs;
   var orderid = ''.obs;
   var isLoading = false.obs;
+  var reviewDesc = ''.obs;
+  var reviewStar = 0.0.obs;
   late TabController tabController;
 
   GetStorage box = GetStorage();
@@ -136,6 +139,44 @@ class HistoryPageController extends GetxController
     }
   }
 
+  Future<void> postReview(int id) async {
+    isLoading.value = true;
+    try {
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      final token = box.read('token');
+      var headers = {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token.toString()}',
+      };
+      var data = {
+        'review': reviewDesc.value,
+        'rating': reviewStar.value.toString(),
+        'history_id': id.toString(),
+      };
+      final response = await http.post(
+        Uri.parse("${url}/ratings/add"),
+        headers: headers,
+        body: data,
+      );
+      if (response.statusCode == 201) {
+        customPopUp("Berhasil memberikan ulasan", successColor);
+        clearRating();
+        Get.back();
+      } else {
+        print(response.body);
+        customPopUp("Error, Kode(${response.statusCode})", warningColor);
+      }
+    } catch (e) {
+      customPopUp("Error, Kode(${e.toString()})", warningColor);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void clearRating() {
+    reviewStar.value = 0.0;
+    reviewDesc.value = '';
+  }
   Future<void> onRefresh() async {
     isLoading.value = true;
     await getHistoryOrders();
