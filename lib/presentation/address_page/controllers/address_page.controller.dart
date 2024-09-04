@@ -9,7 +9,6 @@ import 'package:wash_it/widgets/popup/custom_pop_up.dart';
 import '../../../config.dart';
 
 class AddressPageController extends GetxController {
-  //TODO: Implement AddressPageController
 
   final count = 0.obs;
   var isLoading = false.obs;

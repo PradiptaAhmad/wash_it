@@ -20,124 +20,132 @@ class HomeScreen extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: lightGrey.withOpacity(0.1),
       appBar: AppBar(
-        toolbarHeight: screenHeight(context) * 0.22,
+        toolbarHeight: kToolbarHeight + 120,
         flexibleSpace: _buildAppbar(controller, context),
       ),
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () => controller.onRefresh(),
-          child: Obx(
-            () => SingleChildScrollView(
-              physics: controller.isLoading.value
-                  ? NeverScrollableScrollPhysics()
-                  : AlwaysScrollableScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10),
-                  Obx(() => !controller.isLoading.value
-                      ? Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: defaultMargin),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                _buildOrderTypeWidget(
-                                    context: context,
-                                    mainTitle: "Antar Jemput",
-                                    desc: "Pesan Laundry dan diantar langsung",
-                                    onPressed: () {
-                                      Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
-                                          arguments: 'antar_jemput');
-                                    },
-                                    color: Colors.orange,
-                                    icon: Icons.delivery_dining_rounded),
-                                SizedBox(width: 10),
-                                _buildOrderTypeWidget(
-                                    context: context,
-                                    mainTitle: "Antar Mandiri",
-                                    desc:
-                                        "Pesan Laundry dan antar laundry sendiri",
-                                    onPressed: () {
-                                      Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
-                                          arguments: 'antar_mandiri');
-                                    },
-                                    color: Colors.green,
-                                    icon: Icons.directions_walk_rounded)
-                              ]))
-                      : _shimmerOrderTypeWidget()),
-                  SizedBox(height: 20),
-                  Obx(
-                    () => !controller.isLoading.value
-                        ? ContentTitleWidget(
-                            title: "PESANAN TERBARU",
-                            lefttextSize: tsBodySmallSemibold(grey),
-                          )
-                        : _shimmerTitleWidget(),
-                  ),
-                  SizedBox(height: 10),
-                  Obx(() {
-                    if (controller.isLoading.value) {
-                      return shimmerPreviewNewest();
-                    }
-                    if (controller.ordersList.isEmpty) {
-                      return Padding(
-                        padding: const EdgeInsets.all(60),
-                        child: Center(
-                          child: Text("Tidak ada pesanan",
-                              style: tsBodyMediumMedium(darkGrey)),
-                        ),
-                      );
-                    }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: controller.ordersList.length < 2
-                          ? controller.ordersList.length
-                          : 2,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final order = controller.ordersList[
-                            controller.ordersList.length - 1 - index];
-                        return _buildNewestPreviewWidget(order);
-                      },
+      body: RefreshIndicator(
+        onRefresh: () => controller.onRefresh(),
+        child: Obx(
+          () => SingleChildScrollView(
+            physics: controller.isLoading.value
+                ? NeverScrollableScrollPhysics()
+                : AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 10),
+                Obx(() => !controller.isLoading.value
+                    ? Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: defaultMargin),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildOrderTypeWidget(
+                                  context: context,
+                                  mainTitle: "Antar Jemput",
+                                  desc: "Pesan Laundry dan diantar langsung",
+                                  onPressed: () {
+                                    Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
+                                            arguments: 'antar_jemput')
+                                        ?.then((value) {
+                                      if (value == 'success') {
+                                        controller.onRefresh();
+                                      }
+                                    });
+                                  },
+                                  color: Colors.orange,
+                                  icon: Icons.delivery_dining_rounded),
+                              SizedBox(width: 10),
+                              _buildOrderTypeWidget(
+                                  context: context,
+                                  mainTitle: "Antar Mandiri",
+                                  desc:
+                                      "Pesan Laundry dan antar laundry sendiri",
+                                  onPressed: () {
+                                    Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
+                                            arguments: 'antar_mandiri')
+                                        ?.then((value) {
+                                      if (value == 'success') {
+                                        controller.onRefresh();
+                                      }
+                                    });
+                                  },
+                                  color: Colors.green,
+                                  icon: Icons.directions_walk_rounded)
+                            ]))
+                    : _shimmerOrderTypeWidget()),
+                SizedBox(height: 20),
+                Obx(
+                  () => !controller.isLoading.value
+                      ? ContentTitleWidget(
+                          title: "PESANAN TERBARU",
+                          lefttextSize: tsBodySmallSemibold(grey),
+                        )
+                      : _shimmerTitleWidget(),
+                ),
+                SizedBox(height: 10),
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return shimmerPreviewNewest();
+                  }
+                  if (controller.ordersList.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.all(60),
+                      child: Center(
+                        child: Text("Tidak ada pesanan",
+                            style: tsBodyMediumMedium(darkGrey)),
+                      ),
                     );
-                  }),
-                  SizedBox(height: 10),
-                  Obx(
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: controller.ordersList.length < 2
+                        ? controller.ordersList.length
+                        : 2,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final order = controller
+                          .ordersList[controller.ordersList.length - 1 - index];
+                      return _buildNewestPreviewWidget(order);
+                    },
+                  );
+                }),
+                SizedBox(height: 10),
+                Obx(
+                  () => !controller.isLoading.value
+                      ? ContentTitleWidget(
+                          title: "TIPE LAUNDRY",
+                          lefttextSize: tsBodySmallSemibold(grey))
+                      : _shimmerTitleWidget(),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  height: 200,
+                  child: Obx(
                     () => !controller.isLoading.value
-                        ? ContentTitleWidget(
-                            title: "TIPE LAUNDRY",
-                            lefttextSize: tsBodySmallSemibold(grey))
-                        : _shimmerTitleWidget(),
+                        ? GridView.builder(
+                            itemCount: controller.laundryList.length,
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: defaultMargin),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 1.5,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                            ),
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              var laundries = controller.laundryList[index];
+                              return _buildGridItem(laundries);
+                            })
+                        : _shimmerGridItem(),
                   ),
-                  SizedBox(height: 10),
-                  Container(
-                    height: 200,
-                    child: Obx(
-                      () => !controller.isLoading.value
-                          ? GridView.builder(
-                              itemCount: controller.laundryList.length,
-                              shrinkWrap: true,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: defaultMargin),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: 1.5,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                              ),
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                var laundries = controller.laundryList[index];
-                                return _buildGridItem(laundries);
-                              })
-                          : _shimmerGridItem(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
+                ),
+                SizedBox(height: 20),
+              ],
             ),
           ),
         ),

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 
 import '../../../config.dart';
@@ -38,6 +37,7 @@ class OrderController extends GetxController {
   late final argument;
 
   Future<void> createOrder() async {
+    isLoading.value = true;
     try {
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token');
@@ -68,9 +68,6 @@ class OrderController extends GetxController {
         Get.snackbar('Success', 'Order has been created',
             backgroundColor: successColor);
         currentStep.value = 0;
-        Get.offAndToNamed(Routes.NAVBAR);
-
-        print(data);
         // final jsonResponse = jsonDecode(response.body)['user'];
       } else {
         Get.snackbar('Error', '${response.statusCode}');
@@ -80,6 +77,8 @@ class OrderController extends GetxController {
     } catch (e) {
       Get.snackbar('Error catch', e.toString());
       print(e);
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -182,6 +181,33 @@ class OrderController extends GetxController {
     }
   }
 
+  void clearAll() {
+    count.value = 0;
+    currentStep.value = 0;
+    ordername.value = '';
+    phonenumber.value = '';
+    canContinue.value = false;
+    isSelected.value = false;
+    selectedAddress.value = 0;
+    paymentList.value = ['Tunai', 'Non Tunai'];
+    addressList.value = [];
+    ordertype.value = '';
+    address.value = '';
+    addressNum.value = 0;
+    catatan.value = '';
+    payment.value = '';
+    pickupdate.value = '';
+    laundryIndex.value = 0;
+    laundryName.value = '';
+    isLoading = false.obs;
+    userData.value = {}.obs;
+    laundries.value = [].obs;
+    jenisList.value = [].obs;
+    nameTextController.clear();
+    phoneTextEditingController.clear();
+    addressTextEditingController.clear();
+  }
+
   @override
   void onInit() async {
     super.onInit();
@@ -204,7 +230,16 @@ class OrderController extends GetxController {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    nameTextController.dispose();
+    phoneTextEditingController.dispose();
+    addressTextEditingController.dispose();
+  }
+
+  @override
   void onClose() {
     super.onClose();
+    clearAll();
   }
 }

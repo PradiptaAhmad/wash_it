@@ -32,7 +32,37 @@ class StatusPageScreen extends GetView<StatusPageController> {
               if (controller.ordersList.isEmpty ||
                   controller.filteredOrdersList.isEmpty &&
                       controller.selectedFilter.value != 0) {
-                return DataIsEmpty("Status pesanan kamu masih kosong");
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    DataIsEmpty("Status pesanan kamu masih kosong"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    MainContainerWidget(
+                      onPressed: () => controller.onRefresh(),
+                      padding: EdgeInsets.all(8),
+                      childs: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Coba Lagi",
+                            style: tsLabelLargeMedium(grey),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(
+                            Icons.refresh,
+                            color: grey,
+                            size: 15,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                );
               }
               return ListView.builder(
                 itemCount: controller.selectedFilter.value == 0
