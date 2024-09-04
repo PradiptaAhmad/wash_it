@@ -174,8 +174,9 @@ class TransactionPageScreen extends GetView<TransactionPageController> {
                               SizedBox(height: 5),
                               DetailDataWidget(
                                   leftTitle: "Harga laundry",
-                                  rightTitle: "Rp 6.000 x " +
-                                      "${controller.ordersList['berat_laundry'] == null ? "0" : controller.ordersList['berat_laundry']} Kg"),
+                                  rightTitle:
+                                      "Rp ${controller.ordersList['laundry_price']} x " +
+                                          "${controller.ordersList['berat_laundry'] == null ? "0" : controller.ordersList['berat_laundry']} Kg"),
                               SizedBox(height: 5),
                               Padding(
                                   padding:
@@ -276,8 +277,10 @@ Widget _buildFloatingActionButton(
                       );
                     },
                   );
-                } else if (controller.statusList['status_code'] == 5) {
+                } else if (controller.statusList['status_code'] == 5 &&
+                    controller.argument[1] == 'order') {
                   controller.putCompleteOrder();
+                  Get.back();
                 } else if (controller.argument[1] == 'order') {
                   controller.ordersList['total_harga'] == null
                       ? customSnackBar('Gagal', 'Total harga belum terhitung',

@@ -30,13 +30,14 @@ class DetailDataWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                leftTitle ?? "",
-                style: leftTitleStyle ?? tsBodySmallRegular(darkGrey),
-                textAlign: leftTitleAlignment ?? TextAlign.left,
+              Expanded(
+                child: Text(
+                  leftTitle ?? "",
+                  style: leftTitleStyle ?? tsBodySmallRegular(darkGrey),
+                  textAlign: leftTitleAlignment ?? TextAlign.left,
+                ),
               ),
-              Container(
-                width: 200,
+              Expanded(
                 child: Text(rightTitle ?? "",
                     style: rightTitleStyle ?? tsBodySmallMedium(black),
                     textAlign: rightTitleAlignment ?? TextAlign.right,
