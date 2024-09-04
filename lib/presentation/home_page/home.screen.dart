@@ -186,15 +186,17 @@ Widget _buildGridItem(laundries) {
           style: tsBodySmallSemibold(black),
         ),
         Text(
-          "Rp. ${laundries['harga'].toString()}",
+          "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(laundries['harga'])}",
           style: tsLabelLargeSemibold(secondaryColor),
         ),
         Text(
-          "${laundries['estimasi_waktu'].toString()} Hari",
+          "Estimasi ${laundries['estimasi_waktu'].toString()} Hari",
           style: tsLabelLargeSemibold(secondaryColor),
         ),
         Text(
-          laundries['deskripsi'],
+          "${laundries['deskripsi']}",
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
           style: tsLabelLargeSemibold(grey),
         ),
       ],
