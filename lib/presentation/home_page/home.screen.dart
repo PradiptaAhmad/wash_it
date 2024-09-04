@@ -186,7 +186,7 @@ Widget _buildGridItem(laundries) {
           style: tsBodySmallSemibold(black),
         ),
         Text(
-          "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(laundries['harga'])}",
+          "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(laundries['harga'])} per Kg",
           style: tsLabelLargeSemibold(secondaryColor),
         ),
         Text(
@@ -267,10 +267,7 @@ Widget _buildAppbar(HomeController controller, BuildContext context) {
                                 style: tsBodySmallSemibold(black),
                               ),
                             )
-                          : ShimmerWidget(
-                              height: screenHeight(context) * 0.01,
-                              radius: 8,
-                              width: screenWidth(context) * 0.8)),
+                          : ShimmerWidget(height: 20, radius: 8, width: 200)),
                     ],
                   ),
                 ),
@@ -408,40 +405,44 @@ Widget _buildNewestPreviewWidget(order) {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${order['nama_pemesan']}",
-                          style: tsBodySmallSemibold(black),
-                        ),
-                        Text(
-                          order['jenis_pemesanan'] == 'antar_jemput'
-                              ? "Antar Jemput"
-                              : "Antar Mandiri",
-                          style: tsLabelLargeSemibold(darkGrey),
-                        ),
-                        Text(
-                          order['berat_laundry'] == null
-                              ? "Berat belum tercatat"
-                              : "${order['berat_laundry']}",
-                          style: tsLabelLargeSemibold(darkGrey),
-                        ),
-                        Text(
-                          "${order['nama_laundry']}",
-                          style: tsBodySmallSemibold(successColor),
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${order['nama_pemesan']}",
+                            style: tsBodySmallSemibold(black),
+                          ),
+                          Text(
+                            order['jenis_pemesanan'] == 'antar_jemput'
+                                ? "Antar Jemput"
+                                : "Antar Mandiri",
+                            style: tsLabelLargeSemibold(darkGrey),
+                          ),
+                          Text(
+                            order['berat_laundry'] == null
+                                ? "Berat belum tercatat"
+                                : "${order['berat_laundry']}",
+                            style: tsLabelLargeSemibold(darkGrey),
+                          ),
+                          Text(
+                            "${order['nama_laundry']}",
+                            style: tsBodySmallSemibold(successColor),
+                          ),
+                        ],
+                      ),
                     ),
-                    Container(
-                      width: 120,
-                      child: Text(
-                        "${order['alamat']}",
-                        style: tsLabelLargeSemibold(grey),
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.right,
-                        maxLines: 4,
+                    Expanded(
+                      child: Container(
+                        width: 120,
+                        child: Text(
+                          "${order['alamat']}",
+                          style: tsLabelLargeSemibold(grey),
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.right,
+                          maxLines: 4,
+                        ),
                       ),
                     )
                   ],

@@ -9,7 +9,8 @@ import 'package:wash_it/widgets/common/main_container_widget.dart';
 class MainDetailView extends StatelessWidget {
   MainDetailView({super.key, required this.order});
 
-  final Map<String, dynamic> order;  @override
+  final Map<String, dynamic> order;
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
@@ -57,33 +58,34 @@ class MainDetailView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${order['nama_pemesan']}",
-                          style: tsBodySmallSemibold(black),
-                        ),
-                        Text(
-                          order['jenis_pemesanan'] == 'antar_jemput'
-                              ? "Antar Jemput"
-                              : "Antar Mandiri",
-                          style: tsLabelLargeSemibold(darkGrey),
-                        ),
-                        Text(
-                          order['berat_laundry'] == null
-                              ? "Berat belum tercatat"
-                              : "${order['berat_laundry']} Kg",
-                          style: tsLabelLargeSemibold(darkGrey),
-                        ),
-                        Text(
-                          "${order['nama_laundry']}",
-                          style: tsBodySmallSemibold(successColor),
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${order['nama_pemesan']}",
+                            style: tsBodySmallSemibold(black),
+                          ),
+                          Text(
+                            order['jenis_pemesanan'] == 'antar_jemput'
+                                ? "Antar Jemput"
+                                : "Antar Mandiri",
+                            style: tsLabelLargeSemibold(darkGrey),
+                          ),
+                          Text(
+                            order['berat_laundry'] == null
+                                ? "Berat belum tercatat"
+                                : "${order['berat_laundry']} Kg",
+                            style: tsLabelLargeSemibold(darkGrey),
+                          ),
+                          Text(
+                            "${order['nama_laundry']}",
+                            style: tsBodySmallSemibold(successColor),
+                          ),
+                        ],
+                      ),
                     ),
-                    Container(
-                      width: 120,
+                    Expanded(
                       child: Text(
                         "${order['alamat']}",
                         style: tsLabelLargeSemibold(grey),
@@ -99,59 +101,64 @@ class MainDetailView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Total harga",
-                          style: tsLabelMediumMedium(black),
-                        ),
-                        Text(
-                          order['total_harga'] == null
-                              ? "Harga belum tercatat"
-                              : '${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(order['total_harga'])}',
-                          style: tsBodySmallSemibold(black),
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Total harga",
+                            style: tsLabelMediumMedium(black),
+                          ),
+                          Text(
+                            order['total_harga'] == null
+                                ? "Harga belum tercatat"
+                                : '${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(order['total_harga'])}',
+                            style: tsBodySmallSemibold(black),
+                          ),
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            showModalBottomSheet(
-                              context: context,
-                              enableDrag: true,
-                              isDismissible: true,
-                              scrollControlDisabledMaxHeightRatio: 0.45,
-                              sheetAnimationStyle: AnimationStyle(
-                                duration: Durations.medium1,
-                                curve: Curves.easeInOut,
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              showModalBottomSheet(
+                                context: context,
+                                enableDrag: true,
+                                isDismissible: true,
+                                scrollControlDisabledMaxHeightRatio: 0.45,
+                                sheetAnimationStyle: AnimationStyle(
+                                  duration: Durations.medium1,
+                                  curve: Curves.easeInOut,
+                                ),
+                                backgroundColor: primaryColor,
+                                isScrollControlled: true,
+                                builder: (context) {
+                                  return HistoryReviewPopup(id: order['id']);
+                                },
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: secondaryColor.withOpacity(0.2),
                               ),
-                              backgroundColor: primaryColor,
-                              isScrollControlled: true,
-                              builder: (context) {
-                                return HistoryReviewPopup(id: order['id']);
-                              },
-                            );
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: secondaryColor.withOpacity(0.2),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 30,
-                                vertical: 8,
-                              ),
-                              child: Text(
-                                "Ulas",
-                                style: tsLabelLargeSemibold(secondaryColor),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                  vertical: 8,
+                                ),
+                                child: Text(
+                                  "Ulas",
+                                  style: tsLabelLargeSemibold(secondaryColor),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     )
                   ],
                 ),

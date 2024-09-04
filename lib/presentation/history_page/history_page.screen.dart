@@ -21,7 +21,7 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
         child: _buildAppbar(controller),
       ),
       body: RefreshIndicator(
-          onRefresh: () => controller.onRefresh(),
+          onRefresh: () async => controller.applyFilter(),
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
               child: Obx(() {
