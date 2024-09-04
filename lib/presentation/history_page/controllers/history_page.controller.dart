@@ -21,7 +21,11 @@ class HistoryPageController extends GetxController
   var isLoading = false.obs;
   var reviewDesc = ''.obs;
   var reviewStar = 0.0.obs;
+  var pagination = 1.obs;
+  var isMaxPage = false.obs;
+  var isLoadingMore = false.obs;
   late TabController tabController;
+  final scrollController = ScrollController();
 
   GetStorage box = GetStorage();
 
@@ -36,7 +40,7 @@ class HistoryPageController extends GetxController
       };
 
       final response = await http.get(
-        Uri.parse('$url/histories/all'),
+        Uri.parse('$url/histories/all?page=${pagination.value}'),
         headers: headers,
       );
 
@@ -83,7 +87,7 @@ class HistoryPageController extends GetxController
     }
   }
 
-  Future<void> createOrder(String orderTipe) async {
+  Future<void> fetchHistoryByStatus(String status) async {
     try {
       isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()["url"];
@@ -94,24 +98,20 @@ class HistoryPageController extends GetxController
         'Authorization': 'Bearer ${token.toString()}',
       };
 
-      var data = {
-        'rating': rating.value,
-        'review': review.value,
-        'order_id': orderid,
-      };
-      final response = await http.post(
-        Uri.parse("${url}/orders/new"),
+      final response = await http.get(
+        Uri.parse(
+            "${url}/histories/filter/status?status=${status}&page=${pagination.value}"),
         headers: headers,
-        body: data,
       );
 
-      if (response.statusCode == 201) {
-        Get.snackbar('Success', 'Ulasan berhasil dikirim',
-            backgroundColor: successColor);
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body)['data'];
+        if (data.isEmpty) {
+          isMaxPage.value = true;
+        }
+        filteredOrdersList.addAll(jsonDecode(response.body)['data']);
       } else {
         Get.snackbar('Error', '${response.statusCode}');
-        print(response.body);
-        print(data);
       }
     } catch (e) {
       Get.snackbar('Error catch', e.toString());
@@ -124,17 +124,23 @@ class HistoryPageController extends GetxController
   void applyFilter() {
     switch (isSelected.value) {
       case 0:
-        filteredOrdersList.value = ordersList;
+        onRefresh();
         break;
-      case 1:
-        filteredOrdersList.value = ordersList
-            .where((element) => element['status'] == 'completed')
-            .toList();
+      case 1: 
+        if (isLoadingMore.value == false) {
+          isMaxPage.value = false;
+          pagination.value = 1;
+          filteredOrdersList.clear();
+        }
+        fetchHistoryByStatus('completed');
         break;
       case 2:
-        filteredOrdersList.value = ordersList
-            .where((element) => element['status'] == 'canceled')
-            .toList();
+        if (isLoadingMore.value == false) {
+          isMaxPage.value = false;
+          pagination.value = 1;
+          filteredOrdersList.clear();
+        }
+        fetchHistoryByStatus('canceled');
         break;
     }
   }
@@ -178,17 +184,37 @@ class HistoryPageController extends GetxController
     reviewDesc.value = '';
   }
   Future<void> onRefresh() async {
+    isMaxPage.value = false;
+    pagination.value = 1;
+    filteredOrdersList.clear();
+    ordersList.clear();
     isLoading.value = true;
     await getHistoryOrders();
     await getLaundries();
     isLoading.value = false;
   }
 
+
+
   @override
   void onInit() {
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
     onRefresh();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        if (!isMaxPage.value) {
+          pagination.value++;
+          if (isSelected.value == 0) {
+            getHistoryOrders();
+          } else {
+            applyFilter();
+          }
+          isLoadingMore.value = false;
+        }
+      }
+    });
   }
 
   @override
