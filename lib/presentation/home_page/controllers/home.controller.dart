@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../config.dart';
 import '../../../infrastructure/theme/themes.dart';
 import '../../../widgets/popup/custom_pop_up.dart';
@@ -123,7 +121,6 @@ class HomeController extends GetxController {
       customPopUp("Error, Kode(${e.toString()})", warningColor);
     }
   }
-
   Future<void> onRefresh() async {
     isLoading.value = true;
     await fetchOrdersData();

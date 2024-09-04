@@ -320,7 +320,9 @@ class OrderView extends GetView<OrderController> {
                   ),
                   _buildDataItem(
                     "Tanggal Pengambilan",
-                    "${controller.pickupdate.value}",
+                    controller.pickupdate.value.isEmpty == true
+                        ? ""
+                        : "${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.parse("${controller.pickupdate.value}"))}",
                   ),
                   _buildDataItem("Catatan", "${controller.catatan.value}"),
                   const SizedBox(height: 10),
@@ -433,6 +435,7 @@ class OrderView extends GetView<OrderController> {
                         isNotEmptySnackBar();
                       } else {
                         controller.createOrder();
+                        Get.back(result: 'success');
                       }
                     }
                 }

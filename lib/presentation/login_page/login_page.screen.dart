@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:wash_it/infrastructure/navigation/routes.dart';
 import 'package:wash_it/infrastructure/theme/themes.dart';
 import 'package:wash_it/widgets/common/auth/auth_text_field.dart';
-import 'package:wash_it/widgets/common/auth/divider_widget.dart';
 import 'package:wash_it/widgets/common/auth/input_form_widget.dart';
 import 'package:wash_it/widgets/common/button_widget.dart';
 import 'controllers/login_page.controller.dart';
@@ -16,7 +15,6 @@ class LoginPageScreen extends GetView<LoginPageController> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
         body: SafeArea(

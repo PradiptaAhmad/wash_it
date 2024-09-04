@@ -164,8 +164,7 @@ class LoginPageController extends GetxController {
               warningColor);
         }
       }
-    } on Exception catch (e) {
-      // TODO
+    } on Exception catch (e) { 
       print('exception->$e');
     }
   }
