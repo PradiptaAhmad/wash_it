@@ -28,7 +28,7 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                 if (controller.isLoading.value) {
                   return _buildLoading(controller);
                 }
-                if (controller.ordersList.isEmpty ||
+                if (controller.ordersList.isEmpty &&
                     controller.filteredOrdersList.isEmpty) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +64,7 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                     ],
                   );
                 }
-                return ListView.builder(
+                return Obx(() => ListView.builder(
                     shrinkWrap: true,
                     controller: controller.scrollController,
                     itemCount: controller.isSelected.value == 0
@@ -79,11 +79,10 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
                         if (controller.isLoadingMore.value) {
                           return CupertinoActivityIndicator();
                         } else {
-                          return MainDetailView(
-                          order: order);
+                          return MainDetailView(order: order);
                         }
                       });
-                    });
+                    }));
               }))),
     );
   }
@@ -116,5 +115,3 @@ Widget _buildLoading(controller) {
         )),
   );
 }
-
-
