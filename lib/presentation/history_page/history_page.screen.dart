@@ -10,7 +10,7 @@ import '../../widgets/common/main_container_widget.dart';
 import 'controllers/history_page.controller.dart';
 
 class HistoryPageScreen extends GetView<HistoryPageController> {
-  const HistoryPageScreen({Key? key}) : super(key: key);
+  const HistoryPageScreen({Key? key}) : super(key: key);u
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class HistoryPageScreen extends GetView<HistoryPageController> {
         child: _buildAppbar(controller),
       ),
       body: RefreshIndicator(
-          onRefresh: () => controller.onRefresh(),
+          onRefresh: () async => controller.applyFilter(),
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: defaultMargin),
               child: Obx(() {

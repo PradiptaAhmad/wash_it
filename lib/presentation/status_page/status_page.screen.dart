@@ -187,33 +187,34 @@ Widget _buildOrderItem(Map<String, dynamic> order) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${order['nama_pemesan']}",
-                        style: tsBodySmallSemibold(black),
-                      ),
-                      Text(
-                        order['jenis_pemesanan'] == 'antar_jemput'
-                            ? 'Antar Jemput'
-                            : 'Antar Sendiri',
-                        style: tsLabelLargeSemibold(darkGrey),
-                      ),
-                      Text(
-                        order['berat_laundry'] == null
-                            ? "Berat belum tercatat"
-                            : "${order['berat_laundry']} Kg",
-                        style: tsLabelLargeSemibold(darkGrey),
-                      ),
-                      Text(
-                        "${order['nama_laundry']}",
-                        style: tsBodySmallSemibold(secondaryColor),
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${order['nama_pemesan']}",
+                          style: tsBodySmallSemibold(black),
+                        ),
+                        Text(
+                          order['jenis_pemesanan'] == 'antar_jemput'
+                              ? 'Antar Jemput'
+                              : 'Antar Sendiri',
+                          style: tsLabelLargeSemibold(darkGrey),
+                        ),
+                        Text(
+                          order['berat_laundry'] == null
+                              ? "Berat belum tercatat"
+                              : "${order['berat_laundry']} Kg",
+                          style: tsLabelLargeSemibold(darkGrey),
+                        ),
+                        Text(
+                          "${order['nama_laundry']}",
+                          style: tsBodySmallSemibold(secondaryColor),
+                        ),
+                      ],
+                    ),
                   ),
-                  Container(
-                    width: 120,
+                  Expanded(
                     child: Text(
                       "${order['alamat']}",
                       style: tsLabelLargeSemibold(grey),
@@ -229,40 +230,45 @@ Widget _buildOrderItem(Map<String, dynamic> order) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Total harga",
-                        style: tsLabelMediumMedium(black),
-                      ),
-                      Text(
-                        order['total_harga'] == null
-                            ? "Belum tercatat"
-                            : "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(order['total_harga'])}",
-                        style: tsBodySmallSemibold(black),
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Total harga",
+                          style: tsLabelMediumMedium(black),
+                        ),
+                        Text(
+                          order['total_harga'] == null
+                              ? "Belum tercatat"
+                              : "${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(order['total_harga'])}",
+                          style: tsBodySmallSemibold(black),
+                        ),
+                      ],
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        "Status laundry",
-                        style: tsLabelMediumMedium(black),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: statusColor.withOpacity(0.1),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          "Status laundry",
+                          style: tsLabelMediumMedium(black),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Text(
-                          '${order['status']}',
-                          style: tsBodySmallSemibold(statusColor),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: statusColor.withOpacity(0.1),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            '${order['status']}',
+                            style: tsBodySmallSemibold(statusColor),
+                            textAlign: TextAlign.right,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

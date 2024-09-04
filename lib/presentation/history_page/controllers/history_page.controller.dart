@@ -90,7 +90,6 @@ class HistoryPageController extends GetxController
 
   Future<void> fetchHistoryByStatus(String status) async {
     try {
-      isLoading.value = true;
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token');
 
@@ -117,8 +116,6 @@ class HistoryPageController extends GetxController
     } catch (e) {
       Get.snackbar('Error catch', e.toString());
       print(e);
-    } finally {
-      isLoading.value = false;
     }
   }
 
@@ -127,21 +124,25 @@ class HistoryPageController extends GetxController
       case 0:
         onRefresh();
         break;
-      case 1: 
+      case 1:
         if (isLoadingMore.value == false) {
+          isLoading.value = true;
           isMaxPage.value = false;
           pagination.value = 1;
           filteredOrdersList.clear();
         }
         fetchHistoryByStatus('completed');
+        isLoading.value = false;
         break;
       case 2:
         if (isLoadingMore.value == false) {
+          isLoading.value = true;
           isMaxPage.value = false;
           pagination.value = 1;
           filteredOrdersList.clear();
         }
         fetchHistoryByStatus('canceled');
+        isLoading.value = false;
         break;
     }
   }
@@ -184,6 +185,7 @@ class HistoryPageController extends GetxController
     reviewStar.value = 0.0;
     reviewDesc.value = '';
   }
+
   Future<void> onRefresh() async {
     isMaxPage.value = false;
     pagination.value = 1;
@@ -195,8 +197,6 @@ class HistoryPageController extends GetxController
     isLoading.value = false;
   }
 
-
-
   @override
   void onInit() {
     super.onInit();
@@ -206,6 +206,7 @@ class HistoryPageController extends GetxController
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
         if (!isMaxPage.value) {
+          isLoadingMore.value = true;
           pagination.value++;
           if (isSelected.value == 0) {
             getHistoryOrders();
