@@ -10,7 +10,7 @@ import '../../widgets/common/main_container_widget.dart';
 import 'controllers/history_page.controller.dart';
 
 class HistoryPageScreen extends GetView<HistoryPageController> {
-  const HistoryPageScreen({Key? key}) : super(key: key);u
+  const HistoryPageScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
