@@ -46,78 +46,49 @@ Future addressSelectWidget(BuildContext context, OrderController controller) {
               ),
               const SizedBox(height: 10),
               Container(
-                child: Column(
-                  children: [
-                    ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: controller.addressList.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        var address = controller.addressList[index];
-                        return Obx(
-                          () => InkWell(
-                            onTap: () {
-                              controller.selectedAddress.value = index;
-                              controller.addressNum.value = address['id'];
-                              controller.address.value =
-                                  "${address['street']}, ${address['village']}, ${address['district']}, ${address['city']}, ${address['province']}, ${address['postal_code']}";
-                            },
-                            child: MainContainerWidget(
-                              border: Border.all(
-                                  color:
-                                      controller.selectedAddress.value == index
-                                          ? secondaryColor
-                                          : lightGrey.withOpacity(0.5),
-                                  width: 2),
-                              padding: const EdgeInsets.all(15),
-                              margin: EdgeInsets.only(right: 10),
-                              width: 200,
-                              height: 100,
-                              childs: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${address['type']}",
-                                    style: tsBodySmallMedium(black),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    "${address['street']}, ${address['village']}, ${address['district']}, ${address['city']}, ${address['province']}, ${address['postal_code']}",
-                                    style: tsLabelLargeSemibold(darkGrey),
-                                  ),
-                                ],
+                height: screenHeight(context) * 0.3,
+                // padding: EdgeInsets.all(2),
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: controller.addressList.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    var address = controller.addressList[index];
+                    return Obx(
+                      () => InkWell(
+                        onTap: () {
+                          controller.selectedAddress.value = index;
+                          controller.addressNum.value = address['id'];
+                          controller.address.value =
+                              "${address['street']}, ${address['village']}, ${address['district']}, ${address['city']}, ${address['province']}, ${address['postal_code']}";
+                        },
+                        child: MainContainerWidget(
+                          border: Border.all(
+                              color: controller.selectedAddress.value == index
+                                  ? secondaryColor
+                                  : lightGrey.withOpacity(0.5),
+                              width: 2),
+                          padding: const EdgeInsets.all(15),
+                          margin: EdgeInsets.only(right: 10),
+                          width: 200,
+                          childs: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${address['type']}",
+                                style: tsBodySmallMedium(black),
                               ),
-                            ),
+                              const SizedBox(height: 10),
+                              Text(
+                                "${address['street']}, ${address['village']}, ${address['district']}, ${address['city']}, ${address['province']}, ${address['postal_code']}",
+                                style: tsLabelLargeSemibold(darkGrey),
+                              ),
+                            ],
                           ),
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    // InkWell(
-                    //   onTap: () async {
-                    //     Get.toNamed(Routes.EDIT_ADDRESS_PAGE)?.then((value) {
-                    //       if (value == null) {
-                    //         controller.getAddressUser();
-                    //       }
-                    //     });
-                    //   },
-                    //   child: Container(
-                    //     alignment: Alignment.center,
-                    //     width: double.infinity,
-                    //     height: screenHeight(context) * 0.05,
-                    //     decoration: BoxDecoration(
-                    //       color: secondaryColor,
-                    //       borderRadius: BorderRadius.circular(5),
-                    //     ),
-                    //     child: Text(
-                    //       'Tambah Alamat',
-                    //       style: tsLabelLargeSemibold(primaryColor),
-                    //     ),
-                    //   ),
-                    // )
-                  ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               )
             ],

@@ -70,8 +70,7 @@ class OrderView extends GetView<OrderController> {
                 const Padding(
                   padding: EdgeInsets.only(bottom: 10),
                   child: ContentTitleWidget(
-                    margin: 0,
-                      title: "Silahkan isi data dibawah ini"),
+                      margin: 0, title: "Silahkan isi data dibawah ini"),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -361,6 +360,7 @@ class OrderView extends GetView<OrderController> {
                   "*Untuk layanan antar jemput diwajibkan membayar biaya minimal per kg, minimal 3Kg",
                   style: tsLabelLargeMedium(darkGrey),
                 ),
+                SizedBox(height: 100),
               ],
             ),
           ),
@@ -456,9 +456,8 @@ class OrderView extends GetView<OrderController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: tsBodySmallMedium(darkGrey)),
-          Container(
-            width: Get.width * 0.4,
+          Expanded(child: Text(label, style: tsBodySmallMedium(darkGrey))),
+          Expanded(
             child: Text(
               value,
               style: tsBodySmallRegular(darkBlue),

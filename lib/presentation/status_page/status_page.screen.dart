@@ -124,32 +124,29 @@ Widget _buildOrderItem(Map<String, dynamic> order) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "id Pesanan",
-                        style: tsLabelLargeMedium(grey),
-                      ),
-                      Text(
-                        "${order['no_pemesanan']}",
-                        style: tsLabelLargeMedium(black),
-                      )
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "id Pesanan",
+                          style: tsLabelLargeMedium(grey),
+                        ),
+                        Text(
+                          "${order['no_pemesanan']}",
+                          style: tsLabelLargeMedium(black),
+                        )
+                      ],
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 5,
-                          vertical: 2,
-                        ),
-                        child: Text(
-                          "Estimasi: ${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.parse(order['tanggal_estimasi'].toString()))}",
-                          style: tsLabelLargeMedium(darkGrey),
-                        ),
-                      ),
-                    ],
+                  Expanded(
+                    child: Text(
+                      "Estimasi: ${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.parse(order['tanggal_estimasi'].toString()))}",
+                      style: tsLabelLargeMedium(darkGrey),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      textAlign: TextAlign.right,
+                    ),
                   )
                 ],
               ),

@@ -20,7 +20,7 @@ class HomeScreen extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: lightGrey.withOpacity(0.1),
       appBar: AppBar(
-        toolbarHeight: screenHeight(context) * 0.21,
+        toolbarHeight: screenHeight(context) * 0.22,
         flexibleSpace: _buildAppbar(controller, context),
       ),
       body: SafeArea(
@@ -328,11 +328,11 @@ Widget _buildOrderTypeWidget(
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.keyboard_arrow_right_rounded,
-                    size: 20,
-                    color: grey,
-                  )
+                  // Icon(
+                  //   Icons.keyboard_arrow_right_rounded,
+                  //   size: 20,
+                  //   color: grey,
+                  // )
                 ],
               ),
             ],
@@ -365,32 +365,29 @@ Widget _buildNewestPreviewWidget(order) {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "id Pesanan",
-                          style: tsLabelLargeMedium(grey),
-                        ),
-                        Text(
-                          "${order['no_pemesanan']}",
-                          style: tsLabelLargeMedium(black),
-                        )
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "id Pesanan",
+                            style: tsLabelLargeMedium(grey),
+                          ),
+                          Text(
+                            "${order['no_pemesanan']}",
+                            style: tsLabelLargeMedium(black),
+                          )
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 5,
-                            vertical: 2,
-                          ),
-                          child: Text(
-                            "Estimasi: ${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.parse(order['tanggal_estimasi'] ?? "2007-07-31 00:00:00"))}",
-                            style: tsLabelLargeMedium(darkGrey),
-                          ),
-                        ),
-                      ],
+                    Expanded(
+                      child: Text(
+                        "Estimasi: ${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.parse(order['tanggal_estimasi'] ?? "2007-07-31 00:00:00"))}",
+                        style: tsLabelLargeMedium(darkGrey),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        textAlign: TextAlign.right,
+                      ),
                     )
                   ],
                 ),

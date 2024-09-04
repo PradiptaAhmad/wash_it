@@ -77,37 +77,9 @@ Widget _buildAddressItem(
                           style: tsLabelMediumMedium(secondaryColor))))
             ]),
             SizedBox(height: 10),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Text(
-                    //   "Marlen Edzel Satriani",
-                    //   style: tsBodySmallSemibold(black),
-                    // ),
-                    // Text(
-                    //   "085174310736",
-                    //   style: tsLabelLargeRegular(darkGrey),
-                    // ),
-                    SizedBox(
-                        width: 300,
-                        child: Text(
-                          "${address['street']}, ${address['village']}, ${address['district']}, ${address['city']}, ${address['province']}, ${address['postal_code']}",
-                          style: tsLabelLargeMedium(black.withOpacity(0.7)),
-                        ))
-                  ],
-                ),
-                Container(
-                  width: 4,
-                  height: 30,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: secondaryColor),
-                ),
-              ],
+            Text(
+              "${address['street']}, ${address['village']}, ${address['district']}, ${address['city']}, ${address['province']}, ${address['postal_code']}",
+              style: tsLabelLargeMedium(black.withOpacity(0.7)),
             ),
             SizedBox(height: 10),
             Row(

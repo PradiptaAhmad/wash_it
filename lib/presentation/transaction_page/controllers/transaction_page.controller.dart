@@ -178,14 +178,11 @@ class TransactionPageController extends GetxController {
         print(response.body);
         customPopUp("Error, Kode(${response.statusCode})", warningColor);
       }
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   Future<void> buttonTitle() async {
-
-    if (statusList['status_code'] == 5) {
+    if (statusList['status_code'] == 5 && argument[1] == 'order') {
       displayText.value = 'Selesai';
     } else if (argument[1] == 'order') {
       if (ordersList['metode_pembayaran'] == "non_tunai") {
@@ -193,7 +190,6 @@ class TransactionPageController extends GetxController {
       } else {
         displayText.value = "Batalkan Pesanan";
       }
-      
     } else {
       displayText.value = 'Beri ulasan';
     }
@@ -223,7 +219,6 @@ class TransactionPageController extends GetxController {
     await buttonTitle();
     isLoading.value = false;
   }
-
 
   @override
   void onInit() async {
