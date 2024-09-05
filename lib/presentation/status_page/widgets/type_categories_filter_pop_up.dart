@@ -44,7 +44,7 @@ Widget buildFilterOption(
     onTap: () {
       controller.selectedFilter.value = index;
       controller.typeSelectedFilterName.value = text;
-      controller.applyFilter();
+      controller.applyFilter('refresh');
       Get.back();
     },
     splashColor: Colors.transparent,
