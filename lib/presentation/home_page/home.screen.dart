@@ -517,24 +517,24 @@ class MainTitleWidget extends GetView<HomeController> {
               ),
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: InkWell(
-              onTap: () {
-                Get.toNamed(Routes.NOTIFICATION_PAGE);
-              },
-              borderRadius: BorderRadius.circular(50),
-              child: Container(
-                height: 45,
-                width: 45,
-                child: const Icon(
-                  Icons.notifications,
-                  color: darkGrey,
-                  size: 22,
-                ),
-              ),
-            ),
-          ),
+          // Expanded(
+          //   flex: 1,
+          //   child: InkWell(
+          //     onTap: () {
+          //       Get.toNamed(Routes.NOTIFICATION_PAGE);
+          //     },
+          //     borderRadius: BorderRadius.circular(50),
+          //     child: Container(
+          //       height: 45,
+          //       width: 45,
+          //       child: const Icon(
+          //         Icons.notifications,
+          //         color: darkGrey,
+          //         size: 22,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
