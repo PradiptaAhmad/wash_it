@@ -121,7 +121,6 @@ class HomeScreen extends GetView<HomeController> {
                 ),
                 SizedBox(height: 10),
                 Container(
-                  height: 200,
                   child: Obx(
                     () => !controller.isLoading.value
                         ? GridView.builder(
@@ -132,7 +131,7 @@ class HomeScreen extends GetView<HomeController> {
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              childAspectRatio: 1.5,
+                              childAspectRatio: 1.7,
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
                             ),

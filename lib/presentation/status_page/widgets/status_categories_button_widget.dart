@@ -25,6 +25,7 @@ class StatusCategoriesButtonWidget extends GetView<StatusPageController> {
                   InkWell(
                       onTap: () {
                         controller.selectedFilter.value = 0;
+                        controller.onRefresh();
                       },
                       borderRadius: BorderRadius.circular(defaultMargin),
                       child: Container(

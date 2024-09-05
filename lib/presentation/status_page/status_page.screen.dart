@@ -29,9 +29,10 @@ class StatusPageScreen extends GetView<StatusPageController> {
               if (controller.isLoading.value) {
                 return _buildLoading();
               }
-              if (controller.ordersList.isEmpty ||
+              if (controller.ordersList.isEmpty &&
+                      controller.selectedFilter == 0 ||
                   controller.filteredOrdersList.isEmpty &&
-                      controller.selectedFilter.value != 0) {
+                      controller.selectedFilter != 0) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,16 +65,21 @@ class StatusPageScreen extends GetView<StatusPageController> {
                   ],
                 );
               }
-              return ListView.builder(
-                itemCount: controller.selectedFilter.value == 0
-                    ? controller.ordersList.length
-                    : controller.filteredOrdersList.length,
-                shrinkWrap: true,
-                reverse: false,
-                itemBuilder: (context, index) {
-                  final order = controller.ordersList[index];
-                  return _buildOrderItem(order);
-                },
+              return RefreshIndicator(
+                onRefresh: () async => controller.onRefresh(),
+                child: ListView.builder(
+                  controller: controller.scrollController,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  itemCount: controller.selectedFilter.value == 0
+                      ? controller.ordersList.length
+                      : controller.filteredOrdersList.length,
+                  itemBuilder: (context, index) {
+                    final order = controller.selectedFilter.value == 0
+                        ? controller.ordersList[index]
+                        : controller.filteredOrdersList[index];
+                    return _buildOrderItem(order);
+                  },
+                ),
               );
             },
           ),
