@@ -65,18 +65,21 @@ class StatusPageScreen extends GetView<StatusPageController> {
                   ],
                 );
               }
-              return ListView.builder(
-                itemCount: controller.selectedFilter.value == 0
-                    ? controller.ordersList.length
-                    : controller.filteredOrdersList.length,
-                shrinkWrap: true,
-                reverse: false,
-                itemBuilder: (context, index) {
-                  final order = controller.selectedFilter.value == 0
-                      ? controller.ordersList[index]
-                      : controller.filteredOrdersList[index];
-                  return _buildOrderItem(order);
-                },
+              return RefreshIndicator(
+                onRefresh: () async => controller.onRefresh(),
+                child: ListView.builder(
+                  controller: controller.scrollController,
+                  physics: AlwaysScrollableScrollPhysics(),
+                  itemCount: controller.selectedFilter.value == 0
+                      ? controller.ordersList.length
+                      : controller.filteredOrdersList.length,
+                  itemBuilder: (context, index) {
+                    final order = controller.selectedFilter.value == 0
+                        ? controller.ordersList[index]
+                        : controller.filteredOrdersList[index];
+                    return _buildOrderItem(order);
+                  },
+                ),
               );
             },
           ),

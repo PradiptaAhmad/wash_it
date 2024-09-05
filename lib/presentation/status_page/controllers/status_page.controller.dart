@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +20,7 @@ class StatusPageController extends GetxController {
   var paginate = 1.obs;
   var isMaxPage = false.obs;
   var isLoadingMore = false.obs;
+  var scrollController = ScrollController();
   GetStorage box = GetStorage();
 
   Future<void> fetchOrdersData() async {
@@ -26,7 +28,7 @@ class StatusPageController extends GetxController {
       final url = ConfigEnvironments.getEnvironments()["url"];
       final token = box.read('token');
       final response = await http.get(
-        Uri.parse('$url/orders/all?page${paginate.value}'),
+        Uri.parse('$url/orders/all?page=${paginate.value}'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $token',
@@ -80,16 +82,6 @@ class StatusPageController extends GetxController {
   
 
   void applyFilter(String mode) async {
-    // final filters = [
-    //   null,
-    //   (order) => order['status'] == "Pesanan Telah Dibuat",
-    //   (order) => order['status'] == "Menunggu Penjemputan",
-    //   (order) => order['status'] == "Sedang Diproses",
-    //   (order) => order['status'] == "Belum Dibayar",
-    //   (order) => order['status'] == "Selesai",
-    //   (order) => order['jenis_pemesanan'] == "antar_jemput",
-    //   (order) => order['jenis_pemesanan'] == "antar_mandiri"
-    // ];
     if (mode == 'paginate') {
       isLoadingMore.value = true;
       paginate.value++;
@@ -145,6 +137,12 @@ class StatusPageController extends GetxController {
   void onInit() {
     super.onInit();
     onRefresh();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        applyFilter('paginate');
+      }
+    });
   }
 
   @override
