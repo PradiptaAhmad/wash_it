@@ -62,8 +62,9 @@ class HomeScreen extends GetView<HomeController> {
                                   mainTitle: "Antar Mandiri",
                                   desc:
                                       "Pesan Laundry dan antar laundry sendiri",
-                                  onPressed: () {
-                                    Get.toNamed(Routes.ORDERANTARJEMPUT_PAGE,
+                                  onPressed: () async {
+                                    await Get.toNamed(
+                                            Routes.ORDERANTARJEMPUT_PAGE,
                                             arguments: 'antar_mandiri')
                                         ?.then((value) {
                                       if (value == 'success') {
@@ -253,7 +254,10 @@ Widget _buildAppbar(HomeController controller, BuildContext context) {
                               controller.addressData['type'] ?? "Alamat Utama",
                               style: tsLabelLargeSemibold(grey),
                             )
-                          : ShimmerWidget(height: 15, radius: 8, width: 120)),
+                          : ShimmerWidget(
+                              height: kToolbarHeight * 0.3,
+                              radius: 8,
+                              width: 120)),
                       SizedBox(height: 5),
                       Obx(() => !controller.isLoading.value
                           ? SizedBox(
@@ -266,7 +270,10 @@ Widget _buildAppbar(HomeController controller, BuildContext context) {
                                 style: tsBodySmallSemibold(black),
                               ),
                             )
-                          : ShimmerWidget(height: 20, radius: 8, width: 200)),
+                          : ShimmerWidget(
+                              height: kToolbarHeight * 0.2,
+                              radius: 8,
+                              width: 200)),
                     ],
                   ),
                 ),
@@ -283,7 +290,7 @@ Widget _buildAppbar(HomeController controller, BuildContext context) {
 Widget _buildOrderTypeWidget(
     {required String mainTitle,
     required String desc,
-    required Null Function() onPressed,
+    required void Function() onPressed,
     required IconData icon,
     required BuildContext context,
     color}) {
@@ -478,7 +485,7 @@ class MainTitleWidget extends GetView<HomeController> {
                         child: Image.network(
                           controller.userData['image_path'] == null
                               ? 'https://ui-avatars.com/api/?name=${controller.userData['username']}&background=random&size=128'
-                              : 'https://pradiptaahmad.tech/image/${controller.userData['image_path']}',
+                              : 'https://api.laundrynaruto.my.id/image/${controller.userData['image_path']}',
                           fit: BoxFit.cover,
                         ),
                       ),

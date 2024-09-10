@@ -297,7 +297,7 @@ class MainProfileWidget extends GetView<ProfileController> {
                               .userData['image_path'] ==
                           null
                       ? 'https://ui-avatars.com/api/?name=${controller.userData['username']}&background=random&size=128'
-                      : 'https://pradiptaahmad.tech/image/${controller.userData['image_path']}'),
+                      : 'https://api.laundrynaruto.my.id/image/${controller.userData['image_path']}'),
                 ),
                 SizedBox(height: 5),
                 InkWell(

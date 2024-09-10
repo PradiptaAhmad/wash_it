@@ -27,6 +27,7 @@ class AddressPageController extends GetxController {
   var city = ''.obs;
   var province = ''.obs;
   var postalCode = 0.obs;
+  var isPrimary = false.obs;
   GetStorage box = GetStorage();
 
   var provinceTextController = TextEditingController();
@@ -54,6 +55,9 @@ class AddressPageController extends GetxController {
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body)['data'];
         addressList.value = jsonResponse;
+        if (addressList.isEmpty) {
+          isPrimary.value = true;
+        }
       } else {
         Get.snackbar('Error', '${response.statusCode}');
         print(response.body);
@@ -262,7 +266,7 @@ class AddressPageController extends GetxController {
         'street': address.value,
         'type': label.value,
         'notes': notes.value,
-        'is_primary': 0.toString(),
+        'is_primary': isPrimary.value ? "1" : "0",
       };
 
       final response = await http.post(Uri.parse("${url}/addresses/add"),
@@ -354,6 +358,7 @@ class AddressPageController extends GetxController {
     province.value = '';
     postalCode.value = 0;
     provinceCode.value = 0;
+    isPrimary.value = false;
     cityList.clear();
     districtList.clear();
     villageList.clear();

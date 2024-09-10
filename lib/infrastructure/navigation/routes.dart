@@ -3,10 +3,13 @@ class Routes {
     return LOGIN_PAGE;
   }
 
+  static const ADDRESS_PAGE = '/address-page';
   static const CHAT_PAGE = '/message_screen';
+  static const EDIT_ADDRESS_PAGE = '/edit-address-page';
   static const HISTORY_PAGE = '/history_page';
   static const HOME = '/home';
   static const LOGIN_PAGE = '/login-page.screen';
+  static const MAP_GOOGLE = '/map-google';
   static const NAVBAR = '/navigation_menu';
   static const NOTIFICATION = '/notification';
   static const NOTIFICATION_PAGE = '/notification-page';
@@ -22,6 +25,4 @@ class Routes {
   static const STATUS_PAGE = '/status_page.screen';
   static const TRANSACTION_PAGE = '/transaction-page';
   static const VERIFICATION_PAGE = '/verification_page';
-  static const ADDRESS_PAGE = '/address-page';
-  static const EDIT_ADDRESS_PAGE = '/edit-address-page';
 }

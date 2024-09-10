@@ -147,7 +147,7 @@ Widget _buildAddAddressButton() {
       child: Padding(
           padding: const EdgeInsets.all(defaultMargin),
           child: InkWell(
-              onTap: () => Get.to(EditAddressPage(
+              onTap: () => Get.to(() => EditAddressPage(
                     isPrimary: false,
                     editType: 'add',
                   )),

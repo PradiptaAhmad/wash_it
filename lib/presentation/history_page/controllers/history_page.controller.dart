@@ -119,7 +119,7 @@ class HistoryPageController extends GetxController
     }
   }
 
-  void applyFilter() {
+  void applyFilter() async {
     switch (isSelected.value) {
       case 0:
         onRefresh();
@@ -131,7 +131,7 @@ class HistoryPageController extends GetxController
           pagination.value = 1;
           filteredOrdersList.clear();
         }
-        fetchHistoryByStatus('completed');
+        await fetchHistoryByStatus('completed');
         isLoading.value = false;
         break;
       case 2:
@@ -141,7 +141,7 @@ class HistoryPageController extends GetxController
           pagination.value = 1;
           filteredOrdersList.clear();
         }
-        fetchHistoryByStatus('canceled');
+        await fetchHistoryByStatus('canceled');
         isLoading.value = false;
         break;
     }
