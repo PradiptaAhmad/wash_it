@@ -127,5 +127,10 @@ class Nav {
               isPrimary: false,
             ),
         binding: AddressPageControllerBinding()),
+    GetPage(
+      name: Routes.MAP_GOOGLE,
+      page: () => const MapGoogleScreen(),
+      binding: MapGoogleControllerBinding(),
+    ),
   ];
 }

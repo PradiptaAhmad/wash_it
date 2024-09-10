@@ -14,7 +14,7 @@ class ConfigEnvironments {
     },
     {
       'env': Environments.DEV,
-      'url': 'https://www.washitapi.pradiptaahmad.tech/api',
+      'url': 'https://api.laundrynaruto.my.id/api',
     },
     {
       'env': Environments.QAS,

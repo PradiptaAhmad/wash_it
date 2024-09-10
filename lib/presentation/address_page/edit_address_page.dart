@@ -52,17 +52,6 @@ class EditAddressPage extends GetView<AddressPageController> {
                   }
                   return null;
                 }),
-            InputFormWidget(
-                title: "Detail Alamat",
-                hintText: editType == 'edit' ? street : "Alamat lengkap",
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return "Detail alamat tidak boleh kosong";
-                  } else {
-                    controller.address.value = value;
-                  }
-                  return null;
-                }),
             _buildSearchField(
                 controller: controller,
                 textController: controller.provinceTextController,
@@ -154,6 +143,17 @@ class EditAddressPage extends GetView<AddressPageController> {
                   }
                 })),
             InputFormWidget(
+                title: "Detail Alamat",
+                hintText: editType == 'edit' ? street : "Alamat lengkap",
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Detail alamat tidak boleh kosong";
+                  } else {
+                    controller.address.value = value;
+                  }
+                  return null;
+                }),
+            InputFormWidget(
                 title: "Catatan (Opsional)",
                 hintText: editType == 'edit' && editType.isEmpty
                     ? notes.toString()
@@ -162,6 +162,30 @@ class EditAddressPage extends GetView<AddressPageController> {
                   controller.notes.value = value;
                   return null;
                 }),
+            SizedBox(height: 10),
+            Visibility(
+              visible: controller.addressList.isEmpty == false,
+              child: InkWell(
+                onTap: () {
+                  controller.isPrimary.value = !controller.isPrimary.value;
+                },
+                child: Row(
+                  children: [
+                    Obx(() {
+                      return Icon(
+                        controller.isPrimary.value
+                            ? Icons.check_box
+                            : Icons.check_box_outline_blank,
+                        color: secondaryColor,
+                      );
+                    }),
+                    SizedBox(width: 5),
+                    Text("Jadikan Alamat Utama",
+                        style: tsBodySmallMedium(black)),
+                  ],
+                ),
+              ),
+            ),
             SizedBox(height: 20),
             InkWell(
               onTap: () async {
@@ -169,6 +193,7 @@ class EditAddressPage extends GetView<AddressPageController> {
                 switch (editType) {
                   case 'add':
                     await controller.postAddressUser();
+                    controller.clearForm();
                     Get.back();
                     break;
                   case 'edit':
@@ -198,8 +223,9 @@ class EditAddressPage extends GetView<AddressPageController> {
                       postalCode: controller.postalCode.value == 0
                           ? int.parse(postal)
                           : controller.postalCode.value,
-                      isPrimary: isPrimary,
+                      isPrimary: controller.isPrimary.value,
                     );
+                    controller.clearForm();
                     Get.back();
                     break;
                   default:
