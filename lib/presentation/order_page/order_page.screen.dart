@@ -155,7 +155,10 @@ class OrderView extends GetView<OrderController> {
                       ),
                       SizedBox(height: 10),
                       InkWell(
-                        onTap: () => addressSelectWidget(context, controller),
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                          addressSelectWidget(context, controller);
+                        },
                         child: Container(
                             decoration: BoxDecoration(
                               color: secondaryColor,

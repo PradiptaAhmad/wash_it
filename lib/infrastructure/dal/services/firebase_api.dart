@@ -67,7 +67,7 @@ class FirebaseApi {
         android: AndroidNotificationDetails(
           channel.id,
           channel.name,
-          icon: '@mipmap/ic_launcher',
+          icon: '@mipmap/launcher_icon',
         ),
       ),
     );

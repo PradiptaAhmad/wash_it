@@ -90,7 +90,7 @@ class TransactionPageController extends GetxController {
         Get.snackbar('Error', 'Pembayaran sudah selesai',
             backgroundColor: warningColor);
       } else {
-        customPopUp("Error, Kode(${response.statusCode})", warningColor);
+        customPopUp("Failed, Kode(${response.statusCode})", warningColor);
       }
     } catch (e) {
       customPopUp("Error, Kode(${e.toString()})", warningColor);
@@ -174,7 +174,9 @@ class TransactionPageController extends GetxController {
         print(response.body);
         customPopUp("Error, Kode(${response.statusCode})", warningColor);
       }
-    } catch (e) {}
+    } catch (e) {
+      customPopUp("Error, gagal untuk mengambil data transaksi", warningColor);
+    }
   }
 
   Future<void> buttonTitle() async {
@@ -186,11 +188,8 @@ class TransactionPageController extends GetxController {
       if (statusList['status_code'] == 1) {
         displayText.value = 'Batalkan Pesanan';
       }
-      if (ordersList['status'] == "Selesai") {
-        displayText.value = 'Selesai';
-      }
       if (ordersList['status'] == "completed") {
-        displayText.value = 'Beri ulasan';
+        displayText.value = 'Selesai';
       }
     }
     if (argument[1] == 'histories') {

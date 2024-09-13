@@ -193,7 +193,7 @@ Widget _buildGridItem(laundries) {
         Text(
           "${laundries['deskripsi']}",
           overflow: TextOverflow.ellipsis,
-          maxLines: 2,
+          maxLines: 1,
           style: tsLabelLargeSemibold(grey),
         ),
       ],
@@ -251,8 +251,11 @@ Widget _buildAppbar(HomeController controller, BuildContext context) {
                               controller.addressData['type'] ?? "Alamat Utama",
                               style: tsLabelLargeSemibold(grey),
                             )
-                          : ShimmerWidget(height: 15, radius: 8, width: 120)),
-                      SizedBox(height: 5),
+                          : Padding(
+                              padding: const EdgeInsets.only(bottom: 5.0),
+                              child: ShimmerWidget(
+                                  height: 15, radius: 8, width: 120),
+                            )),
                       Obx(() => !controller.isLoading.value
                           ? SizedBox(
                               width: 300,
@@ -510,24 +513,28 @@ class MainTitleWidget extends GetView<HomeController> {
               ),
             ),
           ),
-          // Expanded(
-          //   flex: 1,
-          //   child: InkWell(
-          //     onTap: () {
-          //       Get.toNamed(Routes.NOTIFICATION_PAGE);
-          //     },
-          //     borderRadius: BorderRadius.circular(50),
-          //     child: Container(
-          //       height: 45,
-          //       width: 45,
-          //       child: const Icon(
-          //         Icons.notifications,
-          //         color: darkGrey,
-          //         size: 22,
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          Expanded(
+            flex: 1,
+            child: InkWell(
+              onTap: () {
+                Get.toNamed(Routes.CHAT_PAGE, arguments: [
+                  controller.userData['id'],
+                  controller.userData['username'],
+                  controller.userData['image_path']
+                ]);
+              },
+              borderRadius: BorderRadius.circular(50),
+              child: Container(
+                height: 45,
+                width: 45,
+                child: const Icon(
+                  Icons.chat_rounded,
+                  color: darkGrey,
+                  size: 22,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
