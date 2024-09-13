@@ -41,14 +41,14 @@ class SearchDropdownWidget extends StatelessWidget {
         controller: controller,
         suggestionStyle: tsBodySmallMedium(black),
         onTap: onTap,
-        searchStyle: tsBodySmallMedium(black),
         onSuggestionTap: (suggestion) {
           if (onSuggestionSelected != null) {
             onSuggestionSelected!(suggestion.searchKey);
           }
         },
         validator: validator,
-        searchInputDecoration: InputDecoration(
+        searchInputDecoration: SearchInputDecoration(
+          searchStyle: tsBodySmallMedium(black),
           isDense: true,
           hintText: hintText,
           hintStyle: tsBodySmallMedium(darkGrey),

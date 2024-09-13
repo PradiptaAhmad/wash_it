@@ -30,19 +30,28 @@ class MainDetailView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "id Pesanan",
+                            "Status Pesanan",
                             style: tsLabelLargeMedium(grey),
                           ),
                           Text(
-                            "${order['no_pemesanan']}",
-                            style: tsLabelLargeMedium(black),
+                            order['status'] == 'canceled'
+                                ? "Dibatalkan"
+                                : order['status'] == 'completed'
+                                    ? "Selesai"
+                                    : "Sedang diproses",
+                            style: tsLabelLargeSemibold(
+                                order['status'] == 'canceled'
+                                    ? warningColor
+                                    : order['status'] == 'completed'
+                                        ? successColor
+                                        : warningColor),
                           )
                         ],
                       ),
                     ),
                     Expanded(
                       child: Text(
-                        "Estimasi: ${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.parse(order['tanggal_estimasi'].toString() == 'null' ? "2007-07-31 00:00:00" : order['tanggal_estimasi'].toString()))}",
+                        "Dipesan: ${DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.parse(order['tanggal_pemesanan'].toString() == 'null' ? "2007-07-31 00:00:00" : order['tanggal_estimasi'].toString()))}",
                         style: tsLabelLargeMedium(darkGrey),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
@@ -97,70 +106,78 @@ class MainDetailView extends StatelessWidget {
                     )
                   ],
                 ),
-                SizedBox(height: 18),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Total harga",
-                            style: tsLabelMediumMedium(black),
-                          ),
-                          Text(
-                            order['total_harga'] == null
-                                ? "Harga belum tercatat"
-                                : '${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(order['total_harga'])}',
-                            style: tsBodySmallSemibold(black),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              showModalBottomSheet(
-                                context: context,
-                                enableDrag: true,
-                                isDismissible: true,
-                                scrollControlDisabledMaxHeightRatio: 0.45,
-                                sheetAnimationStyle: AnimationStyle(
-                                  duration: Durations.medium1,
-                                  curve: Curves.easeInOut,
-                                ),
-                                backgroundColor: primaryColor,
-                                isScrollControlled: true,
-                                builder: (context) {
-                                  return HistoryReviewPopup(id: order['id']);
-                                },
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: secondaryColor.withOpacity(0.2),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 30,
-                                  vertical: 8,
-                                ),
-                                child: Text(
-                                  "Ulas",
-                                  style: tsLabelLargeSemibold(secondaryColor),
-                                ),
-                              ),
+                Visibility(
+                  visible: order['status'] == 'canceled' ? false : true,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Total harga",
+                              style: tsLabelMediumMedium(black),
                             ),
-                          ),
-                        ],
+                            Text(
+                              order['total_harga'] == null
+                                  ? "Harga belum tercatat"
+                                  : '${NumberFormat.currency(locale: 'id', symbol: 'Rp', decimalDigits: 0).format(order['total_harga'])}',
+                              style: tsBodySmallSemibold(black),
+                            ),
+                          ],
+                        ),
                       ),
-                    )
-                  ],
+                      Expanded(
+                        child: Visibility(
+                          visible:
+                              order['status'] == 'completed' ? true : false,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    enableDrag: true,
+                                    isDismissible: true,
+                                    scrollControlDisabledMaxHeightRatio: 0.45,
+                                    sheetAnimationStyle: AnimationStyle(
+                                      duration: Durations.medium1,
+                                      curve: Curves.easeInOut,
+                                    ),
+                                    backgroundColor: primaryColor,
+                                    isScrollControlled: true,
+                                    builder: (context) {
+                                      return HistoryReviewPopup(
+                                          id: order['id']);
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: secondaryColor.withOpacity(0.2),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 30,
+                                      vertical: 8,
+                                    ),
+                                    child: Text(
+                                      "Ulas",
+                                      style:
+                                          tsLabelLargeSemibold(secondaryColor),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),

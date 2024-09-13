@@ -132,5 +132,10 @@ class Nav {
       page: () => const MapGoogleScreen(),
       binding: MapGoogleControllerBinding(),
     ),
+    GetPage(
+      name: Routes.CHAT_PAGE,
+      page: () => const ChatPageScreen(),
+      binding: ChatPageControllerBinding(),
+    ),
   ];
 }

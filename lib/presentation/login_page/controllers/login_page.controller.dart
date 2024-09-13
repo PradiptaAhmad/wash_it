@@ -28,46 +28,48 @@ class LoginPageController extends GetxController {
 
   Future<void> login() async {
     isLoading.value = true;
-    String? notificationtoken;
-    await _firebaseMessaging.getToken().then((value) {
-      notificationtoken = value!;
-    });
-    final url = ConfigEnvironments.getEnvironments()["url"];
-    print(url);
-    var data = {
-      'email': email.value,
-      'password': password.value,
-      'notification_token': notificationtoken,
-    };
-    var headers = {
-      'Accept': 'application/json',
-    };
-
-    var response = await http.post(
-      Uri.parse("$url/users/login"),
-      headers: headers,
-      body: data,
-    );
-
-    if (response.statusCode == 200) {
-      final token = json.decode(response.body)['token'];
-      final user = json.decode(response.body)['user'];
-      box.write("token", token);
-      if (user['email_verified_at'] == null) {
-        Get.toNamed(Routes.VERIFICATION_PAGE, arguments: 'login');
-      } else {
-        FocusScope.of(Get.overlayContext!).unfocus();
-        customPopUp(
-          "Berhasil login",
-          successColor,
-        );
-        Get.offAllNamed(Routes.NAVBAR);
-      }
-    } else {
+    try {
       FocusScope.of(Get.overlayContext!).unfocus();
-      customPopUp(
-          "Gagal untuk melanjutkan login. Kode error(${response.statusCode})",
-          warningColor);
+      String? notificationtoken;
+      await _firebaseMessaging.getToken().then((value) {
+        notificationtoken = value!;
+      });
+      final url = ConfigEnvironments.getEnvironments()["url"];
+      var data = {
+        'email': email.value,
+        'password': password.value,
+        'notification_token': notificationtoken,
+      };
+      var headers = {
+        'Accept': 'application/json',
+      };
+
+      var response = await http.post(
+        Uri.parse("$url/users/login"),
+        headers: headers,
+        body: data,
+      );
+
+      if (response.statusCode == 200) {
+        final token = json.decode(response.body)['token'];
+        final user = json.decode(response.body)['user'];
+        box.write("token", token);
+        if (user['email_verified_at'] == null) {
+          Get.toNamed(Routes.VERIFICATION_PAGE, arguments: 'login');
+        } else {
+          customPopUp("Sukses, berhasil untuk masuk ke akun", successColor);
+          Get.offAllNamed(Routes.NAVBAR);
+        }
+      } else if (response.statusCode == 401) {
+        customPopUp(
+            "Error, ada yang salah di antara email dan password", warningColor);
+      } else {
+        customPopUp("Error, Kode:${response.statusCode}", warningColor);
+      }
+    } catch (e) {
+      customPopUp('Error, Gagal untuk masuk ke akun', warningColor);
+      print(e);
+    } finally {
       isLoading.value = false;
     }
   }
@@ -94,7 +96,8 @@ class LoginPageController extends GetxController {
         switch (status) {
           case 'success':
             closeKeyboard();
-            customPopUp("Berhasil mengirim email reset password", successColor);
+            customPopUp(
+                "Sukses, berhasil mengirim email reset password", successColor);
             Get.toNamed(Routes.VERIFICATION_PAGE,
                 arguments: ['otp-login', email.value]);
             break;
@@ -107,12 +110,10 @@ class LoginPageController extends GetxController {
       } else if (response.statusCode == 422) {
         customPopUp("Email belum di input, silahkan input ulang", warningColor);
       } else {
-        customPopUp(
-            "Gagal untuk reset password. Kode error(${response.statusCode})",
-            warningColor);
+        customPopUp("Error, Kode:${response.statusCode}", warningColor);
       }
     } catch (e) {
-      print(e);
+      customPopUp('Error, Gagal untuk lupa Paswword', warningColor);
     } finally {
       isLoading.value = false;
     }
@@ -152,20 +153,17 @@ class LoginPageController extends GetxController {
           } else {
             FocusScope.of(Get.overlayContext!).unfocus();
             customPopUp(
-              "Berhasil login",
-              successColor,
-            );
+                "Sukses, berhasil masuk menggunakan google", successColor);
             Get.offAllNamed(Routes.NAVBAR);
           }
         } else {
           FocusScope.of(Get.overlayContext!).unfocus();
-          customPopUp(
-              "Gagal untuk melanjutkan login. Kode error(${response.statusCode})",
-              warningColor);
+          customPopUp("Error, Kode:${response.statusCode}", warningColor);
         }
       }
-    } on Exception catch (e) { 
-      print('exception->$e');
+    } on Exception catch (e) {
+      customPopUp('Error, Gagal untuk masuk menggunakan google', warningColor);
+      print(e);
     }
   }
 

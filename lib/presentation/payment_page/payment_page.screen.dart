@@ -108,22 +108,31 @@ class PaymentPageScreen extends GetView<PaymentPageController> {
                                 DetailDataWidget(
                                   leftTitle: "Tipe pembayaran",
                                   rightTitle:
-                                      controller.paymentList['payment_type'] ==
-                                              "non_tunai"
+                                      controller.argument[2] == "non_tunai"
                                           ? "Non Tunai"
                                           : "Tunai",
                                 ),
                                 SizedBox(height: 5),
-                                DetailDataWidget(
-                                  leftTitle: "Metode pembayaran",
-                                  rightTitle:
-                                      "${controller.paymentList['payment_method']}",
+                                Visibility(
+                                  visible: controller
+                                          .paymentList['payment_method'] !=
+                                      null,
+                                  child: DetailDataWidget(
+                                    leftTitle: "Metode pembayaran",
+                                    rightTitle:
+                                        "${controller.paymentList['payment_method']}",
+                                  ),
                                 ),
                                 SizedBox(height: 5),
-                                DetailDataWidget(
-                                  leftTitle: "Kanal pembayaran",
-                                  rightTitle:
-                                      "${controller.paymentList['payment_channel']}",
+                                Visibility(
+                                  visible: controller
+                                          .paymentList['payment_channel'] !=
+                                      null,
+                                  child: DetailDataWidget(
+                                    leftTitle: "Kanal pembayaran",
+                                    rightTitle:
+                                        "${controller.paymentList['payment_channel']}",
+                                  ),
                                 ),
                                 SizedBox(height: 5),
                                 DetailDataWidget(

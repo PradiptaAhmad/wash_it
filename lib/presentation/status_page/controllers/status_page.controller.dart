@@ -79,8 +79,6 @@ class StatusPageController extends GetxController {
     }
   }
 
-  
-
   void applyFilter(String mode) async {
     if (mode == 'paginate') {
       isLoadingMore.value = true;
@@ -115,19 +113,17 @@ class StatusPageController extends GetxController {
     } else {
       isLoading.value = false;
     }
-
   }
 
   void onRefresh() async {
     if (selectedFilter == 0) {
-
-    isLoading.value = true;
+      isLoading.value = true;
       paginate.value = 1;
       isMaxPage.value = false;
       ordersList.clear();
       filteredOrdersList.clear();
-    await fetchOrdersData();
-    isLoading.value = false;
+      await fetchOrdersData();
+      isLoading.value = false;
     } else {
       applyFilter('refresh');
     }

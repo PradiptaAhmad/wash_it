@@ -20,7 +20,7 @@ class HomeScreen extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: lightGrey.withOpacity(0.1),
       appBar: AppBar(
-        toolbarHeight: kToolbarHeight + 120,
+        toolbarHeight: kToolbarHeight + 100,
         flexibleSpace: _buildAppbar(controller, context),
       ),
       body: RefreshIndicator(
@@ -36,8 +36,7 @@ class HomeScreen extends GetView<HomeController> {
                 SizedBox(height: 10),
                 Obx(() => !controller.isLoading.value
                     ? Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: defaultMargin),
+                        margin: EdgeInsets.symmetric(horizontal: defaultMargin),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -121,28 +120,26 @@ class HomeScreen extends GetView<HomeController> {
                       : _shimmerTitleWidget(),
                 ),
                 SizedBox(height: 10),
-                Container(
-                  child: Obx(
-                    () => !controller.isLoading.value
-                        ? GridView.builder(
-                            itemCount: controller.laundryList.length,
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: defaultMargin),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 1.7,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                            ),
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              var laundries = controller.laundryList[index];
-                              return _buildGridItem(laundries);
-                            })
-                        : _shimmerGridItem(),
-                  ),
+                Obx(
+                  () => !controller.isLoading.value
+                      ? GridView.builder(
+                          itemCount: controller.laundryList.length,
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: defaultMargin),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 1.7,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            var laundries = controller.laundryList[index];
+                            return _buildGridItem(laundries);
+                          })
+                      : _shimmerGridItem(),
                 ),
                 SizedBox(height: 20),
               ],
@@ -233,7 +230,7 @@ Widget _buildAppbar(HomeController controller, BuildContext context) {
     borderRadius: 25,
     childs: Column(
       children: [
-        SizedBox(height: 55.00),
+        SizedBox(height: 30),
         MainTitleWidget(),
         Divider(color: lightGrey.withOpacity(0.2), thickness: 2),
         InkWell(
@@ -254,10 +251,7 @@ Widget _buildAppbar(HomeController controller, BuildContext context) {
                               controller.addressData['type'] ?? "Alamat Utama",
                               style: tsLabelLargeSemibold(grey),
                             )
-                          : ShimmerWidget(
-                              height: kToolbarHeight * 0.3,
-                              radius: 8,
-                              width: 120)),
+                          : ShimmerWidget(height: 15, radius: 8, width: 120)),
                       SizedBox(height: 5),
                       Obx(() => !controller.isLoading.value
                           ? SizedBox(
@@ -270,10 +264,7 @@ Widget _buildAppbar(HomeController controller, BuildContext context) {
                                 style: tsBodySmallSemibold(black),
                               ),
                             )
-                          : ShimmerWidget(
-                              height: kToolbarHeight * 0.2,
-                              radius: 8,
-                              width: 200)),
+                          : ShimmerWidget(height: 20, radius: 8, width: 200)),
                     ],
                   ),
                 ),
@@ -428,7 +419,7 @@ Widget _buildNewestPreviewWidget(order) {
                           Text(
                             order['berat_laundry'] == null
                                 ? "Berat belum tercatat"
-                                : "${order['berat_laundry']}",
+                                : "${order['berat_laundry']} Kg",
                             style: tsLabelLargeSemibold(darkGrey),
                           ),
                           Text(
@@ -474,23 +465,21 @@ class MainTitleWidget extends GetView<HomeController> {
           const EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 10),
       child: Row(
         children: [
-          Expanded(
-              flex: 1,
-              child: Obx(() => !controller.isLoading.value
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        height: 45,
-                        width: 45,
-                        child: Image.network(
-                          controller.userData['image_path'] == null
-                              ? 'https://ui-avatars.com/api/?name=${controller.userData['username']}&background=random&size=128'
-                              : 'https://api.laundrynaruto.my.id/image/${controller.userData['image_path']}',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    )
-                  : ShimmerWidget(radius: 10, height: 45))),
+          Obx(() => !controller.isLoading.value
+              ? ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    height: 45,
+                    width: 45,
+                    child: Image.network(
+                      controller.userData['image_path'] == null
+                          ? 'https://ui-avatars.com/api/?name=${controller.userData['username']}&background=random&size=128'
+                          : 'https://api.laundrynaruto.my.id/image/${controller.userData['image_path']}',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                )
+              : ShimmerWidget(radius: 10, height: 45)),
           Expanded(
             flex: 7,
             child: Padding(
@@ -498,18 +487,16 @@ class MainTitleWidget extends GetView<HomeController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Obx(
-                    () => !controller.isLoading.value
-                        ? Text(
-                            "Halo,",
-                            style: tsBodyLargeMedium(darkGrey),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child:
-                                ShimmerWidget(radius: 8, height: 20, width: 80),
-                          ),
-                  ),
+                  Obx(() => !controller.isLoading.value
+                      ? Text(
+                          "Halo,",
+                          style: tsBodyLargeMedium(darkGrey),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child:
+                              ShimmerWidget(radius: 8, height: 20, width: 80),
+                        )),
                   Obx(() => !controller.isLoading.value
                       ? ConstrainedBox(
                           constraints: BoxConstraints(maxWidth: 300),

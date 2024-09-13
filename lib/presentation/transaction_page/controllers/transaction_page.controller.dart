@@ -11,6 +11,7 @@ class TransactionPageController extends GetxController {
   var isLoading = false.obs;
   var ordersList = {}.obs;
   var statusList = {}.obs;
+  var paymentList = {}.obs;
   var displayText = ''.obs;
   var reviewDesc = ''.obs;
   var reviewStar = 0.0.obs;
@@ -58,7 +59,7 @@ class TransactionPageController extends GetxController {
       if (response.statusCode == 200) {
         statusList.value = jsonDecode(response.body)['order_status'];
       } else {
-        customPopUp("Error, Kode(${response.statusCode})", warningColor);
+        customPopUp("Error, Kode:${response.statusCode}", warningColor);
       }
     } catch (e) {
       customPopUp("Error, Kode(${e.toString()})", warningColor);
@@ -161,19 +162,14 @@ class TransactionPageController extends GetxController {
         'Accept': 'application/json',
         'Authorization': 'Bearer ${token.toString()}',
       };
-      var data = {
-        'review': reviewDesc.value,
-        'rating': reviewStar.value.toString(),
-        'history_id': argument[0].toString(),
-      };
-      final response = await http.post(
+      final response = await http.get(
         Uri.parse("${url}/transaction/get?id=${argument[0]}"),
         headers: headers,
-        body: data,
       );
-      if (response.statusCode == 201) {
-        customPopUp("Berhasil memberikan ulasan", successColor);
-        Get.back();
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body)['transaction'];
+        paymentList.value = jsonResponse;
+      } else if (response.statusCode == 404) {
       } else {
         print(response.body);
         customPopUp("Error, Kode(${response.statusCode})", warningColor);
@@ -182,15 +178,22 @@ class TransactionPageController extends GetxController {
   }
 
   Future<void> buttonTitle() async {
-    if (statusList['status_code'] == 5 && argument[1] == 'order') {
-      displayText.value = 'Selesai';
-    } else if (argument[1] == 'order') {
-      if (ordersList['metode_pembayaran'] == "non_tunai") {
+    if (argument[1] == 'order') {
+      if (ordersList['metode_pembayaran'] == "non_tunai" &&
+          statusList['status_code'] > 1) {
         displayText.value = 'Bayar sekarang';
-      } else {
-        displayText.value = "Batalkan Pesanan";
       }
-    } else {
+      if (statusList['status_code'] == 1) {
+        displayText.value = 'Batalkan Pesanan';
+      }
+      if (ordersList['status'] == "Selesai") {
+        displayText.value = 'Selesai';
+      }
+      if (ordersList['status'] == "completed") {
+        displayText.value = 'Beri ulasan';
+      }
+    }
+    if (argument[1] == 'histories') {
       displayText.value = 'Beri ulasan';
     }
   }
@@ -217,6 +220,7 @@ class TransactionPageController extends GetxController {
       await getStatusProgress();
     }
     await buttonTitle();
+    await fetchTransaction();
     isLoading.value = false;
   }
 
