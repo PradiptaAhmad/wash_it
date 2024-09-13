@@ -36,10 +36,10 @@ class HomeController extends GetxController {
         final jsonResponse = jsonDecode(response.body)['order'];
         ordersList.value = jsonResponse;
       } else {
-        customPopUp("Error, Kode(${response.statusCode})", warningColor);
+        customPopUp("Error, Kode:${response.statusCode}", warningColor);
       }
     } catch (e) {
-      customPopUp("Error, Kode(${e.toString()})", warningColor);
+      customPopUp("Error, gagal untuk mengambil data pesanan", warningColor);
     }
   }
 
@@ -62,10 +62,10 @@ class HomeController extends GetxController {
         final jsonResponse = jsonDecode(response.body)['user'];
         userData.value = jsonResponse; // Store raw JSON in userData
       } else {
-        customPopUp("Error, Kode(${response.statusCode})", warningColor);
+        customPopUp("Error, Kode:${response.statusCode}", warningColor);
       }
     } catch (e) {
-      customPopUp("Error, Kode(${e.toString()})", warningColor);
+      customPopUp("Error, gagal untuk mengambil data pengguna", warningColor);
     }
   }
 
@@ -89,10 +89,10 @@ class HomeController extends GetxController {
         addressData.value = jsonResponse;
       } else if (response.statusCode == 404) {
       } else {
-        customPopUp("Error, Kode(${response.statusCode})", warningColor);
+        customPopUp("Error, Kode:${response.statusCode}", warningColor);
       }
     } catch (e) {
-      customPopUp("Error, Kode(${e.toString()})", warningColor);
+      customPopUp("Error, gagal untuk mengambil alamat utama", warningColor);
     }
   }
 
@@ -118,9 +118,10 @@ class HomeController extends GetxController {
         customPopUp("Error, Kode(${response.statusCode})", warningColor);
       }
     } catch (e) {
-      customPopUp("Error, Kode(${e.toString()})", warningColor);
+      customPopUp("Error, gagal untuk mengambil laundry servis", warningColor);
     }
   }
+
   Future<void> onRefresh() async {
     isLoading.value = true;
     await fetchOrdersData();

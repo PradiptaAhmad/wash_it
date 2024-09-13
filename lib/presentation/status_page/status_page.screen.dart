@@ -38,48 +38,34 @@ class StatusPageScreen extends GetView<StatusPageController> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     DataIsEmpty("Status pesanan kamu masih kosong"),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    SizedBox(height: 10),
                     MainContainerWidget(
                       onPressed: () => controller.onRefresh(),
                       padding: EdgeInsets.all(8),
                       childs: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            "Coba Lagi",
-                            style: tsLabelLargeMedium(grey),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.refresh,
-                            color: grey,
-                            size: 15,
-                          )
+                          Text("Coba Lagi", style: tsLabelLargeMedium(grey)),
+                          SizedBox(width: 5),
+                          Icon(Icons.refresh, color: grey, size: 15)
                         ],
                       ),
                     )
                   ],
                 );
               }
-              return RefreshIndicator(
-                onRefresh: () async => controller.onRefresh(),
-                child: ListView.builder(
-                  controller: controller.scrollController,
-                  physics: AlwaysScrollableScrollPhysics(),
-                  itemCount: controller.selectedFilter.value == 0
-                      ? controller.ordersList.length
-                      : controller.filteredOrdersList.length,
-                  itemBuilder: (context, index) {
-                    final order = controller.selectedFilter.value == 0
-                        ? controller.ordersList[index]
-                        : controller.filteredOrdersList[index];
-                    return _buildOrderItem(order);
-                  },
-                ),
+              return ListView.builder(
+                controller: controller.scrollController,
+                physics: AlwaysScrollableScrollPhysics(),
+                itemCount: controller.selectedFilter.value == 0
+                    ? controller.ordersList.length
+                    : controller.filteredOrdersList.length,
+                itemBuilder: (context, index) {
+                  final order = controller.selectedFilter.value == 0
+                      ? controller.ordersList[index]
+                      : controller.filteredOrdersList[index];
+                  return _buildOrderItem(order);
+                },
               );
             },
           ),

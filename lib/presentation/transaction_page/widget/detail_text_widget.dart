@@ -39,7 +39,7 @@ class DetailDataWidget extends StatelessWidget {
               ),
               Expanded(
                 child: Text(rightTitle ?? "",
-                    style: rightTitleStyle ?? tsBodySmallMedium(black),
+                    style: rightTitleStyle ?? tsBodySmallRegular(black),
                     textAlign: rightTitleAlignment ?? TextAlign.right,
                     overflow: textTitleOverflow ?? TextOverflow.ellipsis,
                     maxLines: 5),

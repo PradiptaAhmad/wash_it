@@ -96,12 +96,10 @@ class LoginPageScreen extends GetView<LoginPageController> {
                     backgroundColor: secondaryColor,
                     child: controller.isLoading.value
                         ? Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8),
-                            child: Transform.scale(
-                              scale: 0.5,
-                              child: CircularProgressIndicator(
-                                color: primaryColor,
-                              ),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: Text(
+                              "Loading...",
+                              style: tsBodySmallSemibold(primaryColor),
                             ),
                           )
                         : Padding(
@@ -111,11 +109,10 @@ class LoginPageScreen extends GetView<LoginPageController> {
                               style: tsBodySmallSemibold(primaryColor),
                             ),
                           ),
-                    onPressed: () {
-                      controller.login();
-                    },
+                    onPressed: () => !controller.isLoading.isTrue
+                        ? controller.login()
+                        : null,
                   )),
-              // DividerWidget(screenWidth: screenWidth),
               SizedBox(height: 15),
               ButtonWidget(
                 onPressed: () {
@@ -157,9 +154,7 @@ class LoginPageScreen extends GetView<LoginPageController> {
                     ),
                     SizedBox(width: 5),
                     InkWell(
-                      onTap: () {
-                        Get.toNamed(Routes.REGISTER_PAGE);
-                      },
+                      onTap: () => Get.toNamed(Routes.REGISTER_PAGE),
                       borderRadius: BorderRadius.circular(5),
                       child: Text(
                         "Daftar Sekarang",

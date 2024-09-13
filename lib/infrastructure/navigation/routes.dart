@@ -25,4 +25,5 @@ class Routes {
   static const STATUS_PAGE = '/status_page.screen';
   static const TRANSACTION_PAGE = '/transaction-page';
   static const VERIFICATION_PAGE = '/verification_page';
+  static const CHAT_PAGE = '/chat-page';
 }
