@@ -265,9 +265,11 @@ Widget _buildFloatingActionButton(
     BuildContext context, TransactionPageController controller) {
   return Visibility(
     visible: controller.ordersList['total_harga'] == null &&
-                controller.statusList['status_code'] > 1 ||
+                controller.statusList['status_code'] < 1 ||
             controller.ordersList['status'] == 'canceled' ||
-            controller.paymentList['status'] == 'PAID'
+            controller.paymentList['status'] == 'PAID' &&
+                controller.ordersList['status'] != 'completed' ||
+            controller.ordersList['berat_laundry'] == null
         ? false
         : true,
     child: Container(
@@ -351,8 +353,9 @@ Widget _buildFloatingActionButton(
                         },
                       );
                     }
-                    if (controller.statusList['status_code'] == 5) {
+                    if (controller.ordersList['status'] == 'completed') {
                       controller.putCompleteOrder();
+                      Get.back();
                       Get.back();
                     }
                   }

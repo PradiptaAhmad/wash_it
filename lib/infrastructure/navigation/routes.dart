@@ -1,10 +1,9 @@
 class Routes {
   static Future<String> get initialRoute async {
-    return LOGIN_PAGE;
+    return SPLASH_SCREEN;
   }
 
   static const ADDRESS_PAGE = '/address-page';
-  static const CHAT_PAGE = '/message_screen';
   static const EDIT_ADDRESS_PAGE = '/edit-address-page';
   static const HISTORY_PAGE = '/history_page';
   static const HOME = '/home';

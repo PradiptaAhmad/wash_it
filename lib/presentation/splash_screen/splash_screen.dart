@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:wash_it/infrastructure/theme/themes.dart';
+import 'package:wash_it/presentation/splash_screen/controllers/splash_screen.controller.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends GetView<SplashPageController> {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(controller.text.value);
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: primaryColor,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlutterLogo(size: 100),
-            SizedBox(height: 24),
-            Text(
-              'Splash Screen',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        child: Image.asset(
+          'assets/icons/logo.png',
+          width: 200,
+          height: 200,
         ),
       ),
     );

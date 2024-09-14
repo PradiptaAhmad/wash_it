@@ -134,7 +134,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.CHAT_PAGE,
-      page: () => const ChatPageScreen(),
+      page: () => ChatPageScreen(),
       binding: ChatPageControllerBinding(),
     ),
   ];
